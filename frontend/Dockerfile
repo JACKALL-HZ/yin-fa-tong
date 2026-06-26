@@ -1,5 +1,5 @@
 # Stage 1: Build Vue app
-FROM node:current-slim AS builder
+FROM node:20-slim AS builder
 
 WORKDIR /app
 COPY package*.json ./

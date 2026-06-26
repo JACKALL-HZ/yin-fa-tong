@@ -127,9 +127,10 @@ services:
       ALIPAY_APP_ID: ${ALIPAY_APP_ID:-}
       ALIPAY_PRIVATE_KEY: ${ALIPAY_PRIVATE_KEY:-}
       ALIPAY_PUBLIC_KEY: ${ALIPAY_PUBLIC_KEY:-}
-      ALIPAY_GATEWAY: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+      ALIPAY_GATEWAY: ${ALIPAY_GATEWAY:-https://openapi-sandbox.dl.alipaydev.com/gateway.do}
       ALIPAY_NOTIFY_URL: ${ALIPAY_NOTIFY_URL:-http://localhost:8000/api/payment/notify}
       ALIPAY_RETURN_URL: ${ALIPAY_RETURN_URL:-http://localhost:5173/pay-result}
+      ALIPAY_OAUTH_REDIRECT_URI: ${ALIPAY_OAUTH_REDIRECT_URI:-http://localhost:5173/auth/callback}
       PAY_MODE: ${PAY_MODE:-mock}
     # ports:        # 生产环境通过 Nginx 反代，不直接暴露
     #   - "8000:8000"
@@ -162,7 +163,13 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
 
 volumes:
   mysql_data:

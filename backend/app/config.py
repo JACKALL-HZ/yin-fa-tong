@@ -66,9 +66,9 @@ class Settings(BaseSettings):
     ALIPAY_PRIVATE_KEY: str = ""
     ALIPAY_PUBLIC_KEY: str = ""
     ALIPAY_GATEWAY: str = "https://openapi-sandbox.dl.alipaydev.com/gateway.do"
-    ALIPAY_NOTIFY_URL: str = "http://localhost:8000/api/payment/notify"
-    ALIPAY_RETURN_URL: str = "http://localhost:5173/pay-result"
-    ALIPAY_OAUTH_REDIRECT_URI: str = "http://localhost:5173/auth/callback"
+    ALIPAY_NOTIFY_URL: str = "http://118.31.120.180/api/payment/notify"
+    ALIPAY_RETURN_URL: str = "http://118.31.120.180/pay-result"
+    ALIPAY_OAUTH_REDIRECT_URI: str = "http://118.31.120.180/auth/callback"
     # 支付模式：sandbox=沙箱 / mock=纯模拟（降级方案）
     PAY_MODE: str = "mock"
     DIFY_MAX_RETRIES: int = 1

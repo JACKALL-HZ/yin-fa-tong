@@ -52,6 +52,7 @@ docker/es/data/
 # 环境文件（保留 .env.example）
 .env
 .env.local
+.env.production
 .env.*.local
 
 # 计划文件
