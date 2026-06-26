@@ -1,0 +1,366 @@
+version: '0.6.0'
+kind: app
+app:
+  name: 银发通-AI智能导诊
+  mode: advanced-chat
+  icon: "\U0001FA7A"
+  icon_type: emoji
+  icon_background: '#E0F2FE'
+  description: '银发通智慧就医平台 —— AI智能导诊。根据用户症状描述，检索医学知识库并通过通义千问大模型分析，推荐挂号科室与OTC用药建议。'
+  use_icon_as_answer_icon: false
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+      allowed_file_extensions: []
+      allowed_file_types: []
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+    opening_statement: '您好！我是银发通AI导诊助手，专为老年用户提供就医指导。请描述您哪里不舒服，我会根据医学知识库为您推荐合适的科室和用药建议。\n\n例如：您可以说"头疼了三天，还有点发烧"或"膝盖疼，走路困难"。'
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - 我头疼、有点发烧，浑身没劲，应该挂什么科？
+    - 膝盖疼了好几个月，走路都困难，有什么药可以缓解吗？
+    - 最近总是胸闷气短、心跳快，是不是心脏有问题？
+    - 晚上睡不着，白天头昏，血压也有点高，怎么办？
+    - 吃完饭后胃胀、反酸，有时候还想吐，该看哪个科室？
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: start-kb-edge
+      source: start_node
+      sourceHandle: source
+      target: kb_retrieval
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: llm
+      id: kb-llm-edge
+      source: kb_retrieval
+      sourceHandle: source
+      target: llm_analysis
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: code
+      id: llm-code-edge
+      source: llm_analysis
+      sourceHandle: source
+      target: code_parser
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: answer
+      id: code-answer-edge
+      source: code_parser
+      sourceHandle: source
+      target: answer_output
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: '接收用户输入的症状描述文本'
+        selected: false
+        title: 用户症状输入
+        type: start
+        variables:
+        - label: symptom_text
+          max_length: 500
+          options: []
+          required: true
+          type: paragraph
+          variable: symptom_text
+      height: 106
+      id: start_node
+      position:
+        x: 80
+        y: 300
+      positionAbsolute:
+        x: 80
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '在银发通医学知识库中检索与症状相关的文档片段，返回 Top-K 结果'
+        selected: false
+        title: 医学知识库检索
+        type: knowledge-retrieval
+        query_variable_selector:
+        - start_node
+        - symptom_text
+        dataset_ids: []
+        retrieval_mode: multiple
+        top_k: 8
+        score_threshold: 0.55
+        reranking_enable: true
+        reranking_mode: reranking_model
+        metadata_filtering_mode: disabled
+      height: 106
+      id: kb_retrieval
+      position:
+        x: 380
+        y: 300
+      positionAbsolute:
+        x: 380
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '基于用户症状和知识库检索结果，由通义千问大模型生成科室推荐和用药建议（JSON格式）'
+        selected: false
+        title: AI导诊分析（通义千问）
+        type: llm
+        model:
+          provider: tongyi
+          name: qwen-plus
+          mode: chat
+          completion_params:
+            temperature: 0.3
+            max_tokens: 2000
+        prompt_template:
+        - role: system
+          text: |-
+            你是银发通智慧就医平台的AI导诊助手，专门为老年用户提供就医指导服务。
+
+            ## 你的职责
+            根据用户的症状描述，结合知识库中的医学资料，进行分析并给出以下三部分建议。
+
+            ## 重要约束
+            1. 只推荐非处方药（OTC），严禁推荐处方药
+            2. 所有用药建议必须注明"仅供参考，请遵医嘱"
+            3. 如果症状涉及胸痛剧烈、呼吸困难、意识模糊、突然偏瘫等危急情况，emergency_flag 设为 true
+            4. 科室推荐按置信度从高到低排序，最多3个
+            5. 用药建议最多3个
+            6. 置信度取值 0.0-1.0，基于症状与知识库匹配程度客观评估
+
+            ## 知识库参考
+            {{#context#}}
+
+            ## 输出格式
+            严格按照以下JSON格式输出，不要输出其他内容：
+            {
+              "departments": [
+                {
+                  "dept_name": "推荐科室名称",
+                  "confidence": 0.85,
+                  "reasoning": "推荐理由，说明哪些症状与科室匹配"
+                }
+              ],
+              "medications": [
+                {
+                  "drug_name": "药品通用名",
+                  "indication": "适应症说明",
+                  "dosage_note": "用法用量参考",
+                  "elderly_precaution": "老年患者特别注意事项",
+                  "contraindication": "禁忌症"
+                }
+              ],
+              "elderly_precautions": "针对老年患者的综合注意事项",
+              "emergency_flag": false,
+              "general_advice": "综合就医和生活建议"
+            }
+        - role: user
+          text: '{{#start_node.symptom_text#}}'
+        context:
+          enabled: true
+          variable_selector:
+          - kb_retrieval
+          - result
+        memory:
+          role_prefix:
+            user: ''
+            assistant: ''
+          window:
+            enabled: false
+            size: 10
+          query_prompt_template: ''
+        vision:
+          enabled: false
+      height: 120
+      id: llm_analysis
+      position:
+        x: 680
+        y: 300
+      positionAbsolute:
+        x: 680
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 320
+    - data:
+        desc: '解析LLM输出的JSON文本，确保格式正确、字段完整，兜底默认值'
+        selected: false
+        title: JSON解析与校验
+        type: code
+        code_language: python3
+        code: |-
+          import json
+          import re
+
+          def main(llm_output: str) -> dict:
+              """解析LLM输出的JSON，提取科室推荐和用药建议，兜底默认值"""
+              default = {
+                  "departments": [],
+                  "medications": [],
+                  "elderly_precautions": "",
+                  "emergency_flag": False,
+                  "general_advice": ""
+              }
+
+              if not llm_output:
+                  return {"result": json.dumps(default, ensure_ascii=False)}
+
+              # 尝试提取JSON：先匹配代码块，再匹配裸花括号
+              parsed = None
+              m = re.search(r'```(?:json)?\s*([\s\S]*?)```', llm_output)
+              if m:
+                  try:
+                      parsed = json.loads(m.group(1))
+                  except json.JSONDecodeError:
+                      pass
+
+              if parsed is None:
+                  m = re.search(r'\{[\s\S]*\}', llm_output)
+                  if m:
+                      try:
+                          parsed = json.loads(m.group())
+                      except json.JSONDecodeError:
+                          pass
+
+              if parsed is None or not isinstance(parsed, dict):
+                  return {"result": json.dumps(default, ensure_ascii=False)}
+
+              # 合并默认值，保证所有字段存在
+              result = {**default, **{k: v for k, v in parsed.items() if k in default}}
+
+              # 校验 departments
+              depts = []
+              for dep in result.get("departments", [])[:3]:
+                  if isinstance(dep, dict) and dep.get("dept_name"):
+                      depts.append({
+                          "dept_name": dep.get("dept_name", ""),
+                          "confidence": max(0.0, min(1.0, float(dep.get("confidence", 0.5)))),
+                          "reasoning": dep.get("reasoning", "") or ""
+                      })
+              result["departments"] = depts
+
+              # 校验 medications
+              meds = []
+              for med in result.get("medications", [])[:3]:
+                  if isinstance(med, dict) and med.get("drug_name"):
+                      meds.append({
+                          "drug_name": med.get("drug_name", ""),
+                          "indication": med.get("indication", ""),
+                          "dosage_note": med.get("dosage_note", ""),
+                          "elderly_precaution": med.get("elderly_precaution", ""),
+                          "contraindication": med.get("contraindication", "")
+                      })
+              result["medications"] = meds
+
+              # 校验 emergency_flag
+              result["emergency_flag"] = bool(result.get("emergency_flag", False))
+
+              # 保证字符串字段
+              result["elderly_precautions"] = str(result.get("elderly_precautions", "") or "")
+              result["general_advice"] = str(result.get("general_advice", "") or "")
+
+              return {"result": json.dumps(result, ensure_ascii=False)}
+        outputs:
+          result:
+            type: string
+            children: null
+        variables:
+        - variable: llm_output
+          value_selector:
+          - llm_analysis
+          - text
+      height: 106
+      id: code_parser
+      position:
+        x: 1056
+        y: 300
+      positionAbsolute:
+        x: 1056
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: '将AI分析结果输出为最终诊断建议'
+        selected: false
+        title: 输出诊断结果
+        type: answer
+        answer: '{{#code_parser.result#}}'
+      height: 106
+      id: answer_output
+      position:
+        x: 1356
+        y: 300
+      positionAbsolute:
+        x: 1356
+        y: 300
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 1
+dependencies: []

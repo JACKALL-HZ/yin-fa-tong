@@ -1,0 +1,172 @@
+name: yinfa-tong
+
+services:
+  # ========================
+  # MySQL 8 数据库
+  # ========================
+  mysql:
+    image: mysql:8.0
+    container_name: yft-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root123}
+      MYSQL_DATABASE: ${DB_NAME:-yinfa_tong}
+    # ports:        # 生产环境不暴露，只在 Docker 内部通信
+    #   - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-root123}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ========================
+  # Redis 7 缓存
+  # ========================
+  redis:
+    image: redis:7-alpine
+    container_name: yft-redis
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+    # ports:        # 生产环境不暴露
+    #   - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: sh -c 'if [ -n "$$REDIS_PASSWORD" ]; then exec redis-server --appendonly yes --requirepass "$$REDIS_PASSWORD"; else exec redis-server --appendonly yes; fi'
+    healthcheck:
+      test: ["CMD-SHELL", "if [ -n \"$$REDIS_PASSWORD\" ]; then redis-cli -a \"$$REDIS_PASSWORD\" ping; else redis-cli ping; fi | grep -q PONG"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ========================
+  # RabbitMQ 3 消息队列
+  # ========================
+  rabbitmq:
+    build: ./docker/rabbitmq
+    image: yft-rabbitmq:local
+    container_name: yft-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-guest}
+    # ports:        # 生产环境不暴露
+    #   - "5672:5672"
+    #   - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ========================
+  # Elasticsearch 8 搜索引擎（含 IK 中文分词）
+  # ========================
+  elasticsearch:
+    build: ./docker/elasticsearch
+    image: yft-elasticsearch:local
+    container_name: yft-elasticsearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    # ports:        # 生产环境不暴露
+    #   - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q -E 'green|yellow'"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+
+  # ========================
+  # FastAPI 后端
+  # ========================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: yft-backend
+    restart: unless-stopped
+    environment:
+      APP_NAME: ${APP_NAME:-银发通}
+      APP_VERSION: ${APP_VERSION:-1.0.0}
+      DEBUG: ${DEBUG:-false}
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-root123}
+      DB_NAME: ${DB_NAME:-yinfa_tong}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
+      ES_HOST: elasticsearch
+      ES_PORT: 9200
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-yft-dev-jwt-key-2026-not-for-prod}
+      JWT_ALGORITHM: HS256
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: 1440
+      UPLOAD_DIR: uploads
+      DIFY_API_KEY: ${DIFY_API_KEY:-}
+      DIFY_BASE_URL: ${DIFY_BASE_URL:-https://api.dify.ai}
+      DIFY_APP_MODE: ${DIFY_APP_MODE:-chatflow}
+      DIFY_TIMEOUT: ${DIFY_TIMEOUT:-60}
+      DIFY_MAX_RETRIES: ${DIFY_MAX_RETRIES:-1}
+      ALIPAY_APP_ID: ${ALIPAY_APP_ID:-}
+      ALIPAY_PRIVATE_KEY: ${ALIPAY_PRIVATE_KEY:-}
+      ALIPAY_PUBLIC_KEY: ${ALIPAY_PUBLIC_KEY:-}
+      ALIPAY_GATEWAY: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+      ALIPAY_NOTIFY_URL: ${ALIPAY_NOTIFY_URL:-http://localhost:8000/api/payment/notify}
+      ALIPAY_RETURN_URL: ${ALIPAY_RETURN_URL:-http://localhost:5173/pay-result}
+      PAY_MODE: ${PAY_MODE:-mock}
+    # ports:        # 生产环境通过 Nginx 反代，不直接暴露
+    #   - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/app/uploads
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # ========================
+  # Nginx 前端
+  # ========================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: yft-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+  redis_data:
+  rabbitmq_data:
+  es_data:
+  uploads_data:

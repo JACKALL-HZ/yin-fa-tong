@@ -1,0 +1,432 @@
+/* ========== Shared CSS Patterns ========== */
+/* 从设计稿 yinfa-tong-all.html 提取的复现模式 */
+
+/* --- 卡片 --- */
+.card {
+  background: var(--c-paper);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.card-xl { border-radius: var(--r-xl); }
+.card-hover { transition: transform .25s, box-shadow .25s; }
+.card-hover:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); }
+
+/* --- Section 标题 --- */
+.sec-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 0 4px;
+}
+.sec-head-zh {
+  font-family: "Noto Serif SC", serif;
+  font-weight: 900;
+  font-size: 32px;
+  color: var(--c-ink-900);
+  letter-spacing: 2px;
+}
+.sec-head-en {
+  font-family: "Fraunces", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--c-gold);
+  letter-spacing: 1px;
+  padding-bottom: 6px;
+}
+.sec-head-more {
+  margin-left: auto;
+  color: var(--c-ink-500);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* --- 按钮 --- */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 28px; border-radius: var(--r-pill);
+  background: var(--c-primary); color: var(--c-cream);
+  font-weight: 700; font-size: 16px; border: none; cursor: pointer;
+  letter-spacing: 1px; transition: background .2s;
+}
+.btn-primary:hover { background: var(--c-primary-d); }
+
+.btn-accent {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 28px; border-radius: var(--r-pill);
+  background: var(--c-accent); color: var(--c-cream);
+  font-weight: 700; font-size: 16px; border: none; cursor: pointer;
+  letter-spacing: 1px; transition: background .2s;
+}
+.btn-accent:hover { background: var(--c-accent-d); }
+
+.btn-gold {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 28px; border-radius: var(--r-pill);
+  background: var(--c-gold); color: var(--c-ink-900);
+  font-weight: 700; font-size: 16px; border: none; cursor: pointer;
+  letter-spacing: 1px; transition: background .2s;
+}
+
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 14px 28px; border-radius: var(--r-pill);
+  background: transparent; color: var(--c-ink-700);
+  border: 1.5px solid var(--c-line-2);
+  font-weight: 700; font-size: 16px; cursor: pointer;
+  transition: border-color .2s;
+}
+.btn-outline:hover { border-color: var(--c-primary); color: var(--c-primary); }
+
+/* --- Pill 标签 --- */
+.pill {
+  display: inline-block; padding: 4px 12px; border-radius: var(--r-pill);
+  font-size: 12px; font-weight: 700; line-height: 1.4;
+}
+.pill-primary { background: var(--c-primary); color: var(--c-cream); }
+.pill-accent  { background: var(--c-accent); color: var(--c-cream); }
+.pill-gold    { background: var(--c-gold-bg); color: var(--c-gold); border: 1px solid var(--c-gold-l); }
+.pill-rose    { background: var(--c-rose); color: #fff; }
+.pill-outline { border: 1.5px solid var(--c-line-2); color: var(--c-ink-500); }
+
+/* --- 分隔线 --- */
+.divider-dash { border-top: 1px dashed var(--c-line-2); }
+.divider-line { border-top: 1px solid var(--c-line); }
+
+/* --- 页面容器 --- */
+.page-wrap { max-width: 1320px; margin: 0 auto; padding: 32px 32px 80px; }
+
+/* --- 深色卡片 --- */
+.dark-card {
+  background: var(--c-ink-900); color: var(--c-cream);
+  border-radius: var(--r-xl); padding: 36px;
+  position: relative; overflow: hidden;
+}
+.dark-card-accent {
+  background: linear-gradient(160deg, var(--c-accent), var(--c-accent-d));
+  color: var(--c-cream);
+  border-radius: var(--r-xl); padding: 36px;
+  position: relative; overflow: hidden;
+}
+
+/* --- 装饰水印 --- */
+.watermark {
+  position: absolute; font-family: "Noto Serif SC", serif;
+  font-size: 200px; font-weight: 900; opacity: .05; line-height: 1;
+  pointer-events: none;
+}
+
+/* --- 印章 --- */
+.seal {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: radial-gradient(circle, var(--c-primary), var(--c-primary-d));
+  color: var(--c-cream); display: flex; align-items: center; justify-content: center;
+  font-family: "Ma Shan Zheng", cursive; font-size: 14px; line-height: 1;
+  text-align: center; transform: rotate(-8deg);
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,.4);
+  border: 2px solid rgba(255,247,232,.2);
+  flex-shrink: 0;
+}
+
+/* --- 两列非对称 --- */
+.grid-hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+
+/* --- 脉冲动画 --- */
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes ring {
+  0% { transform: scale(1); opacity: .6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ================================================================
+   Element Plus 覆盖 —— 去除 AI 感，统一为暖色手作风格
+   ================================================================ */
+
+/* --- 全局表单输入框 --- */
+.el-input__wrapper {
+  background: var(--c-paper) !important;
+  border: 1.5px solid var(--c-line) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: none !important;
+  padding: 4px 14px !important;
+  transition: border-color .2s !important;
+}
+.el-input__wrapper:hover {
+  border-color: var(--c-line-2) !important;
+}
+.el-input__wrapper.is-focus {
+  border-color: var(--c-primary) !important;
+  box-shadow: 0 0 0 3px rgba(184,69,31,.1) !important;
+}
+.el-input__inner {
+  font-family: "Noto Sans SC", sans-serif !important;
+  font-size: 16px !important;
+  color: var(--c-ink-900) !important;
+}
+.el-input__inner::placeholder {
+  color: var(--c-ink-300) !important;
+}
+.el-textarea__inner {
+  background: var(--c-paper) !important;
+  border: 1.5px solid var(--c-line) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: none !important;
+  font-family: "Noto Sans SC", sans-serif !important;
+  font-size: 16px !important;
+  color: var(--c-ink-900) !important;
+}
+.el-textarea__inner:focus {
+  border-color: var(--c-primary) !important;
+  box-shadow: 0 0 0 3px rgba(184,69,31,.1) !important;
+}
+
+/* --- 选择器 --- */
+.el-select__wrapper {
+  background: var(--c-paper) !important;
+  border: 1.5px solid var(--c-line) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: none !important;
+}
+.el-select__wrapper:hover {
+  border-color: var(--c-line-2) !important;
+}
+.el-select__wrapper.is-focused {
+  border-color: var(--c-primary) !important;
+  box-shadow: 0 0 0 3px rgba(184,69,31,.1) !important;
+}
+
+/* --- 按钮覆盖 --- */
+.el-button--primary {
+  background: var(--c-primary) !important;
+  border-color: var(--c-primary) !important;
+  border-radius: var(--r-pill) !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+}
+.el-button--primary:hover,
+.el-button--primary:focus {
+  background: var(--c-primary-d) !important;
+  border-color: var(--c-primary-d) !important;
+}
+.el-button--default {
+  background: var(--c-paper) !important;
+  border: 1.5px solid var(--c-line-2) !important;
+  color: var(--c-ink-700) !important;
+  border-radius: var(--r-pill) !important;
+  font-weight: 600 !important;
+}
+.el-button--default:hover {
+  border-color: var(--c-primary) !important;
+  color: var(--c-primary) !important;
+}
+.el-button--success {
+  background: var(--c-accent) !important;
+  border-color: var(--c-accent) !important;
+  border-radius: var(--r-pill) !important;
+}
+.el-button--warning {
+  background: var(--c-gold) !important;
+  border-color: var(--c-gold) !important;
+  color: var(--c-ink-900) !important;
+  border-radius: var(--r-pill) !important;
+}
+.el-button--danger {
+  background: var(--c-rose) !important;
+  border-color: var(--c-rose) !important;
+  border-radius: var(--r-pill) !important;
+}
+.el-button--info {
+  background: var(--c-ink-500) !important;
+  border-color: var(--c-ink-500) !important;
+  border-radius: var(--r-pill) !important;
+}
+
+/* --- 单选/复选框 --- */
+.el-radio__inner {
+  border-color: var(--c-line-2) !important;
+}
+.el-radio__input.is-checked .el-radio__inner {
+  background: var(--c-primary) !important;
+  border-color: var(--c-primary) !important;
+}
+.el-radio__input.is-checked + .el-radio__label {
+  color: var(--c-primary) !important;
+  font-weight: 700 !important;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background: var(--c-primary) !important;
+  border-color: var(--c-primary) !important;
+}
+
+/* --- 日期选择器 --- */
+.el-date-editor.el-input__wrapper {
+  border-radius: var(--r-md) !important;
+}
+
+/* --- 对话框 --- */
+.el-dialog {
+  border-radius: var(--r-xl) !important;
+  box-shadow: var(--shadow-3) !important;
+  border: 1px solid var(--c-line) !important;
+}
+.el-dialog__header {
+  border-bottom: 1px dashed var(--c-line) !important;
+  padding: 20px 24px !important;
+}
+.el-dialog__title {
+  font-family: "Noto Serif SC", serif !important;
+  font-weight: 700 !important;
+  font-size: 20px !important;
+  color: var(--c-ink-900) !important;
+}
+.el-dialog__body {
+  padding: 24px !important;
+  font-size: 16px !important;
+  color: var(--c-ink-700) !important;
+  line-height: 1.8 !important;
+}
+.el-dialog__footer {
+  border-top: 1px dashed var(--c-line) !important;
+  padding: 16px 24px !important;
+}
+
+/* --- 表格 --- */
+.el-table {
+  border-radius: var(--r-lg) !important;
+  overflow: hidden !important;
+  border: 1px solid var(--c-line) !important;
+}
+.el-table th.el-table__cell {
+  background: var(--c-paper-2) !important;
+  color: var(--c-ink-900) !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  border-bottom: 2px solid var(--c-line-2) !important;
+}
+.el-table td.el-table__cell {
+  border-bottom: 1px dashed var(--c-line) !important;
+  font-size: 14px !important;
+  color: var(--c-ink-700) !important;
+}
+.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+  background: var(--c-paper-2) !important;
+}
+.el-table tr:hover > td.el-table__cell {
+  background: var(--c-primary-bg) !important;
+}
+
+/* --- 标签页 --- */
+.el-tabs__item {
+  font-weight: 700 !important;
+  color: var(--c-ink-500) !important;
+}
+.el-tabs__item.is-active {
+  color: var(--c-primary) !important;
+}
+.el-tabs__active-bar {
+  background: var(--c-primary) !important;
+  height: 3px !important;
+  border-radius: 2px !important;
+}
+
+/* --- 消息提示 --- */
+.el-message {
+  border-radius: var(--r-md) !important;
+  border: 1px solid var(--c-line) !important;
+  box-shadow: var(--shadow-2) !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+}
+.el-message--success {
+  background: var(--c-accent-bg) !important;
+  border-color: var(--c-accent-l) !important;
+}
+.el-message--warning {
+  background: var(--c-gold-bg) !important;
+  border-color: var(--c-gold-l) !important;
+}
+.el-message--error {
+  background: var(--c-primary-bg) !important;
+  border-color: var(--c-primary-l) !important;
+}
+.el-message--info {
+  background: var(--c-paper) !important;
+}
+
+/* --- 通知 --- */
+.el-notification {
+  border-radius: var(--r-lg) !important;
+  border: 1px solid var(--c-line) !important;
+  box-shadow: var(--shadow-2) !important;
+}
+
+/* --- 分页 --- */
+.el-pagination .el-pager li {
+  border-radius: var(--r-sm) !important;
+  font-weight: 700 !important;
+}
+.el-pagination .el-pager li.is-active {
+  background: var(--c-primary) !important;
+  color: var(--c-cream) !important;
+}
+
+/* --- 加载遮罩 --- */
+.el-loading-mask {
+  background: rgba(245,235,216,.85) !important;
+}
+.el-loading-spinner .circular {
+  stroke: var(--c-primary) !important;
+}
+
+/* --- 表单标签 --- */
+.el-form-item__label {
+  font-weight: 700 !important;
+  color: var(--c-ink-900) !important;
+  font-size: 15px !important;
+}
+
+/* --- 下拉菜单 --- */
+.el-select-dropdown {
+  border: 1px solid var(--c-line) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: var(--shadow-2) !important;
+}
+.el-select-dropdown__item {
+  font-size: 15px !important;
+}
+.el-select-dropdown__item.is-hovering {
+  background: var(--c-primary-bg) !important;
+}
+.el-select-dropdown__item.is-selected {
+  color: var(--c-primary) !important;
+  font-weight: 700 !important;
+}
+
+/* --- 虚线边框卡片（手作感） --- */
+.card-dashed {
+  border: 1.5px dashed var(--c-line-2) !important;
+  background: var(--c-paper) !important;
+}
+
+/* --- 暖色渐变分割线 --- */
+.divider-warm {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--c-gold), transparent);
+  border: none;
+  margin: 24px 0;
+}
+
+/* --- 手写批注风格 --- */
+.brush-note {
+  font-family: "Ma Shan Zheng", cursive;
+  color: var(--c-primary);
+  transform: rotate(-2deg);
+  display: inline-block;
+}

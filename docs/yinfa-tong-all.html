@@ -1,0 +1,3097 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>银发通 · 设计稿全集 v3.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800;900&family=Noto+Serif+SC:wght@500;700;900&family=Ma+Shan+Zheng&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@1,144,600;1,144,800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;overflow:hidden}
+  body{font-family:"Noto Sans SC",system-ui,sans-serif;background:#1A1814}
+
+  /* 主导航 */
+  .master-nav{position:fixed;top:0;left:0;right:0;z-index:9999;height:72px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#1F4D3A 0%,#2F6B53 100%);border-bottom:3px solid #C28840;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  .master-nav::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(194,136,64,.6),transparent)}
+  .brand{display:flex;flex-direction:column;gap:2px;flex-shrink:0}
+  .brand .zh{font-family:"Noto Serif SC",serif;font-weight:900;font-size:24px;color:#FFF7E8;letter-spacing:3px;line-height:1}
+  .brand .en{font-family:"DM Serif Display",serif;font-style:italic;font-size:11px;color:#C28840;letter-spacing:2px}
+  .brand .stamp{display:inline-block;font-family:"Ma Shan Zheng",cursive;font-size:14px;color:#FFF7E8;background:#B8451F;padding:2px 8px;border-radius:4px;margin-left:8px;transform:rotate(-2deg);letter-spacing:1px}
+  .tabs{display:flex;gap:6px;height:100%;align-items:center}
+  .tab{display:flex;align-items:center;gap:8px;padding:10px 18px;cursor:pointer;color:rgba(255,247,232,.65);font-size:14px;font-weight:700;border-radius:10px;transition:all .2s;border:1px solid transparent}
+  .tab:hover{color:#FFF7E8;background:rgba(255,247,232,.08);border-color:rgba(255,247,232,.15)}
+  .tab.active{color:#FFF7E8;background:#B8451F;border-color:rgba(255,247,232,.25);box-shadow:0 4px 14px -4px rgba(184,69,31,.6)}
+  .tab .num{font-family:"Bebas Neue";font-size:18px;letter-spacing:1px;opacity:.85}
+  .tab.active .num{color:#E0A55A;opacity:1}
+  .right{display:flex;align-items:center;gap:18px;flex-shrink:0}
+  .right .meta{font-size:12px;color:rgba(255,247,232,.7);text-align:right;line-height:1.5}
+  .right .meta b{color:#E0A55A;font-family:"Bebas Neue";font-size:18px;letter-spacing:1px;display:block}
+  .right .seal{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,#B8451F,#8E3215);color:#FFF7E8;display:flex;align-items:center;justify-content:center;font-family:"Ma Shan Zheng",cursive;font-size:14px;line-height:1;text-align:center;transform:rotate(-8deg);box-shadow:0 4px 12px -4px rgba(0,0,0,.4);border:2px solid rgba(255,247,232,.2)}
+
+  /* 状态条 */
+  .status-bar{position:fixed;top:72px;left:0;right:0;z-index:9998;height:32px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;background:rgba(26,24,20,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(194,136,64,.3);color:rgba(255,247,232,.75);font-size:12px;font-weight:700}
+  .status-bar .left{display:flex;gap:18px;align-items:center}
+  .status-bar .live{display:flex;align-items:center;gap:6px;color:#E0A55A}
+  .status-bar .live::before{content:"";width:6px;height:6px;background:#E0A55A;border-radius:50%;animation:pulse 1.5s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .status-bar .right{font-family:"DM Serif Display",serif;font-style:italic}
+
+  /* 主内容 */
+  .pages{position:absolute;top:104px;left:0;right:0;bottom:0;background:#F5EBD8}
+  iframe{width:100%;height:100%;border:0;background:#F5EBD8;display:none}
+  iframe.active{display:block}
+
+  /* 加载占位 */
+  .loader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#F5EBD8;flex-direction:column;gap:14px;color:#6B6358;font-size:14px}
+  .loader .spin{width:36px;height:36px;border:3px solid #E5D7BC;border-top-color:#B8451F;border-radius:50%;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+  <nav class="master-nav">
+    <div class="brand">
+      <span class="zh">银发通<span class="stamp">全集</span></span>
+      <span class="en">YINFA-TONG · COMPLETE DESIGN SET</span>
+    </div>
+    <div class="tabs">
+      <div class="tab active" data-target="frame-v2"><span class="num">01</span><span class="lbl">首页 v3 饱满版</span></div>
+      <div class="tab" data-target="frame-flow"><span class="num">02</span><span class="lbl">挂号 4 步流程</span></div>
+      <div class="tab" data-target="frame-doctor"><span class="num">03</span><span class="lbl">专家详情</span></div>
+      <div class="tab" data-target="frame-accompany"><span class="num">04</span><span class="lbl">陪诊预约</span></div>
+      <div class="tab" data-target="frame-family"><span class="num">05</span><span class="lbl">子女端后台</span></div>
+      <div class="tab" data-target="frame-queue"><span class="num">06</span><span class="lbl">候诊叫号屏</span></div>
+    </div>
+    <div class="right">
+      <div class="meta">6 张全套 · 适老化就医<br><b>v3.0 · 2026.06.22</b></div>
+      <div class="seal">适老<br>设计</div>
+    </div>
+  </nav>
+
+  <div class="status-bar">
+    <div class="left">
+      <span class="live">READY</span>
+      <span>适老化就医服务设计稿 · 数字鸿沟解决方案</span>
+    </div>
+    <div class="right">6 pages · click tab to switch</div>
+  </div>
+
+  <div class="pages">
+    <iframe id="frame-v2" name="v2" title="首页 v3 饱满版"></iframe>
+    <iframe id="frame-flow" name="flow" title="挂号 4 步流程"></iframe>
+    <iframe id="frame-doctor" name="doctor" title="专家详情"></iframe>
+    <iframe id="frame-accompany" name="accompany" title="陪诊预约"></iframe>
+    <iframe id="frame-family" name="family" title="子女端后台"></iframe>
+    <iframe id="frame-queue" name="queue" title="候诊叫号屏"></iframe>
+  </div>
+
+  <script>
+    const templates = {
+    "frame-v2": `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>银发通 · 长者就医服务平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800;900&family=Noto+Serif+SC:wght@500;700;900&family=Ma+Shan+Zheng&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400;1,9..144,500&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* 主色：温暖赭红 + 墨绿 + 焦糖 + 暖米 */
+    --c-bg:       #F5EBD8;  /* 焦糖米 */
+    --c-paper:    #FFFCF5;  /* 暖纸白 */
+    --c-paper-2:  #F9F0DC;  /* 牛皮纸 */
+    --c-ink-900:  #1A1814;
+    --c-ink-700:  #3D3830;
+    --c-ink-500:  #6B6358;
+    --c-ink-300:  #A89F8E;
+    --c-line:     #D8C8A8;
+    --c-line-2:   #C4B190;
+
+    --c-primary:  #B8451F;  /* 深赭红 */
+    --c-primary-d:#8C2F12;
+    --c-primary-l:#F4D9C7;
+    --c-primary-bg:#FBEEE5;
+
+    --c-accent:   #1F4D3A;  /* 深墨绿 */
+    --c-accent-d: #0F2E22;
+    --c-accent-l: #D1DDD3;
+    --c-accent-bg:#E5EDE6;
+
+    --c-gold:     #C28840;  /* 焦糖金 */
+    --c-gold-l:   #F2DDB0;
+    --c-gold-bg:  #FAEED3;
+
+    --c-cream:    #EDD9A8;  /* 奶油 */
+    --c-rose:     #D87056;
+    --c-sky:      #6E8A99;  /* 雾蓝点缀 */
+    --c-berry:    #7B2D3A;  /* 浆果深红 */
+
+    --r-sm: 8px;
+    --r-md: 14px;
+    --r-lg: 22px;
+    --r-xl: 32px;
+    --r-pill: 999px;
+    --shadow-1: 0 1px 2px rgba(28,24,20,.04), 0 6px 18px rgba(28,24,20,.06);
+    --shadow-2: 0 2px 4px rgba(28,24,20,.06), 0 14px 36px rgba(28,24,20,.10);
+    --shadow-3: 0 4px 8px rgba(28,24,20,.08), 0 24px 60px rgba(28,24,20,.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--c-bg); color: var(--c-ink-900); }
+  body {
+    font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.7;
+    background:
+      radial-gradient(1100px 700px at 0% 0%, rgba(194,136,64,.10), transparent 60%),
+      radial-gradient(900px 600px at 100% 0%, rgba(184,69,31,.07), transparent 60%),
+      radial-gradient(800px 600px at 50% 100%, rgba(31,77,58,.06), transparent 60%),
+      var(--c-bg);
+    min-height: 100vh;
+  }
+
+  .container { max-width: 1320px; margin: 0 auto; padding: 32px 32px 80px; }
+
+  /* 标题字体 */
+  .serif { font-family: "Noto Serif SC", "Songti SC", serif; }
+  .brush { font-family: "Ma Shan Zheng", "Noto Serif SC", serif; }
+  .display { font-family: "DM Serif Display", "Noto Serif SC", serif; font-style: italic; }
+  .num { font-family: "Bebas Neue", "Noto Sans SC", sans-serif; letter-spacing: 1px; }
+
+  /* ============ 顶部运营条 ============ */
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 10px 20px;
+    background: var(--c-ink-900); color: var(--c-cream);
+    border-radius: var(--r-pill);
+    font-size: 14px; font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .topbar .marquee { flex: 1; display: flex; align-items: center; gap: 10px; overflow: hidden; }
+  .topbar .marquee-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--c-gold); box-shadow: 0 0 0 4px rgba(194,136,64,.25);
+    animation: blink 1.6s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+  .topbar b { color: var(--c-gold-l); font-weight: 700; }
+  .topbar .item { display: flex; align-items: center; gap: 6px; color: var(--c-cream); opacity: .85; }
+  .topbar .item:hover { opacity: 1; }
+
+  /* ============ 主导航 ============ */
+  .nav {
+    display: flex; align-items: center; gap: 36px;
+    padding: 16px 0 24px; border-bottom: 1px solid var(--c-line);
+    margin-bottom: 32px;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; }
+  .nav-logo .icon {
+    width: 48px; height: 48px;
+    background: var(--c-primary); color: var(--c-cream);
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 14px; font-family: "Noto Serif SC", serif;
+    font-weight: 900; font-size: 24px;
+    box-shadow: var(--shadow-1);
+    position: relative;
+  }
+  .nav-logo .icon::after {
+    content: ""; position: absolute; inset: -4px;
+    border: 1.5px dashed var(--c-gold);
+    border-radius: 18px; opacity: .5;
+  }
+  .nav-logo .name {
+    font-family: "Noto Serif SC", serif; font-weight: 900;
+    font-size: 24px; letter-spacing: 2px; color: var(--c-ink-900);
+  }
+  .nav-logo .name span { color: var(--c-primary); }
+  .nav-logo .sub {
+    font-family: "Fraunces", serif; font-style: italic; font-size: 11px;
+    color: var(--c-ink-500); letter-spacing: 1.5px; margin-top: 2px;
+  }
+  .nav-menu { display: flex; gap: 28px; }
+  .nav-menu a {
+    color: var(--c-ink-700); font-weight: 600; font-size: 16px;
+    text-decoration: none; padding: 6px 0; position: relative;
+  }
+  .nav-menu a.active { color: var(--c-primary); }
+  .nav-menu a.active::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -27px;
+    height: 3px; background: var(--c-primary);
+    border-radius: 2px;
+  }
+  .nav-menu a .new {
+    font-size: 10px; padding: 2px 6px; background: var(--c-primary);
+    color: var(--c-cream); border-radius: 6px; margin-left: 4px;
+    font-weight: 700; vertical-align: top;
+  }
+  .nav-tools { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .nav-search {
+    width: 240px; padding: 10px 16px 10px 40px;
+    background: var(--c-paper); border: 1px solid var(--c-line);
+    border-radius: var(--r-pill); font-size: 14px; color: var(--c-ink-700);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A89F8E' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.5' y2='16.5'/></svg>");
+    background-repeat: no-repeat; background-position: 16px center;
+  }
+  .nav-btn {
+    padding: 10px 22px; border-radius: var(--r-pill);
+    background: var(--c-ink-900); color: var(--c-cream);
+    font-weight: 700; font-size: 14px; border: none;
+  }
+  .nav-btn.ghost { background: transparent; color: var(--c-ink-700); border: 1px solid var(--c-line-2); }
+
+  /* ============ Hero 区（不对称）============ */
+  .hero {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px;
+    margin-bottom: 56px;
+  }
+  .hero-left {
+    position: relative; padding: 56px 48px 48px;
+    background: var(--c-ink-900); color: var(--c-cream);
+    border-radius: var(--r-xl); overflow: hidden;
+  }
+  .hero-left::before {
+    content: ""; position: absolute; top: -100px; right: -100px;
+    width: 360px; height: 360px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(194,136,64,.3), transparent 60%);
+  }
+  .hero-left::after {
+    content: "長"; position: absolute; bottom: -80px; right: 24px;
+    font-family: "Noto Serif SC", serif; font-size: 280px; font-weight: 900;
+    color: rgba(237,217,168,.05); line-height: 1;
+  }
+  .hero-date {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(237,217,168,.12); color: var(--c-gold-l);
+    padding: 6px 14px; border-radius: var(--r-pill);
+    font-size: 13px; font-weight: 600; margin-bottom: 24px;
+    border: 1px solid rgba(237,217,168,.2);
+  }
+  .hero-greet {
+    font-family: "Noto Serif SC", serif; font-weight: 700;
+    font-size: 26px; line-height: 1.5; margin-bottom: 16px;
+    color: var(--c-cream);
+  }
+  .hero-greet .brush {
+    font-family: "Ma Shan Zheng", serif; font-size: 56px;
+    color: var(--c-gold-l); display: block; line-height: 1.2; margin: 4px 0 8px;
+  }
+  .hero-tip {
+    font-size: 16px; line-height: 1.8; opacity: .8; max-width: 480px; margin-bottom: 32px;
+  }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; position: relative; }
+  .hero-cta .btn {
+    padding: 16px 32px; border-radius: var(--r-pill);
+    font-weight: 700; font-size: 16px; border: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .hero-cta .btn-primary { background: var(--c-gold); color: var(--c-ink-900); }
+  .hero-cta .btn-outline { background: transparent; color: var(--c-cream); border: 1.5px solid var(--c-cream); }
+  .hero-stats {
+    display: flex; gap: 32px; margin-top: 40px;
+    padding-top: 24px; border-top: 1px solid rgba(237,217,168,.15);
+    position: relative;
+  }
+  .hero-stat .n {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 44px; line-height: 1; color: var(--c-gold-l);
+    letter-spacing: 1px;
+  }
+  .hero-stat .l { font-size: 13px; opacity: .6; margin-top: 4px; letter-spacing: 1px; }
+  .hero-stat + .hero-stat { padding-left: 32px; border-left: 1px solid rgba(237,217,168,.15); }
+
+  /* Hero 右侧运营位 */
+  .hero-right { display: flex; flex-direction: column; gap: 16px; }
+
+  .voice-card {
+    position: relative; padding: 24px 28px;
+    background: var(--c-primary); color: var(--c-cream);
+    border-radius: var(--r-xl); overflow: hidden;
+    box-shadow: var(--shadow-2);
+  }
+  .voice-card::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(120% 80% at 100% 0%, rgba(255,255,255,.15), transparent 50%);
+  }
+  .voice-card .row { display: flex; align-items: center; gap: 16px; position: relative; }
+  .voice-card .mic {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--c-cream); color: var(--c-primary);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    position: relative;
+  }
+  .voice-card .mic::before, .voice-card .mic::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%;
+    border: 2px solid var(--c-cream); opacity: 0;
+  }
+  .voice-card .mic::before { animation: ring 1.8s ease-out infinite; }
+  .voice-card .mic::after  { animation: ring 1.8s ease-out .9s infinite; }
+  @keyframes ring { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(1.6);opacity:0} }
+  .voice-card .t1 { font-family: "Noto Serif SC", serif; font-size: 20px; font-weight: 700; }
+  .voice-card .t2 { font-size: 14px; opacity: .85; margin-top: 2px; }
+
+  .weather-card {
+    display: flex; align-items: center; gap: 20px;
+    padding: 20px 24px;
+    background: var(--c-paper); border-radius: var(--r-xl);
+    border: 1px solid var(--c-line); box-shadow: var(--shadow-1);
+  }
+  .weather-icon { width: 56px; height: 56px; flex-shrink: 0; }
+  .weather-info { flex: 1; }
+  .weather-info .city { font-size: 13px; color: var(--c-ink-500); }
+  .weather-info .t { font-family: "Bebas Neue", sans-serif; font-size: 36px; line-height: 1; color: var(--c-ink-900); }
+  .weather-info .desc { font-size: 13px; color: var(--c-ink-500); margin-top: 2px; }
+  .weather-tip { text-align: right; max-width: 110px; }
+  .weather-tip .h { font-size: 12px; color: var(--c-primary); font-weight: 700; }
+  .weather-tip .d { font-size: 12px; color: var(--c-ink-500); line-height: 1.5; }
+
+  /* ============ 服务区：混合大小 ============ */
+  .sec { margin-bottom: 64px; }
+  .sec-head {
+    display: flex; align-items: flex-end; gap: 16px;
+    margin-bottom: 24px; padding: 0 4px;
+  }
+  .sec-head .zh {
+    font-family: "Noto Serif SC", serif; font-weight: 900;
+    font-size: 32px; color: var(--c-ink-900); letter-spacing: 2px;
+  }
+  .sec-head .en {
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 16px; color: var(--c-gold); letter-spacing: 1px;
+    padding-bottom: 6px;
+  }
+  .sec-head .more {
+    margin-left: auto; color: var(--c-ink-500);
+    font-size: 14px; font-weight: 600; text-decoration: none;
+  }
+  .sec-head .more::after { content: " →"; }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 200px 200px;
+    gap: 16px;
+  }
+  .svc {
+    background: var(--c-paper); border-radius: var(--r-lg);
+    padding: 24px; position: relative; overflow: hidden;
+    box-shadow: var(--shadow-1); border: 1px solid transparent;
+    transition: all .25s; cursor: pointer;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .svc:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); }
+  .svc .num-tag {
+    position: absolute; top: 16px; right: 18px;
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 28px; color: var(--c-ink-300); font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .svc .ico {
+    width: 56px; height: 56px; border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; flex-shrink: 0;
+  }
+  .svc .name {
+    font-family: "Noto Serif SC", serif; font-size: 20px; font-weight: 700;
+    color: var(--c-ink-900); margin-top: 14px;
+  }
+  .svc .desc { font-size: 13px; color: var(--c-ink-500); margin-top: 4px; }
+
+  .svc.big {
+    grid-column: span 1; grid-row: span 2;
+    background: var(--c-primary-bg);
+    border: 1px solid var(--c-primary-l);
+  }
+  .svc.big .ico { width: 72px; height: 72px; background: var(--c-primary); color: var(--c-cream); }
+  .svc.big .name { font-size: 26px; }
+  .svc.big .desc { font-size: 14px; }
+  .svc.big .badge {
+    display: inline-block; padding: 4px 12px; background: var(--c-primary);
+    color: var(--c-cream); border-radius: var(--r-pill);
+    font-size: 12px; font-weight: 700; margin-top: 10px;
+  }
+  .svc.big .corner {
+    position: absolute; bottom: -20px; right: -20px;
+    width: 140px; height: 140px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,69,31,.12), transparent 70%);
+  }
+  .svc.accent { background: var(--c-accent-bg); border-color: var(--c-accent-l); }
+  .svc.accent .ico { background: var(--c-accent); color: var(--c-cream); }
+  .svc.gold { background: var(--c-gold-bg); border-color: var(--c-gold-l); }
+  .svc.gold .ico { background: var(--c-gold); color: var(--c-cream); }
+  .svc.berry .ico { background: var(--c-berry); color: var(--c-cream); }
+  .svc.sky .ico { background: var(--c-sky); color: var(--c-cream); }
+  .svc.cream .ico { background: var(--c-cream); color: var(--c-ink-900); }
+
+  /* ============ 推荐专家：真实头像 + 运营感 ============ */
+  .expert-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .expert {
+    background: var(--c-paper); border-radius: var(--r-lg);
+    overflow: hidden; box-shadow: var(--shadow-1);
+    border: 1px solid var(--c-line);
+    transition: .25s; cursor: pointer;
+    position: relative;
+  }
+  .expert:hover { transform: translateY(-4px); box-shadow: var(--shadow-2); }
+  .expert-photo {
+    height: 220px; position: relative; overflow: hidden;
+    background: var(--c-paper-2);
+  }
+  .expert-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .expert-photo::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 80px;
+    background: linear-gradient(transparent, var(--c-paper));
+  }
+  .expert-tag {
+    position: absolute; top: 14px; left: 14px;
+    background: var(--c-primary); color: var(--c-cream);
+    padding: 5px 12px; border-radius: var(--r-pill);
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    z-index: 2;
+  }
+  .expert-tag.gold { background: var(--c-gold); color: var(--c-ink-900); }
+  .expert-tag.green { background: var(--c-accent); }
+  .expert-info { padding: 18px 20px 20px; margin-top: -40px; position: relative; }
+  .expert-name {
+    font-family: "Noto Serif SC", serif; font-size: 20px; font-weight: 700;
+    color: var(--c-ink-900); margin-bottom: 4px;
+  }
+  .expert-title { font-size: 13px; color: var(--c-primary); font-weight: 600; }
+  .expert-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px dashed var(--c-line);
+  }
+  .expert-rating { display: flex; align-items: center; gap: 4px; }
+  .expert-rating .star { color: var(--c-gold); font-size: 14px; }
+  .expert-rating .v { font-family: "Bebas Neue", sans-serif; font-size: 18px; color: var(--c-ink-900); margin-left: 2px; }
+  .expert-rating .c { font-size: 11px; color: var(--c-ink-500); }
+  .expert-cta {
+    background: var(--c-ink-900); color: var(--c-cream);
+    padding: 8px 16px; border-radius: var(--r-pill);
+    font-size: 13px; font-weight: 700; border: none;
+  }
+
+  /* ============ 健康资讯流 ============ */
+  .news-wrap {
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px;
+  }
+  .news-feature {
+    background: var(--c-paper); border-radius: var(--r-lg); overflow: hidden;
+    box-shadow: var(--shadow-1); border: 1px solid var(--c-line);
+    position: relative; min-height: 320px;
+  }
+  .news-feature-img {
+    height: 220px; background: var(--c-paper-2);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .news-feature-img img { width: 100%; height: 100%; object-fit: cover; }
+  .news-feature-body { padding: 24px 28px; }
+  .news-cat {
+    display: inline-block; padding: 4px 12px; background: var(--c-gold-bg);
+    color: var(--c-gold); border-radius: var(--r-pill);
+    font-size: 12px; font-weight: 700; margin-bottom: 12px;
+    border: 1px solid var(--c-gold-l);
+  }
+  .news-cat.green { background: var(--c-accent-bg); color: var(--c-accent); border-color: var(--c-accent-l); }
+  .news-cat.red { background: var(--c-primary-bg); color: var(--c-primary); border-color: var(--c-primary-l); }
+  .news-title {
+    font-family: "Noto Serif SC", serif; font-weight: 700; font-size: 22px;
+    color: var(--c-ink-900); line-height: 1.5; margin-bottom: 10px;
+  }
+  .news-meta { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--c-ink-500); }
+  .news-meta .src { color: var(--c-primary); font-weight: 600; }
+
+  .news-list { display: flex; flex-direction: column; gap: 14px; }
+  .news-item {
+    display: flex; gap: 16px; padding: 16px;
+    background: var(--c-paper); border-radius: var(--r-md);
+    border: 1px solid var(--c-line); box-shadow: var(--shadow-1);
+    cursor: pointer; transition: .2s;
+  }
+  .news-item:hover { border-color: var(--c-primary); transform: translateX(4px); }
+  .news-item-thumb {
+    width: 84px; height: 84px; flex-shrink: 0; border-radius: var(--r-sm);
+    background: var(--c-paper-2); overflow: hidden;
+  }
+  .news-item-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .news-item-body { flex: 1; min-width: 0; }
+  .news-item-title {
+    font-family: "Noto Serif SC", serif; font-size: 16px; font-weight: 700;
+    color: var(--c-ink-900); line-height: 1.5; margin-bottom: 6px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .news-item-meta { font-size: 12px; color: var(--c-ink-500); }
+  .news-item-num {
+    font-family: "Bebas Neue", sans-serif; font-size: 32px;
+    color: var(--c-cream); -webkit-text-stroke: 1.5px var(--c-primary);
+    line-height: 1; align-self: center;
+  }
+
+  /* ============ 双列 banner：长者活动 + 陪诊 ============ */
+  .dual-banner { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .bn {
+    border-radius: var(--r-xl); overflow: hidden;
+    position: relative; padding: 36px 36px 32px; min-height: 240px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .bn.duanwu {
+    background: var(--c-accent); color: var(--c-cream);
+  }
+  .bn.duanwu::before {
+    content: ""; position: absolute; right: -40px; top: -40px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(194,136,64,.3), transparent 60%);
+  }
+  .bn.duanwu::after {
+    content: "端"; position: absolute; right: 24px; bottom: -50px;
+    font-family: "Noto Serif SC", serif; font-size: 200px; font-weight: 900;
+    color: rgba(237,217,168,.08); line-height: 1;
+  }
+  .bn-h5 {
+    display: inline-block; padding: 4px 12px;
+    background: var(--c-gold); color: var(--c-ink-900);
+    border-radius: var(--r-pill); font-size: 12px; font-weight: 700;
+    margin-bottom: 14px; position: relative;
+  }
+  .bn-title {
+    font-family: "Noto Serif SC", serif; font-size: 28px; font-weight: 700;
+    line-height: 1.4; position: relative; max-width: 320px;
+  }
+  .bn-title .brush { font-family: "Ma Shan Zheng", serif; font-size: 36px; color: var(--c-gold-l); }
+  .bn-desc { font-size: 14px; opacity: .8; margin-top: 10px; position: relative; max-width: 360px; }
+  .bn-stats { display: flex; gap: 24px; margin-top: 20px; position: relative; }
+  .bn-stats .s .n { font-family: "Bebas Neue", sans-serif; font-size: 32px; line-height: 1; color: var(--c-gold-l); }
+  .bn-stats .s .l { font-size: 12px; opacity: .7; margin-top: 2px; }
+  .bn-cta {
+    align-self: flex-start; margin-top: 20px; position: relative;
+    padding: 12px 28px; background: var(--c-gold); color: var(--c-ink-900);
+    border: none; border-radius: var(--r-pill);
+    font-weight: 700; font-size: 14px; cursor: pointer;
+  }
+
+  .bn.peizhen {
+    background: var(--c-primary-bg);
+    color: var(--c-ink-900);
+    border: 1px solid var(--c-primary-l);
+  }
+  .bn.peizhen .bn-h5 { background: var(--c-primary); color: var(--c-cream); }
+  .bn.peizhen .bn-title { color: var(--c-ink-900); }
+  .bn.peizhen .illust {
+    position: absolute; right: 24px; bottom: 16px;
+    width: 180px; height: 180px; opacity: .9;
+  }
+  .bn.peizhen .bn-cta { background: var(--c-primary); color: var(--c-cream); }
+  .bn.peizhen .review {
+    position: relative; margin-top: 16px; padding: 14px 18px;
+    background: var(--c-paper); border-radius: var(--r-md);
+    border: 1px dashed var(--c-primary-l);
+  }
+  .bn.peizhen .review .t { font-family: "Noto Serif SC", serif; font-size: 14px; line-height: 1.7; }
+  .bn.peizhen .review .u { font-size: 12px; color: var(--c-ink-500); margin-top: 6px; display: flex; align-items: center; gap: 8px; }
+  .bn.peizhen .review .u .av {
+    width: 24px; height: 24px; border-radius: 50%; background: var(--c-gold);
+    color: var(--c-cream); display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+  }
+
+  /* ============ 排行榜 + 数字大字 ============ */
+  .rank-wrap {
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px;
+  }
+  .rank-card {
+    background: var(--c-paper); border-radius: var(--r-lg);
+    padding: 28px; box-shadow: var(--shadow-1); border: 1px solid var(--c-line);
+  }
+  .rank-card-head {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+  }
+  .rank-card-head .h {
+    font-family: "Noto Serif SC", serif; font-size: 22px; font-weight: 700;
+    color: var(--c-ink-900);
+  }
+  .rank-card-head .sub {
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 13px; color: var(--c-ink-500); margin-left: auto;
+  }
+  .rank-list { display: flex; flex-direction: column; gap: 14px; }
+  .rank-item {
+    display: flex; align-items: center; gap: 16px; padding: 12px 0;
+    border-bottom: 1px dashed var(--c-line);
+  }
+  .rank-item:last-child { border-bottom: none; }
+  .rank-num {
+    font-family: "Bebas Neue", sans-serif; font-size: 36px;
+    line-height: 1; color: var(--c-ink-300); width: 36px; text-align: center;
+  }
+  .rank-num.gold { color: var(--c-gold); }
+  .rank-num.silver { color: var(--c-ink-500); }
+  .rank-num.bronze { color: var(--c-rose); }
+  .rank-info { flex: 1; }
+  .rank-info .n { font-family: "Noto Serif SC", serif; font-size: 16px; font-weight: 700; color: var(--c-ink-900); }
+  .rank-info .d { font-size: 12px; color: var(--c-ink-500); margin-top: 2px; }
+  .rank-bar {
+    width: 100px; height: 6px; background: var(--c-line); border-radius: 3px; overflow: hidden;
+  }
+  .rank-bar > div { height: 100%; background: linear-gradient(90deg, var(--c-primary), var(--c-gold)); }
+  .rank-val { font-family: "Bebas Neue", sans-serif; font-size: 18px; color: var(--c-primary); }
+
+  /* 健康 widget */
+  .health-widget {
+    background: var(--c-ink-900); color: var(--c-cream);
+    border-radius: var(--r-lg); padding: 28px;
+    box-shadow: var(--shadow-1);
+  }
+  .health-widget .h {
+    font-family: "Noto Serif SC", serif; font-size: 20px; font-weight: 700;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+  }
+  .health-widget .h::before {
+    content: ""; width: 4px; height: 18px;
+    background: var(--c-gold); border-radius: 2px;
+  }
+  .hw-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px dashed rgba(237,217,168,.15); }
+  .hw-row:last-child { border-bottom: none; }
+  .hw-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(237,217,168,.12); color: var(--c-gold-l); flex-shrink: 0;
+  }
+  .hw-info { flex: 1; }
+  .hw-info .t { font-size: 14px; font-weight: 600; }
+  .hw-info .s { font-size: 12px; opacity: .55; margin-top: 2px; }
+  .hw-pill {
+    padding: 4px 12px; border-radius: var(--r-pill);
+    background: var(--c-primary); color: var(--c-cream);
+    font-size: 12px; font-weight: 700;
+  }
+  .hw-pill.green { background: var(--c-accent); }
+
+  /* ============ 子女代办 + 健康工具 ============ */
+  .family-zone {
+    background: var(--c-paper); border-radius: var(--r-xl);
+    padding: 40px 44px; border: 1px solid var(--c-line);
+    box-shadow: var(--shadow-1);
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 36px; align-items: center;
+  }
+  .family-zone .left .h {
+    font-family: "Noto Serif SC", serif; font-size: 28px; font-weight: 700;
+    color: var(--c-ink-900); line-height: 1.4; margin-bottom: 12px;
+  }
+  .family-zone .left .h span { color: var(--c-primary); }
+  .family-zone .left .d {
+    font-size: 15px; color: var(--c-ink-500); line-height: 1.8; margin-bottom: 20px;
+  }
+  .family-zone .left .cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 28px; background: var(--c-primary); color: var(--c-cream);
+    border: none; border-radius: var(--r-pill);
+    font-weight: 700; font-size: 15px; cursor: pointer;
+  }
+  .family-zone .right { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .member {
+    background: var(--c-paper-2); border-radius: var(--r-md);
+    padding: 18px; display: flex; gap: 12px; align-items: center;
+  }
+  .member .av {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--c-gold); color: var(--c-cream);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px; flex-shrink: 0;
+  }
+  .member .info { flex: 1; }
+  .member .n { font-weight: 700; font-size: 15px; color: var(--c-ink-900); }
+  .member .r { font-size: 12px; color: var(--c-ink-500); }
+  .member .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-l);
+  }
+  .member.offline .dot { background: var(--c-ink-300); box-shadow: 0 0 0 3px var(--c-line); }
+
+  /* ============ Footer ============ */
+  .footer {
+    margin-top: 80px; padding: 32px 0 0;
+    border-top: 2px solid var(--c-line-2);
+    text-align: center; color: var(--c-ink-500);
+  }
+  .footer .brand-mini {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .footer .brand-mini .icon {
+    width: 32px; height: 32px; background: var(--c-primary); color: var(--c-cream);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-family: "Noto Serif SC", serif; font-weight: 900;
+  }
+  .footer .brand-mini .n {
+    font-family: "Noto Serif SC", serif; font-weight: 700; font-size: 18px;
+    color: var(--c-ink-900); letter-spacing: 1px;
+  }
+  .footer .brand-mini .n span { color: var(--c-primary); }
+  .footer .small { font-size: 13px; }
+  .footer .small b { color: var(--c-primary); font-weight: 700; }
+  .footer .divider-glyph { color: var(--c-gold); margin: 0 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ============ Top Bar ============ -->
+  <div class="topbar">
+    <div class="marquee">
+      <div class="marquee-dot"></div>
+      <span><b>温馨提示：</b>端午假期 6/8-6/10 各医院门诊安排有变动，建议就诊前查看停诊公告</span>
+    </div>
+    <div class="item">📞 24h 客服 400-820-1188</div>
+    <div class="item">下载 App</div>
+    <div class="item">长辈版 →</div>
+  </div>
+
+  <!-- ============ Main Nav ============ -->
+  <div class="nav">
+    <div class="nav-logo">
+      <div class="icon">銀</div>
+      <div>
+        <div class="name">银发<span>通</span></div>
+        <div class="sub">SILVER HAIR · SINCE 2024</div>
+      </div>
+    </div>
+    <div class="nav-menu">
+      <a href="#" class="active">首页</a>
+      <a href="#">预约挂号<span class="new">HOT</span></a>
+      <a href="#">智能导诊</a>
+      <a href="#">陪诊服务</a>
+      <a href="#">健康科普</a>
+      <a href="#">我的档案</a>
+    </div>
+    <div class="nav-tools">
+      <input class="nav-search" placeholder="搜医院、医生、症状…">
+      <button class="nav-btn ghost">登录</button>
+      <button class="nav-btn">注册</button>
+    </div>
+  </div>
+
+  <!-- ============ Hero ============ -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-date">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        2026 年 6 月 22 日 · 农历五月初七 · 父亲节后一天
+      </div>
+      <div class="hero-greet">
+        早安，王大爷
+        <span class="brush">今天也要好好的</span>
+      </div>
+      <div class="hero-tip">
+        您上次复诊的降压药还剩 5 天<br>
+        <b style="color:var(--c-gold-l);">建议本周三前完成续方，避免断药</b>
+      </div>
+      <div class="hero-cta">
+        <button class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          一键续方
+        </button>
+        <button class="btn btn-outline">查看今日就诊安排</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="n">12,386</div><div class="l">已服务长者</div></div>
+        <div class="hero-stat"><div class="n">98.6%</div><div class="l">满意度</div></div>
+        <div class="hero-stat"><div class="n">320+</div><div class="l">合作医院</div></div>
+        <div class="hero-stat"><div class="n">7×24h</div><div class="l">陪诊待命</div></div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!-- 语音挂号卡 -->
+      <div class="voice-card">
+        <div class="row">
+          <div class="mic">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+          </div>
+          <div style="flex:1;">
+            <div class="t1">按住说话 · 帮您挂号</div>
+            <div class="t2">"我老伴儿最近血压高，帮我挂个心内科"</div>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+      <!-- 天气 -->
+      <div class="weather-card">
+        <svg class="weather-icon" viewBox="0 0 64 64" fill="none">
+          <circle cx="24" cy="24" r="11" fill="#E89B2B"/>
+          <path d="M44 36c-4 0-8 3-9 7H22c-3 0-6 3-6 6 0 4 3 7 7 7h22c5 0 9-4 9-9s-4-11-10-11z" fill="#A89F8E" opacity=".8"/>
+        </svg>
+        <div class="weather-info">
+          <div class="city">上海 · 浦东</div>
+          <div class="t">28°</div>
+          <div class="desc">多云 · 东南风 3 级</div>
+        </div>
+        <div class="weather-tip">
+          <div class="h">🩺 今日养生</div>
+          <div class="d">湿度偏高，关节不好的老人注意防潮</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 服务区 ============ -->
+  <section class="sec">
+    <div class="sec-head">
+      <div>
+        <div class="zh">一站就医</div>
+        <div class="en">All you need, on one screen.</div>
+      </div>
+      <a href="#" class="more">查看全部 32 项服务</a>
+    </div>
+    <div class="service-grid">
+      <div class="svc big">
+        <div class="num-tag">01</div>
+        <div class="ico">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div>
+          <div class="name">预约挂号</div>
+          <div class="desc">320+ 三甲医院 · 50,000+ 主任医师</div>
+          <div class="badge">🔥 今日剩 1,286 个长者优先号</div>
+        </div>
+        <div class="corner"></div>
+      </div>
+      <div class="svc accent">
+        <div class="num-tag">02</div>
+        <div class="ico">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <div class="name">实时叫号</div>
+          <div class="desc">候诊进度一目了然</div>
+        </div>
+      </div>
+      <div class="svc gold">
+        <div class="num-tag">03</div>
+        <div class="ico">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </div>
+        <div>
+          <div class="name">AI 导诊</div>
+          <div class="desc">"哪里不舒服"说出来</div>
+        </div>
+      </div>
+      <div class="svc berry">
+        <div class="num-tag">04</div>
+        <div class="ico">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        </div>
+        <div>
+          <div class="name">在线缴费</div>
+          <div class="desc">医保结算 / 微信 / 子女代付</div>
+        </div>
+      </div>
+      <div class="svc sky">
+        <div class="num-tag">05</div>
+        <div class="ico">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="name">查报告单</div>
+          <div class="desc">OCR 识别纸质报告</div>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="num-tag">06</div>
+        <div class="ico" style="background:var(--c-cream);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div>
+          <div class="name">慢病管家</div>
+          <div class="desc">血压 / 血糖 / 用药提醒</div>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="num-tag">07</div>
+        <div class="ico" style="background:var(--c-accent-bg); color:var(--c-accent);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <div class="name">亲情账号</div>
+          <div class="desc">子女远程代办</div>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="num-tag">08</div>
+        <div class="ico" style="background:var(--c-gold-bg); color:var(--c-gold);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div>
+          <div class="name">免费陪诊</div>
+          <div class="desc">志愿者全程陪同</div>
+        </div>
+      </div>
+      <div class="svc">
+        <div class="num-tag">09</div>
+        <div class="ico" style="background:var(--c-berry); color:var(--c-cream);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div>
+          <div class="name">健康百科</div>
+          <div class="desc">10万+ 医生审稿</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 推荐专家 ============ -->
+  <section class="sec">
+    <div class="sec-head">
+      <div>
+        <div class="zh">今日推荐 · 主任专家</div>
+        <div class="en">Hand-picked for you, this morning.</div>
+      </div>
+      <a href="#" class="more">查看更多专家</a>
+    </div>
+    <div class="expert-grid">
+      <div class="expert">
+        <div class="expert-photo">
+          <span class="expert-tag">重点专科</span>
+          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face" alt="李婉清">
+        </div>
+        <div class="expert-info">
+          <div class="expert-name">李婉清 · 主任医师</div>
+          <div class="expert-title">心血管内科 · 从医 22 年</div>
+          <div class="expert-meta">
+            <div class="expert-rating">
+              <span class="star">★</span>
+              <span class="v">4.9</span>
+              <span class="c">(386)</span>
+            </div>
+            <button class="expert-cta">预约 · ¥80</button>
+          </div>
+        </div>
+      </div>
+      <div class="expert">
+        <div class="expert-photo">
+          <span class="expert-tag gold">名老中医</span>
+          <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face" alt="陈知行">
+        </div>
+        <div class="expert-info">
+          <div class="expert-name">陈知行 · 副主任医师</div>
+          <div class="expert-title">中医内科 · 从医 15 年</div>
+          <div class="expert-meta">
+            <div class="expert-rating">
+              <span class="star">★</span>
+              <span class="v">4.8</span>
+              <span class="c">(254)</span>
+            </div>
+            <button class="expert-cta">预约 · ¥50</button>
+          </div>
+        </div>
+      </div>
+      <div class="expert">
+        <div class="expert-photo">
+          <span class="expert-tag green">免费义诊</span>
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop&crop=face" alt="王明远">
+        </div>
+        <div class="expert-info">
+          <div class="expert-name">王明远 · 主任医师</div>
+          <div class="expert-title">神经内科 · 从医 28 年</div>
+          <div class="expert-meta">
+            <div class="expert-rating">
+              <span class="star">★</span>
+              <span class="v">4.9</span>
+              <span class="c">(412)</span>
+            </div>
+            <button class="expert-cta">预约 · ¥0</button>
+          </div>
+        </div>
+      </div>
+      <div class="expert">
+        <div class="expert-photo">
+          <span class="expert-tag">骨科圣手</span>
+          <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=400&fit=crop&crop=face" alt="张仲仁">
+        </div>
+        <div class="expert-info">
+          <div class="expert-name">张仲仁 · 副主任医师</div>
+          <div class="expert-title">骨科 · 从医 18 年</div>
+          <div class="expert-meta">
+            <div class="expert-rating">
+              <span class="star">★</span>
+              <span class="v">4.7</span>
+              <span class="c">(198)</span>
+            </div>
+            <button class="expert-cta">预约 · ¥60</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 健康资讯 ============ -->
+  <section class="sec">
+    <div class="sec-head">
+      <div>
+        <div class="zh">健康科普</div>
+        <div class="en">Read. Rest. Recover.</div>
+      </div>
+      <a href="#" class="more">查看更多</a>
+    </div>
+    <div class="news-wrap">
+      <div class="news-feature">
+        <div class="news-feature-img">
+          <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&h=400&fit=crop" alt="夏季养生">
+        </div>
+        <div class="news-feature-body">
+          <span class="news-cat">时令养生</span>
+          <div class="news-title">三伏天将至，老年人如何安稳度夏？心血管专家给出 7 条建议</div>
+          <div class="news-meta">
+            <span class="src">中华医学会</span>
+            <span>·</span>
+            <span>2026-06-21</span>
+            <span>·</span>
+            <span>12,386 阅读</span>
+            <span>·</span>
+            <span>8 分钟</span>
+          </div>
+        </div>
+      </div>
+      <div class="news-list">
+        <div class="news-item">
+          <div class="news-item-thumb">
+            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=200&h=200&fit=crop" alt="">
+          </div>
+          <div class="news-item-body">
+            <div class="news-item-title">空腹血糖 7.2，要紧吗？三位内分泌专家联合解读</div>
+            <div class="news-item-meta">丁香医生 · 2,841 阅读</div>
+          </div>
+          <div class="news-item-num">02</div>
+        </div>
+        <div class="news-item">
+          <div class="news-item-thumb">
+            <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=200&h=200&fit=crop" alt="">
+          </div>
+          <div class="news-item-body">
+            <div class="news-item-title">老年人该不该吃阿司匹林？最新指南给出明确答案</div>
+            <div class="news-item-meta">阜外医院 · 5,128 阅读</div>
+          </div>
+          <div class="news-item-num">03</div>
+        </div>
+        <div class="news-item">
+          <div class="news-item-thumb">
+            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=200&h=200&fit=crop" alt="">
+          </div>
+          <div class="news-item-body">
+            <div class="news-item-title">膝关节退行性变，别急着换关节！保守治疗这样做</div>
+            <div class="news-item-meta">北京积水潭医院 · 3,562 阅读</div>
+          </div>
+          <div class="news-item-num">04</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 活动 + 陪诊 ============ -->
+  <section class="sec">
+    <div class="dual-banner">
+      <div class="bn duanwu">
+        <span class="bn-h5">🎋 端午义诊月</span>
+        <div class="bn-title">千名三甲医师<br><span class="brush">在线免费问诊</span></div>
+        <div class="bn-desc">6 月 8 日 — 6 月 30 日，心血管、内分泌、骨科、神经内科四大科室，30 分钟极速响应</div>
+        <div class="bn-stats">
+          <div class="s"><div class="n">1,286</div><div class="l">已服务长者</div></div>
+          <div class="s"><div class="n">98.6%</div><div class="l">好评率</div></div>
+          <div class="s"><div class="n">30 min</div><div class="l">响应时长</div></div>
+        </div>
+        <button class="bn-cta">立即参加 →</button>
+      </div>
+
+      <div class="bn peizhen">
+        <svg class="illust" viewBox="0 0 200 200" fill="none">
+          <circle cx="100" cy="100" r="80" fill="#F4D9C7"/>
+          <circle cx="100" cy="80" r="30" fill="#B8451F" opacity=".15"/>
+          <path d="M70 130 Q100 110 130 130 L130 180 L70 180 Z" fill="#B8451F" opacity=".25"/>
+          <path d="M85 60 Q85 50 100 50 Q115 50 115 60" stroke="#1F4D3A" stroke-width="3" fill="none"/>
+          <circle cx="90" cy="80" r="3" fill="#1F4D3A"/>
+          <circle cx="110" cy="80" r="3" fill="#1F4D3A"/>
+          <path d="M90 95 Q100 102 110 95" stroke="#1F4D3A" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+        <span class="bn-h5">🧡 公益陪诊</span>
+        <div class="bn-title">"陪爸妈看一次病"<br>志愿者全程陪同</div>
+        <div class="review">
+          <div class="t">"张阿姨 78 岁，子女都在国外，志愿者张师傅陪了她一整天，连厕所都帮看着。走的时候老太太哭了。"</div>
+          <div class="u">
+            <span class="av">李</span>
+            来自 上海 · 浦东新区 · 王大爷女儿的留言
+          </div>
+        </div>
+        <button class="bn-cta">预约志愿者 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 排行 + 健康 widget ============ -->
+  <section class="sec">
+    <div class="rank-wrap">
+      <div class="rank-card">
+        <div class="rank-card-head">
+          <div class="h">本周热门科室 TOP 5</div>
+          <div class="sub">Updated · 06-22 06:00</div>
+        </div>
+        <div class="rank-list">
+          <div class="rank-item">
+            <div class="rank-num gold">1</div>
+            <div class="rank-info">
+              <div class="n">心血管内科</div>
+              <div class="d">冠心病 · 高血压 · 心律失常</div>
+            </div>
+            <div class="rank-bar"><div style="width:100%;"></div></div>
+            <div class="rank-val">2,386</div>
+          </div>
+          <div class="rank-item">
+            <div class="rank-num silver">2</div>
+            <div class="rank-info">
+              <div class="n">内分泌科</div>
+              <div class="d">糖尿病 · 甲状腺 · 痛风</div>
+            </div>
+            <div class="rank-bar"><div style="width:84%;"></div></div>
+            <div class="rank-val">2,012</div>
+          </div>
+          <div class="rank-item">
+            <div class="rank-num bronze">3</div>
+            <div class="rank-info">
+              <div class="n">骨科</div>
+              <div class="d">膝关节 · 腰椎 · 颈椎病</div>
+            </div>
+            <div class="rank-bar"><div style="width:72%;"></div></div>
+            <div class="rank-val">1,728</div>
+          </div>
+          <div class="rank-item">
+            <div class="rank-num">4</div>
+            <div class="rank-info">
+              <div class="n">神经内科</div>
+              <div class="d">脑梗 · 头晕 · 失眠 · 痴呆</div>
+            </div>
+            <div class="rank-bar"><div style="width:61%;"></div></div>
+            <div class="rank-val">1,456</div>
+          </div>
+          <div class="rank-item">
+            <div class="rank-num">5</div>
+            <div class="rank-info">
+              <div class="n">眼科</div>
+              <div class="d">白内障 · 青光眼 · 老花</div>
+            </div>
+            <div class="rank-bar"><div style="width:48%;"></div></div>
+            <div class="rank-val">1,142</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="health-widget">
+        <div class="h">健康提醒 · 今日</div>
+        <div class="hw-row">
+          <div class="hw-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="hw-info">
+            <div class="t">降压药 · 苯磺酸氨氯地平</div>
+            <div class="s">08:00 服用 · 还剩 5 天</div>
+          </div>
+          <span class="hw-pill">续方</span>
+        </div>
+        <div class="hw-row">
+          <div class="hw-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+          </div>
+          <div class="hw-info">
+            <div class="t">测血压 · 距上次 18h</div>
+            <div class="s">收缩压 138 / 舒张压 86 mmHg</div>
+          </div>
+          <span class="hw-pill green">正常</span>
+        </div>
+        <div class="hw-row">
+          <div class="hw-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="hw-info">
+            <div class="t">周三 09:00 · 心内科复诊</div>
+            <div class="s">李婉清 · 仁济堂总院 3F305</div>
+          </div>
+          <span class="hw-pill">查看</span>
+        </div>
+        <div class="hw-row">
+          <div class="hw-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="hw-info">
+            <div class="t">体检报告已出 · 3 项异常</div>
+            <div class="s">点击查看详细解读</div>
+          </div>
+          <span class="hw-pill">查看</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 子女代办 ============ -->
+  <section class="sec">
+    <div class="family-zone">
+      <div class="left">
+        <div class="h">不在父母身边，<br>也能帮他们<span>看病就医</span></div>
+        <div class="d">绑定亲情账号后，您可远程帮爸妈挂号、缴费、查报告，<br>所有操作都有微信通知，再也不用担心他们不会用手机</div>
+        <button class="cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          立即添加亲情账号
+        </button>
+      </div>
+      <div class="right">
+        <div class="member">
+          <div class="av">英</div>
+          <div class="info">
+            <div class="n">小英 · 女儿</div>
+            <div class="r">已绑定 · 上海徐汇</div>
+          </div>
+          <div class="dot" title="在线"></div>
+        </div>
+        <div class="member">
+          <div class="av" style="background:var(--c-primary);">军</div>
+          <div class="info">
+            <div class="n">小军 · 儿子</div>
+            <div class="r">已绑定 · 北京海淀</div>
+          </div>
+          <div class="dot" title="在线"></div>
+        </div>
+        <div class="member offline">
+          <div class="av" style="background:var(--c-sky);">芳</div>
+          <div class="info">
+            <div class="n">小芳 · 小女儿</div>
+            <div class="r">3 天前在线</div>
+          </div>
+          <div class="dot"></div>
+        </div>
+        <div class="member">
+          <div class="av" style="background:var(--c-berry);">邻</div>
+          <div class="info">
+            <div class="n">王阿姨 · 邻居代办</div>
+            <div class="r">已授权 · 同小区</div>
+          </div>
+          <div class="dot" title="在线"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Footer ============ -->
+  <div class="footer">
+    <div class="brand-mini">
+      <div class="icon">銀</div>
+      <div class="n">银发<span>通</span></div>
+    </div>
+    <div class="small">
+      <b>适老化 · 智慧就医 · 公益陪诊</b><br>
+      <span class="divider-glyph">❀</span> 沪 ICP 备 2024-00000 号 <span class="divider-glyph">❀</span> 沪公网安备 31011502000000 号 <span class="divider-glyph">❀</span> 2026
+    </div>
+  </div>
+</div>
+</body>
+</html>
+`,
+    "frame-flow": `<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>银发通 · 挂号 4 步流程</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800;900&family=Noto+Serif+SC:wght@500;700;900&family=Ma+Shan+Zheng&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@1,144,600;1,144,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c-primary:#B8451F;
+    --c-primary-dark:#8E3215;
+    --c-accent:#1F4D3A;
+    --c-accent-2:#2F6B53;
+    --c-gold:#C28840;
+    --c-gold-2:#E0A55A;
+    --c-bg:#F5EBD8;
+    --c-paper:#FFFCF5;
+    --c-paper-2:#FAF1E0;
+    --c-ink-900:#1A1814;
+    --c-ink-700:#3D372F;
+    --c-ink-500:#6B6358;
+    --c-ink-300:#A89E8E;
+    --c-line:#E5D7BC;
+    --c-line-2:#D4C29E;
+    --c-danger:#C0392B;
+    --r-md:14px;
+    --r-lg:22px;
+    --r-xl:32px;
+    --r-pill:999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--c-bg);color:var(--c-ink-900);font-family:"Noto Sans SC",system-ui,sans-serif;font-weight:500}
+  body{background-image:radial-gradient(1200px 600px at 80% -10%,#EBD5B0 0%,transparent 60%),radial-gradient(800px 500px at -10% 100%,#E8D7B5 0%,transparent 50%)}
+  .wrap{max-width:1380px;margin:0 auto;padding:48px 36px 80px}
+
+  /* ─── 顶部装饰条 ─── */
+  .top-rail{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px dashed var(--c-line-2);font-size:14px;color:var(--c-ink-500)}
+  .top-rail .left{display:flex;gap:18px;align-items:center}
+  .top-rail .stamp{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid var(--c-line-2);border-radius:6px;background:var(--c-paper)}
+  .top-rail .stamp::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--c-primary)}
+  .top-rail .right{display:flex;gap:18px;align-items:center;font-family:"DM Serif Display",serif;font-style:italic}
+  .top-rail .right b{color:var(--c-primary);font-style:normal;font-family:"Bebas Neue",sans-serif;letter-spacing:1px;font-size:18px}
+
+  /* ─── 页头 ─── */
+  .page-head{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:end;margin:30px 0 28px}
+  .ph-title{font-family:"Noto Serif SC",serif;font-weight:900;font-size:54px;line-height:1.05;color:var(--c-ink-900);letter-spacing:-1px}
+  .ph-title em{font-family:"Fraunces",serif;font-style:italic;font-weight:600;color:var(--c-primary);padding:0 4px}
+  .ph-title .seal{display:inline-block;font-family:"Ma Shan Zheng",cursive;font-size:46px;color:var(--c-primary);transform:rotate(-6deg);margin:0 8px -8px;letter-spacing:4px}
+  .ph-sub{margin-top:14px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;color:var(--c-ink-500);font-size:15px}
+  .ph-sub .dot{width:5px;height:5px;background:var(--c-gold);border-radius:50%}
+  .ph-meta{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-lg);padding:18px 22px;position:relative;overflow:hidden}
+  .ph-meta::before{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(194,136,64,.18),transparent 70%)}
+  .ph-meta h5{font-family:"Noto Serif SC",serif;font-size:18px;color:var(--c-ink-900);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .ph-meta h5::before{content:"";width:18px;height:2px;background:var(--c-primary)}
+  .ph-meta .row{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;color:var(--c-ink-700);border-top:1px dashed var(--c-line)}
+  .ph-meta .row:first-of-type{border-top:0}
+  .ph-meta .row b{color:var(--c-primary);font-family:"Bebas Neue";letter-spacing:1px;font-size:18px}
+
+  /* ─── 4 步进度条 ─── */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-lg);padding:0;position:relative;overflow:hidden;margin-bottom:36px}
+  .step{padding:24px 24px 22px;position:relative;border-right:1px dashed var(--c-line)}
+  .step:last-child{border-right:0}
+  .step::after{content:"";position:absolute;right:-10px;top:50%;width:18px;height:18px;background:var(--c-paper);border:1px solid var(--c-line);border-radius:50%;transform:translateY(-50%) rotate(45deg);z-index:2}
+  .step:last-child::after{display:none}
+  .step .num{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+  .step .num b{font-family:"Bebas Neue";font-size:46px;color:var(--c-ink-300);letter-spacing:1px;line-height:1}
+  .step.done .num b{color:var(--c-accent-2)}
+  .step.now .num b{color:var(--c-primary)}
+  .step .num em{font-family:"DM Serif Display",serif;font-style:italic;font-size:14px;color:var(--c-ink-500)}
+  .step .name{font-family:"Noto Serif SC",serif;font-weight:900;font-size:24px;color:var(--c-ink-900);margin-bottom:4px}
+  .step .desc{font-size:13px;color:var(--c-ink-500);line-height:1.5}
+  .step.now{background:linear-gradient(180deg,#FFF7E8,transparent 60%)}
+  .step.now::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--c-primary)}
+  .step.now .name{color:var(--c-primary)}
+  .step .tag{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:var(--r-pill);font-size:12px;font-weight:700}
+  .step.done .tag{background:#E8F1ED;color:var(--c-accent)}
+  .step.now .tag{background:var(--c-primary);color:#FFF7E8}
+  .step.todo .tag{background:var(--c-paper-2);color:var(--c-ink-500)}
+
+  /* ─── 主舞台 ─── */
+  .stage{display:grid;grid-template-columns:1.5fr 1fr;gap:24px}
+  .card{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:30px;position:relative;overflow:hidden}
+  .card h3{font-family:"Noto Serif SC",serif;font-weight:900;font-size:30px;color:var(--c-ink-900);display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .card h3 .en{font-family:"DM Serif Display",serif;font-style:italic;font-weight:400;font-size:18px;color:var(--c-primary);letter-spacing:1px}
+  .card h3 .rec{font-family:"Ma Shan Zheng",cursive;font-size:24px;color:var(--c-primary);margin-left:6px}
+  .card .lead{color:var(--c-ink-500);font-size:15px;margin-bottom:22px;display:flex;gap:14px;align-items:center}
+  .card .lead::before{content:"";width:30px;height:1px;background:var(--c-gold)}
+
+  /* 步骤1 — 选科室 */
+  .depts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+  .dept{background:var(--c-paper-2);border:2px solid transparent;border-radius:var(--r-lg);padding:22px 18px;cursor:pointer;transition:all .2s;position:relative}
+  .dept:hover{border-color:var(--c-gold-2);transform:translateY(-2px)}
+  .dept.sel{background:#FFF;border-color:var(--c-primary);box-shadow:0 12px 28px -16px rgba(184,69,31,.4)}
+  .dept.sel::after{content:"";position:absolute;right:14px;top:14px;width:24px;height:24px;background:var(--c-primary);border-radius:50%;background-image:radial-gradient(circle at 50% 55%,#FFF 0 4px,transparent 5px)}
+  .dept .ico{width:52px;height:52px;background:#FFF;border:1px solid var(--c-line);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .dept .ico svg{width:30px;height:30px}
+  .dept h4{font-family:"Noto Serif SC",serif;font-weight:900;font-size:22px;color:var(--c-ink-900);margin-bottom:4px}
+  .dept p{font-size:13px;color:var(--c-ink-500)}
+  .dept .meta{display:flex;gap:8px;margin-top:10px}
+  .dept .meta span{padding:2px 8px;background:#FFF;border:1px solid var(--c-line);border-radius:var(--r-pill);font-size:11px;color:var(--c-ink-700);font-weight:700}
+
+  /* 步骤2 — 选医生 */
+  .docs{display:flex;flex-direction:column;gap:12px}
+  .doc{display:grid;grid-template-columns:80px 1fr auto;gap:18px;align-items:center;background:var(--c-paper-2);border:2px solid transparent;border-radius:var(--r-lg);padding:16px 20px;cursor:pointer;transition:all .2s}
+  .doc:hover{border-color:var(--c-gold-2);background:#FFF}
+  .doc.sel{background:#FFF;border-color:var(--c-primary);box-shadow:0 12px 28px -16px rgba(184,69,31,.4)}
+  .doc .avatar{width:80px;height:80px;border-radius:50%;background-size:cover;background-position:center;border:3px solid #FFF;box-shadow:0 4px 12px -4px rgba(0,0,0,.15);position:relative}
+  .doc .avatar::after{content:"";position:absolute;right:0;bottom:0;width:22px;height:22px;border-radius:50%;background:var(--c-accent);border:3px solid #FFF;display:flex;align-items:center;justify-content:center}
+  .doc .avatar.tea::after{background:var(--c-gold)}
+  .doc .info h4{font-family:"Noto Serif SC",serif;font-weight:900;font-size:24px;color:var(--c-ink-900);margin-bottom:2px;display:flex;align-items:center;gap:10px}
+  .doc .info h4 em{font-family:"DM Serif Display",serif;font-style:italic;font-size:18px;color:var(--c-primary);font-weight:400}
+  .doc .info .title{font-size:14px;color:var(--c-ink-700);margin-bottom:8px;display:flex;gap:8px;align-items:center}
+  .doc .info .title span{padding:2px 8px;background:#FFF;border:1px solid var(--c-line);border-radius:4px;font-size:12px;color:var(--c-ink-700);font-weight:700}
+  .doc .info .skill{font-size:13px;color:var(--c-ink-500);display:flex;gap:6px;flex-wrap:wrap}
+  .doc .info .skill b{color:var(--c-primary-dark);font-weight:700;background:#FBE8D6;padding:1px 6px;border-radius:4px}
+  .doc .right{text-align:right}
+  .doc .right .price{font-family:"Bebas Neue";font-size:36px;color:var(--c-primary);letter-spacing:1px;line-height:1}
+  .doc .right .price small{font-size:16px;color:var(--c-ink-500)}
+  .doc .right .avail{margin-top:6px;font-size:13px;color:var(--c-accent);font-weight:700}
+  .doc .right .avail::before{content:"●";margin-right:4px;font-size:10px}
+
+  /* 步骤3 — 选时段 */
+  .slots{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .slot{background:var(--c-paper-2);border:2px solid transparent;border-radius:var(--r-md);padding:16px 12px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+  .slot:hover{border-color:var(--c-gold-2)}
+  .slot.sel{background:#FFF;border-color:var(--c-primary);box-shadow:0 8px 20px -12px rgba(184,69,31,.4)}
+  .slot .time{font-family:"Bebas Neue";font-size:26px;color:var(--c-ink-900);letter-spacing:1px}
+  .slot .ampm{font-size:13px;color:var(--c-ink-500);margin-top:2px}
+  .slot .rest{margin-top:8px;font-size:12px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block}
+  .slot .rest.ok{background:#E8F1ED;color:var(--c-accent)}
+  .slot .rest.few{background:#FBE8D6;color:var(--c-primary)}
+  .slot .rest.full{background:#EFE7D7;color:var(--c-ink-500)}
+  .slot.full{opacity:.55;cursor:not-allowed}
+  .slot.full .time,.slot.full .ampm{text-decoration:line-through;color:var(--c-ink-300)}
+
+  /* 步骤4 — 支付 */
+  .pay-card{background:linear-gradient(135deg,#1F4D3A,#2F6B53);color:#FFF7E8;border-radius:var(--r-xl);padding:28px;position:relative;overflow:hidden;margin-bottom:18px}
+  .pay-card::before{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(194,136,64,.3),transparent 70%)}
+  .pay-card::after{content:"";position:absolute;left:-20px;bottom:-30px;width:160px;height:160px;border:1px dashed rgba(255,247,232,.25);border-radius:50%}
+  .pay-card .label{font-family:"DM Serif Display",serif;font-style:italic;font-size:18px;opacity:.7;letter-spacing:1px}
+  .pay-card .amount{font-family:"Bebas Neue";font-size:84px;color:#FFF7E8;line-height:1;margin:8px 0 14px;letter-spacing:2px}
+  .pay-card .amount small{font-size:24px;opacity:.7;margin-right:6px}
+  .pay-card .break{display:flex;gap:18px;font-size:14px;opacity:.85;border-top:1px dashed rgba(255,247,232,.25);padding-top:14px;margin-top:6px}
+  .pay-card .break b{font-family:"Bebas Neue";font-size:20px;color:var(--c-gold-2);letter-spacing:1px}
+  .pay-card .stamp{position:absolute;right:24px;top:24px;width:78px;height:78px;border:2px solid var(--c-primary);border-radius:50%;color:var(--c-primary);display:flex;align-items:center;justify-content:center;text-align:center;transform:rotate(-12deg);font-family:"Ma Shan Zheng",cursive;font-size:18px;background:#FFF7E8;line-height:1.2}
+
+  .pay-modes{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+  .pay-mode{display:grid;grid-template-columns:48px 1fr auto;gap:14px;align-items:center;background:var(--c-paper-2);border:2px solid transparent;border-radius:var(--r-md);padding:14px 18px;cursor:pointer}
+  .pay-mode.sel{background:#FFF;border-color:var(--c-primary)}
+  .pay-mode .ico{width:48px;height:48px;background:#FFF;border:1px solid var(--c-line);border-radius:12px;display:flex;align-items:center;justify-content:center}
+  .pay-mode .ico svg{width:28px;height:28px}
+  .pay-mode h5{font-family:"Noto Serif SC",serif;font-weight:900;font-size:18px;color:var(--c-ink-900)}
+  .pay-mode p{font-size:13px;color:var(--c-ink-500)}
+  .pay-mode .badge{padding:4px 10px;border-radius:var(--r-pill);background:var(--c-primary);color:#FFF7E8;font-size:12px;font-weight:700}
+  .pay-mode .badge.ok{background:var(--c-accent)}
+
+  /* 右侧 — 订单摘要 */
+  .summary{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:28px;position:sticky;top:24px}
+  .summary h3{font-family:"Noto Serif SC",serif;font-weight:900;font-size:26px;color:var(--c-ink-900);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
+  .summary h3 .en{font-family:"DM Serif Display",serif;font-style:italic;font-size:15px;color:var(--c-primary);font-weight:400}
+  .sum-block{background:var(--c-paper-2);border-radius:var(--r-md);padding:16px;margin-bottom:14px}
+  .sum-block h6{font-size:12px;color:var(--c-ink-500);font-weight:700;letter-spacing:1px;margin-bottom:8px;display:flex;align-items:center;gap:6px;text-transform:uppercase}
+  .sum-block h6::before{content:"";width:14px;height:2px;background:var(--c-primary)}
+  .sum-block .v{font-family:"Noto Serif SC",serif;font-weight:900;font-size:20px;color:var(--c-ink-900)}
+  .sum-block .sub{font-size:13px;color:var(--c-ink-500);margin-top:4px}
+  .sum-doctor{display:flex;gap:12px;align-items:center;margin-top:10px}
+  .sum-doctor .av{width:48px;height:48px;border-radius:50%;background-size:cover;background-position:center;border:2px solid #FFF;box-shadow:0 2px 8px -2px rgba(0,0,0,.15)}
+  .sum-doctor .info b{font-family:"Noto Serif SC",serif;font-weight:900;font-size:17px;color:var(--c-ink-900);display:block}
+  .sum-doctor .info span{font-size:12px;color:var(--c-ink-500)}
+  .sum-timeline{margin:18px 0;padding:18px;background:linear-gradient(180deg,#FFF7E8,transparent);border-radius:var(--r-md);position:relative}
+  .sum-timeline::before{content:"";position:absolute;left:24px;top:30px;bottom:30px;width:1px;background:var(--c-line-2)}
+  .sum-timeline .item{display:flex;gap:14px;padding:6px 0;position:relative}
+  .sum-timeline .item .dot{width:12px;height:12px;border-radius:50%;background:var(--c-line-2);border:2px solid #FFF;flex-shrink:0;margin-top:4px;z-index:1}
+  .sum-timeline .item.done .dot{background:var(--c-accent)}
+  .sum-timeline .item.now .dot{background:var(--c-primary);box-shadow:0 0 0 4px rgba(184,69,31,.2)}
+  .sum-timeline .item b{font-family:"Noto Serif SC",serif;font-weight:900;font-size:15px;color:var(--c-ink-900);display:block}
+  .sum-timeline .item span{font-size:12px;color:var(--c-ink-500)}
+  .sum-total{display:flex;align-items:baseline;justify-content:space-between;padding:18px 0;border-top:1px dashed var(--c-line-2);margin-top:6px}
+  .sum-total .label{font-size:14px;color:var(--c-ink-500)}
+  .sum-total .label b{color:var(--c-primary);font-size:16px;font-weight:900}
+  .sum-total .num{font-family:"Bebas Neue";font-size:48px;color:var(--c-primary);letter-spacing:1px;line-height:1}
+  .sum-total .num small{font-size:18px;color:var(--c-ink-500);margin-right:4px}
+  .cta{display:block;width:100%;padding:22px;background:var(--c-primary);color:#FFF7E8;border:0;border-radius:var(--r-lg);font-family:"Noto Serif SC",serif;font-weight:900;font-size:22px;cursor:pointer;margin-top:16px;position:relative;overflow:hidden;letter-spacing:2px}
+  .cta::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.1),transparent 50%)}
+  .cta:hover{background:var(--c-primary-dark)}
+  .cta-aux{display:flex;gap:10px;margin-top:10px}
+  .cta-aux button{flex:1;padding:14px;background:transparent;color:var(--c-ink-700);border:1px solid var(--c-line-2);border-radius:var(--r-md);font-size:14px;font-weight:700;cursor:pointer}
+  .cta-aux button:hover{background:var(--c-paper-2);color:var(--c-primary)}
+
+  /* ─── 提示条 ─── */
+  .help-rail{margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .help{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-lg);padding:18px 20px;display:flex;gap:14px;align-items:center}
+  .help .ico{width:46px;height:46px;background:var(--c-paper-2);border:1px solid var(--c-line);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .help .ico svg{width:24px;height:24px}
+  .help b{font-family:"Noto Serif SC",serif;font-weight:900;font-size:16px;color:var(--c-ink-900);display:block;margin-bottom:2px}
+  .help p{font-size:13px;color:var(--c-ink-500);line-height:1.5}
+
+  /* ─── 页脚 ─── */
+  .footer{margin-top:42px;padding-top:22px;border-top:1px dashed var(--c-line-2);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--c-ink-500)}
+  .footer .slogan{font-family:"Ma Shan Zheng",cursive;font-size:22px;color:var(--c-primary);letter-spacing:3px}
+  .footer .meta{display:flex;gap:18px;align-items:center}
+  .footer .meta em{font-family:"DM Serif Display",serif;font-style:italic}
+
+  @media (max-width:1100px){
+    .stage{grid-template-columns:1fr}
+    .summary{position:static}
+    .page-head{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 顶部装饰条 -->
+  <div class="top-rail">
+    <div class="left">
+      <span class="stamp">适老化就医服务</span>
+      <span>·</span>
+      <span>国家卫健委 2025 长者就医便利化行动</span>
+    </div>
+    <div class="right">
+      <span>4-step booking flow</span>
+      <b>银发通 / YINFA-TONG v3.0</b>
+    </div>
+  </div>
+
+  <!-- 页头 -->
+  <div class="page-head">
+    <div>
+      <h1 class="ph-title">
+        一键挂号，<em>四步</em>搞定<br>
+        <span class="seal">银发通</span>陪爸妈看病不再难
+      </h1>
+      <div class="ph-sub">
+        <span>为 60+ 长者及亲友代办设计</span>
+        <span class="dot"></span>
+        <span>支持语音 / 大字 / 子女远程代办</span>
+        <span class="dot"></span>
+        <span>医保结算 + 长者专属号源</span>
+      </div>
+    </div>
+    <div class="ph-meta">
+      <h5>本次预约概览</h5>
+      <div class="row"><span>就诊人</span><b>张秀英</b></div>
+      <div class="row"><span>预约医院</span><b>北京协和医院（东院）</b></div>
+      <div class="row"><span>预约日期</span><b>2026 / 06 / 25 周四</b></div>
+      <div class="row"><span>代办人</span><b>女儿 · 思雨</b></div>
+    </div>
+  </div>
+
+  <!-- 4 步进度条 -->
+  <div class="steps">
+    <div class="step done">
+      <div class="num"><b>01</b><em>choose</em></div>
+      <div class="name">选科室</div>
+      <div class="desc">按身体部位或症状匹配，避免挂错号</div>
+      <span class="tag">已完成</span>
+    </div>
+    <div class="step now">
+      <div class="num"><b>02</b><em>select</em></div>
+      <div class="name">选医生</div>
+      <div class="desc">查看医生擅长与坐诊时段，子女可代选</div>
+      <span class="tag">进行中</span>
+    </div>
+    <div class="step todo">
+      <div class="num"><b>03</b><em>schedule</em></div>
+      <div class="name">选时段</div>
+      <div class="desc">大字时段卡，所见即可点</div>
+      <span class="tag">待办</span>
+    </div>
+    <div class="step todo">
+      <div class="num"><b>04</b><em>pay</em></div>
+      <div class="name">医保支付</div>
+      <div class="desc">医保优先，长者一键完成</div>
+      <span class="tag">待办</span>
+    </div>
+  </div>
+
+  <!-- 主舞台 -->
+  <div class="stage">
+
+    <!-- 左侧：流程详情 -->
+    <div style="display:flex;flex-direction:column;gap:24px">
+
+      <!-- 步骤 2：选医生（当前步骤）-->
+      <div class="card">
+        <h3>选医生 <span class="en">— Pick Your Doctor</span><span class="rec">名医</span></h3>
+        <p class="lead">已为您筛选「心血管内科」当日出诊医生 4 位，按评分排序</p>
+
+        <div class="docs">
+          <div class="doc sel">
+            <div class="avatar tea" style="background-image:url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop&crop=faces')"></div>
+            <div class="info">
+              <h4>王建华 <em>· 主任医师</em></h4>
+              <div class="title">心血管内科 <span>从医 32 年</span> <span>博士导师</span></div>
+              <div class="skill">擅长 <b>冠心病介入治疗</b> <b>高血压管理</b> <b>心律失常</b> · 中国医师协会心血管分会委员</div>
+            </div>
+            <div class="right">
+              <div class="price">¥50<small>.00</small></div>
+              <div class="avail">今日余 3 号</div>
+            </div>
+          </div>
+
+          <div class="doc">
+            <div class="avatar" style="background-image:url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop&crop=faces')"></div>
+            <div class="info">
+              <h4>李文静 <em>· 副主任医师</em></h4>
+              <div class="title">心血管内科 <span>从医 18 年</span> <span>北大医学部</span></div>
+              <div class="skill">擅长 <b>心力衰竭</b> <b>老年心血管病</b> · 接诊耐心细致，老年患者口碑第一</div>
+            </div>
+            <div class="right">
+              <div class="price">¥30<small>.00</small></div>
+              <div class="avail">今日余 6 号</div>
+            </div>
+          </div>
+
+          <div class="doc">
+            <div class="avatar" style="background-image:url('https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=200&h=200&fit=crop&crop=faces')"></div>
+            <div class="info">
+              <h4>赵永康 <em>· 主任医师</em></h4>
+              <div class="title">心血管内科 <span>从医 28 年</span> <span>国务院津贴</span></div>
+              <div class="skill">擅长 <b>复杂冠心病</b> <b>先心病介入</b> · 周四上午特需门诊</div>
+            </div>
+            <div class="right">
+              <div class="price">¥100<small>.00</small></div>
+              <div class="avail">特需号 余 1 号</div>
+            </div>
+          </div>
+
+          <div class="doc">
+            <div class="avatar" style="background-image:url('https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=200&h=200&fit=crop&crop=faces')"></div>
+            <div class="info">
+              <h4>孙慧敏 <em>· 主治医师</em></h4>
+              <div class="title">心血管内科 <span>从医 12 年</span></div>
+              <div class="skill">擅长 <b>高血压慢病管理</b> <b>老年综合评估</b> · 普通话/沪语 双语接诊</div>
+            </div>
+            <div class="right">
+              <div class="price">¥20<small>.00</small></div>
+              <div class="avail">今日余 9 号</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 步骤 3：选时段（预览）-->
+      <div class="card">
+        <h3>选就诊时段 <span class="en">— Choose A Slot</span></h3>
+        <p class="lead">王建华主任 · 周四 6 月 25 日 · 上午 8 段 / 下午 6 段</p>
+
+        <div style="font-family:'Noto Serif SC',serif;font-weight:900;font-size:16px;color:var(--c-ink-700);margin:14px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:4px;height:16px;background:var(--c-primary);border-radius:2px"></span>上午门诊</div>
+        <div class="slots">
+          <div class="slot"><div class="time">08:00</div><div class="ampm">上午</div><span class="rest ok">余 4</span></div>
+          <div class="slot"><div class="time">08:30</div><div class="ampm">上午</div><span class="rest ok">余 6</span></div>
+          <div class="slot sel"><div class="time">09:00</div><div class="ampm">上午</div><span class="rest few">余 1</span></div>
+          <div class="slot full"><div class="time">09:30</div><div class="ampm">上午</div><span class="rest full">已满</span></div>
+          <div class="slot"><div class="time">10:00</div><div class="ampm">上午</div><span class="rest ok">余 3</span></div>
+          <div class="slot"><div class="time">10:30</div><div class="ampm">上午</div><span class="rest ok">余 5</span></div>
+          <div class="slot"><div class="time">11:00</div><div class="ampm">上午</div><span class="rest ok">余 2</span></div>
+          <div class="slot full"><div class="time">11:30</div><div class="ampm">上午</div><span class="rest full">已满</span></div>
+        </div>
+
+        <div style="font-family:'Noto Serif SC',serif;font-weight:900;font-size:16px;color:var(--c-ink-700);margin:22px 0 10px;display:flex;align-items:center;gap:8px"><span style="width:4px;height:16px;background:var(--c-accent);border-radius:2px"></span>下午门诊</div>
+        <div class="slots">
+          <div class="slot"><div class="time">14:00</div><div class="ampm">下午</div><span class="rest ok">余 8</span></div>
+          <div class="slot"><div class="time">14:30</div><div class="ampm">下午</div><span class="rest ok">余 7</span></div>
+          <div class="slot"><div class="time">15:00</div><div class="ampm">下午</div><span class="rest few">余 1</span></div>
+          <div class="slot full"><div class="time">15:30</div><div class="ampm">下午</div><span class="rest full">已满</span></div>
+          <div class="slot"><div class="time">16:00</div><div class="ampm">下午</div><span class="rest ok">余 4</span></div>
+          <div class="slot full"><div class="time">16:30</div><div class="ampm">下午</div><span class="rest full">已满</span></div>
+        </div>
+      </div>
+
+      <!-- 步骤 4：支付确认（预览）-->
+      <div class="card">
+        <h3>医保支付 <span class="en">— Pay With Insurance</span><span class="rec">一键</span></h3>
+        <p class="lead">支持医保账户实时结算，子女可远程代付</p>
+
+        <div class="pay-card">
+          <div class="stamp">长者<br>专属号<br>已锁定</div>
+          <div class="label">本单应付总额 · Total Amount</div>
+          <div class="amount"><small>¥</small>12<small>.00</small></div>
+          <div class="break">
+            <span>医保统筹 <b>¥38.00</b></span>
+            <span>个人账户 <b>¥10.00</b></span>
+            <span>自费部分 <b>¥2.00</b></span>
+          </div>
+        </div>
+
+        <div class="pay-modes">
+          <div class="pay-mode sel">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#1F4D3A" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg>
+            </div>
+            <div>
+              <h5>医保账户支付</h5>
+              <p>实时结算 · 需提前在国家医保 APP 激活电子凭证</p>
+            </div>
+            <span class="badge">推荐</span>
+          </div>
+          <div class="pay-mode">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#B8451F" stroke-width="2"><path d="M6 3h12l3 6v12H3V9z"/><path d="M3 9h18M9 14a3 3 0 0 0 6 0"/></svg>
+            </div>
+            <div>
+              <h5>微信 / 支付宝</h5>
+              <p>支持子女账户远程代付 · 免输密码 30 分钟</p>
+            </div>
+            <span class="badge ok">安全</span>
+          </div>
+          <div class="pay-mode">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#C28840" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            </div>
+            <div>
+              <h5>子女远程代付</h5>
+              <p>推送至「女儿 · 思雨」微信 · 短信一键确认</p>
+            </div>
+            <span class="badge ok">爱心</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 右侧：订单摘要 -->
+    <aside class="summary">
+      <h3>订单摘要 <span class="en">Summary</span></h3>
+
+      <div class="sum-block">
+        <h6>就诊人 · Patient</h6>
+        <div class="v">张秀英 <span style="font-size:14px;color:var(--c-ink-500);font-weight:500">· 68 岁</span></div>
+        <div class="sub">身份证 1101****1958****0224 · 北京市医保</div>
+      </div>
+
+      <div class="sum-block">
+        <h6>科室 · Department</h6>
+        <div class="v">心血管内科</div>
+        <div class="sub">根据您「胸闷气短 3 天」症状智能推荐</div>
+      </div>
+
+      <div class="sum-block">
+        <h6>医生 · Doctor</h6>
+        <div class="sum-doctor">
+          <div class="av" style="background-image:url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=200&h=200&fit=crop&crop=faces')"></div>
+          <div class="info">
+            <b>王建华 · 主任医师</b>
+            <span>从医 32 年 · 冠心病介入</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sum-block">
+        <h6>时段 · Schedule</h6>
+        <div class="v">2026.06.25 <span style="font-family:'Bebas Neue';font-size:24px;color:var(--c-primary)">09:00</span></div>
+        <div class="sub">周四上午 · 余 1 号（请尽快确认）</div>
+      </div>
+
+      <div class="sum-timeline">
+        <div class="item done">
+          <div class="dot"></div>
+          <div><b>已完成 · 选科室</b><span>2026.06.22 10:31</span></div>
+        </div>
+        <div class="item now">
+          <div class="dot"></div>
+          <div><b>进行中 · 选医生</b><span>正在为您展示医生列表</span></div>
+        </div>
+        <div class="item">
+          <div class="dot"></div>
+          <div><b>待办 · 选时段</b><span>需在 14:59 前完成</span></div>
+        </div>
+        <div class="item">
+          <div class="dot"></div>
+          <div><b>待办 · 支付</b><span>支持医保/微信/代付</span></div>
+        </div>
+      </div>
+
+      <div class="sum-total">
+        <div class="label">应付金额<br><b>医保结算后</b></div>
+        <div class="num"><small>¥</small>12<small>.00</small></div>
+      </div>
+
+      <button class="cta">继续选时段 →</button>
+      <div class="cta-aux">
+        <button>↶ 返回上一步</button>
+        <button>♡ 收藏医生</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 底部帮助条 -->
+  <div class="help-rail">
+    <div class="help">
+      <div class="ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#B8451F" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg>
+      </div>
+      <div>
+        <b>说句话就能挂号</b>
+        <p>点底部麦克风：「挂明天下午心内科」即可，AI 自动解析</p>
+      </div>
+    </div>
+    <div class="help">
+      <div class="ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1F4D3A" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.13a4 4 0 0 1 0 7.75M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+      </div>
+      <div>
+        <b>子女远程代办</b>
+        <p>邀请家人绑定亲情号，爸妈不会操作儿女来帮</p>
+      </div>
+    </div>
+    <div class="help">
+      <div class="ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#C28840" stroke-width="2"><path d="M12 2L4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div>
+        <b>长者专属号源</b>
+        <p>每天 20% 号源专为 60+ 保留，不与年轻人抢号</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <div class="footer">
+    <div class="slogan">陪爸妈看病 · 一站到家</div>
+    <div class="meta">
+      <span>© 2026 银发通 / YINFA-TONG</span>
+      <em>Designed for 60+ · Powered by ❤️</em>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
+`,
+    "frame-doctor": `<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>银发通 · 专家详情</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800;900&family=Noto+Serif+SC:wght@500;700;900&family=Ma+Shan+Zheng&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@1,144,600;1,144,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c-primary:#B8451F; --c-primary-dark:#8E3215;
+    --c-accent:#1F4D3A;  --c-accent-2:#2F6B53;
+    --c-gold:#C28840;    --c-gold-2:#E0A55A;
+    --c-bg:#F5EBD8;      --c-paper:#FFFCF5;  --c-paper-2:#FAF1E0;
+    --c-ink-900:#1A1814; --c-ink-700:#3D372F; --c-ink-500:#6B6358; --c-ink-300:#A89E8E;
+    --c-line:#E5D7BC;    --c-line-2:#D4C29E;
+    --r-md:14px; --r-lg:22px; --r-xl:32px; --r-pill:999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--c-bg);color:var(--c-ink-900);font-family:"Noto Sans SC",system-ui,sans-serif;font-weight:500}
+  body{background-image:radial-gradient(1200px 600px at 80% -10%,#EBD5B0 0%,transparent 60%),radial-gradient(800px 500px at -10% 100%,#E8D7B5 0%,transparent 50%)}
+  .wrap{max-width:1380px;margin:0 auto;padding:48px 36px 80px}
+
+  .crumb{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--c-ink-500);margin-bottom:18px}
+  .crumb a{color:var(--c-ink-500);text-decoration:none}
+  .crumb a:hover{color:var(--c-primary)}
+  .crumb .sep{color:var(--c-ink-300)}
+  .crumb .now{color:var(--c-primary);font-weight:700}
+
+  /* 主区 */
+  .hero{display:grid;grid-template-columns:1fr 1.4fr;gap:32px;margin-bottom:32px}
+  .hero-card{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:30px;position:relative;overflow:hidden}
+  .hero-card.large{background:linear-gradient(135deg,#1F4D3A,#2F6B53);color:#FFF7E8}
+  .photo{width:100%;aspect-ratio:1/1;border-radius:var(--r-lg);background-size:cover;background-position:center;position:relative;margin-bottom:18px;border:4px solid #FFF;box-shadow:0 12px 32px -12px rgba(0,0,0,.25)}
+  .photo .badge{position:absolute;left:14px;top:14px;padding:6px 14px;background:var(--c-primary);color:#FFF7E8;border-radius:var(--r-pill);font-size:13px;font-weight:700;font-family:"Noto Serif SC",serif;display:flex;align-items:center;gap:6px}
+  .photo .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#FFF7E8;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .photo .qr{position:absolute;right:14px;bottom:14px;width:64px;height:64px;background:#FFF;border-radius:8px;padding:6px}
+  .photo .qr svg{width:100%;height:100%}
+  .doc-name{font-family:"Noto Serif SC",serif;font-weight:900;font-size:42px;line-height:1.1;margin-bottom:6px}
+  .doc-name em{font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:32px;color:var(--c-gold-2);margin-left:8px}
+  .doc-title{font-size:18px;opacity:.85;margin-bottom:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .doc-title span{padding:4px 12px;border:1px solid rgba(255,247,232,.3);border-radius:var(--r-pill);font-size:13px;font-weight:700}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:rgba(255,247,232,.08);border-radius:var(--r-md);margin:18px 0;overflow:hidden}
+  .stats div{text-align:center;padding:14px 8px;border-right:1px solid rgba(255,247,232,.15)}
+  .stats div:last-child{border-right:0}
+  .stats b{font-family:"Bebas Neue";font-size:30px;color:var(--c-gold-2);letter-spacing:1px;display:block;line-height:1}
+  .stats span{font-size:12px;opacity:.7;margin-top:4px;display:block}
+  .hospital{display:flex;gap:12px;align-items:center;padding:14px 16px;background:rgba(255,247,232,.08);border-radius:var(--r-md);font-size:14px;opacity:.95}
+  .hospital svg{width:22px;height:22px;flex-shrink:0}
+
+  /* 右侧 */
+  .doc-side .tagline{font-family:"Ma Shan Zheng",cursive;font-size:32px;color:var(--c-primary);letter-spacing:4px;margin-bottom:6px;transform:rotate(-2deg);display:inline-block}
+  .doc-side h1{font-family:"Noto Serif SC",serif;font-weight:900;font-size:46px;line-height:1.1;color:var(--c-ink-900);letter-spacing:-1px;margin-bottom:14px}
+  .doc-side h1 em{font-family:"Fraunces",serif;font-style:italic;font-weight:600;color:var(--c-primary)}
+  .quick-info{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+  .qi{padding:8px 14px;background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-pill);font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
+  .qi svg{width:16px;height:16px}
+  .qi.hot{background:#FBE8D6;border-color:#F2C499;color:var(--c-primary-dark)}
+
+  .section{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:28px;margin-bottom:24px}
+  .section h3{font-family:"Noto Serif SC",serif;font-weight:900;font-size:26px;color:var(--c-ink-900);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+  .section h3 .en{font-family:"DM Serif Display",serif;font-style:italic;font-size:15px;color:var(--c-primary);font-weight:400}
+  .section h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--c-line-2),transparent)}
+
+  .specialty{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .sp{background:var(--c-paper-2);border-radius:var(--r-md);padding:18px;border-left:4px solid var(--c-gold)}
+  .sp h4{font-family:"Noto Serif SC",serif;font-weight:900;font-size:18px;color:var(--c-ink-900);margin-bottom:6px}
+  .sp p{font-size:13px;color:var(--c-ink-500);line-height:1.6}
+  .sp b{color:var(--c-primary);font-weight:900}
+
+  .timeline{position:relative;padding-left:0}
+  .tl-item{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:14px 0;border-top:1px dashed var(--c-line)}
+  .tl-item:first-child{border-top:0}
+  .tl-year{font-family:"Bebas Neue";font-size:24px;color:var(--c-primary);letter-spacing:1px}
+  .tl-year small{display:block;font-family:"Noto Sans SC";font-size:12px;color:var(--c-ink-500);letter-spacing:0;font-weight:700;margin-top:2px}
+  .tl-content b{font-family:"Noto Serif SC",serif;font-weight:900;font-size:17px;color:var(--c-ink-900);display:block;margin-bottom:4px}
+  .tl-content p{font-size:14px;color:var(--c-ink-700);line-height:1.6}
+
+  .review{display:flex;flex-direction:column;gap:14px}
+  .rv{background:var(--c-paper-2);border-radius:var(--r-md);padding:18px 20px;position:relative}
+  .rv::before{content:"\\201C";position:absolute;left:14px;top:8px;font-family:"Fraunces",serif;font-size:50px;color:var(--c-gold);line-height:1;opacity:.5}
+  .rv-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;padding-left:30px}
+  .rv-av{width:36px;height:36px;border-radius:50%;background-size:cover;background-position:center;border:2px solid #FFF;box-shadow:0 2px 6px -2px rgba(0,0,0,.15)}
+  .rv-head b{font-family:"Noto Serif SC",serif;font-weight:900;font-size:15px;color:var(--c-ink-900)}
+  .rv-head .meta{font-size:12px;color:var(--c-ink-500);margin-left:auto}
+  .rv-head .stars{color:var(--c-gold);font-size:14px;letter-spacing:1px}
+  .rv p{font-size:14px;color:var(--c-ink-700);line-height:1.7;padding-left:30px}
+
+  /* 时段卡 */
+  .sched{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-top:8px}
+  .day{background:var(--c-paper-2);border:2px solid transparent;border-radius:var(--r-md);padding:14px 8px;text-align:center;cursor:pointer;transition:all .2s}
+  .day:hover{border-color:var(--c-gold-2)}
+  .day.sel{background:#FFF;border-color:var(--c-primary)}
+  .day .d{font-family:"Bebas Neue";font-size:22px;color:var(--c-ink-900);letter-spacing:1px}
+  .day .w{font-size:12px;color:var(--c-ink-500);margin:2px 0 6px}
+  .day .n{font-size:12px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block}
+  .day .n.ok{background:#E8F1ED;color:var(--c-accent)}
+  .day .n.few{background:#FBE8D6;color:var(--c-primary)}
+  .day .n.full{background:#EFE7D7;color:var(--c-ink-500)}
+  .day.full{opacity:.5;cursor:not-allowed}
+
+  /* 底部 CTA */
+  .cta-bar{position:sticky;bottom:0;background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-lg);padding:16px 22px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;margin-top:18px;box-shadow:0 -8px 24px -12px rgba(0,0,0,.1)}
+  .cta-bar .price{font-family:"Bebas Neue";font-size:46px;color:var(--c-primary);letter-spacing:1px;line-height:1}
+  .cta-bar .price small{font-size:16px;color:var(--c-ink-500);margin-right:6px;font-family:"Noto Sans SC"}
+  .cta-bar .price .label{display:block;font-family:"Noto Sans SC";font-size:13px;color:var(--c-ink-500);letter-spacing:0;font-weight:700;margin-top:2px}
+  .cta-bar .actions{display:flex;gap:10px;align-items:center}
+  .cta-bar .actions button{padding:18px 28px;border:0;border-radius:var(--r-md);font-family:"Noto Serif SC",serif;font-weight:900;font-size:17px;cursor:pointer;letter-spacing:1px}
+  .cta-bar .actions .pri{background:var(--c-primary);color:#FFF7E8}
+  .cta-bar .actions .pri:hover{background:var(--c-primary-dark)}
+  .cta-bar .actions .sec{background:var(--c-paper-2);color:var(--c-ink-700);border:1px solid var(--c-line-2)}
+
+  .footer{margin-top:42px;padding-top:22px;border-top:1px dashed var(--c-line-2);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--c-ink-500)}
+  .footer .slogan{font-family:"Ma Shan Zheng",cursive;font-size:22px;color:var(--c-primary);letter-spacing:3px}
+  .footer em{font-family:"DM Serif Display",serif;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="crumb">
+    <a href="#">首页</a><span class="sep">›</span>
+    <a href="#">心血管内科</a><span class="sep">›</span>
+    <span class="now">王建华 主任医师</span>
+  </div>
+
+  <!-- 主区 -->
+  <div class="hero">
+    <div class="hero-card large">
+      <div class="photo" style="background-image:url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&h=600&fit=crop&crop=faces')">
+        <div class="badge">本周出诊</div>
+        <div class="qr">
+          <svg viewBox="0 0 24 24" fill="var(--c-ink-900)"><rect x="0" y="0" width="8" height="8"/><rect x="2" y="2" width="4" height="4" fill="#FFF"/><rect x="3" y="3" width="2" height="2"/><rect x="16" y="0" width="8" height="8"/><rect x="18" y="2" width="4" height="4" fill="#FFF"/><rect x="19" y="3" width="2" height="2"/><rect x="0" y="16" width="8" height="8"/><rect x="2" y="18" width="4" height="4" fill="#FFF"/><rect x="3" y="19" width="2" height="2"/><rect x="10" y="2" width="2" height="2"/><rect x="14" y="2" width="2" height="2"/><rect x="10" y="6" width="2" height="2"/><rect x="14" y="6" width="2" height="2"/><rect x="8" y="10" width="2" height="2"/><rect x="10" y="10" width="2" height="2"/><rect x="14" y="10" width="2" height="2"/><rect x="16" y="10" width="2" height="2"/><rect x="20" y="10" width="2" height="2"/><rect x="10" y="14" width="2" height="2"/><rect x="14" y="14" width="2" height="2"/><rect x="20" y="14" width="2" height="2"/><rect x="8" y="18" width="2" height="2"/><rect x="12" y="18" width="2" height="2"/><rect x="18" y="18" width="2" height="2"/><rect x="20" y="18" width="2" height="2"/><rect x="16" y="20" width="2" height="2"/></svg>
+        </div>
+      </div>
+      <div class="doc-name">王建华<em>· Dr. Wang</em></div>
+      <div class="doc-title"><span>主任医师</span><span>教授</span><span>博士导师</span></div>
+      <div class="stats">
+        <div><b>32</b><span>从医年限</span></div>
+        <div><b>4.9</b><span>患者评分</span></div>
+        <div><b>2.3W</b><span>接诊人次</span></div>
+      </div>
+      <div class="hospital">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg>
+        <div><b style="font-family:'Noto Serif SC',serif">北京协和医院（东院）</b><br><span style="opacity:.7;font-size:12px">心血管内科 · 特需门诊 8 号楼 5 层</span></div>
+      </div>
+    </div>
+
+    <div class="doc-side">
+      <span class="tagline">名医</span>
+      <h1>心血管内科<em>领军</em>人物<br>从医三十二载</h1>
+
+      <div class="quick-info">
+        <span class="qi hot"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>4.9 综合评分</span>
+        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>平均接诊 15 分钟</span>
+        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>擅长 中老年心血管</span>
+        <span class="qi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2"/></svg>国务院特殊津贴</span>
+      </div>
+
+      <div class="section" style="margin-bottom:0">
+        <h3>擅长领域 <span class="en">— Specialties</span></h3>
+        <div class="specialty">
+          <div class="sp"><h4>冠心病介入治疗</h4><p>完成 <b>5000+</b> 例冠脉支架植入术，成功率 99.2%</p></div>
+          <div class="sp"><h4>高血压慢病管理</h4><p>个性化用药方案，<b>20+ 年</b> 随访研究经验</p></div>
+          <div class="sp"><h4>心律失常诊治</h4><p>擅长房颤、室上速等复杂心律失常射频消融</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 一周排班 -->
+  <div class="section">
+    <h3>近 7 天排班 <span class="en">— Schedule</span></h3>
+    <div class="sched">
+      <div class="day"><div class="d">06.22</div><div class="w">今天</div><span class="n full">已满</span></div>
+      <div class="day"><div class="d">06.23</div><div class="w">周二</div><span class="n full">已满</span></div>
+      <div class="day"><div class="d">06.24</div><div class="w">周三</div><span class="n few">余 2</span></div>
+      <div class="day sel"><div class="d">06.25</div><div class="w">周四</div><span class="n few">余 1</span></div>
+      <div class="day"><div class="d">06.26</div><div class="w">周五</div><span class="n ok">余 5</span></div>
+      <div class="day"><div class="d">06.27</div><div class="w">周六</div><span class="n ok">余 8</span></div>
+      <div class="day full"><div class="d">06.28</div><div class="w">周日</div><span class="n full">休</span></div>
+    </div>
+  </div>
+
+  <!-- 从医经历 -->
+  <div class="section">
+    <h3>从医经历 <span class="en">— Career</span></h3>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">2020<small>至今</small></div>
+        <div class="tl-content"><b>北京协和医院 · 主任医师</b><p>心血管内科主任，主持国家自然科学基金课题 3 项</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2012<small>-2020</small></div>
+        <div class="tl-content"><b>阜外医院 · 副主任医师</b><p>冠心病介入治疗中心主刀医师，年完成介入手术 600+ 例</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1994<small>-2012</small></div>
+        <div class="tl-content"><b>北京大学医学部 · 教学任职</b><p>博士导师，培养心血管内科研究生 40 余人，发表 SCI 论文 80 余篇</p></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1987<small>-1994</small></div>
+        <div class="tl-content"><b>协和医科大学 · 临床医学博士</b><p>师从我国著名心血管病学家，享受国务院政府特殊津贴</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 患者评价 -->
+  <div class="section">
+    <h3>患者评价 <span class="en">— Reviews</span><span style="margin-left:auto;font-family:'Bebas Neue';font-size:24px;color:var(--c-primary)">4.9 / 5.0</span></h3>
+    <div class="review">
+      <div class="rv">
+        <div class="rv-head">
+          <div class="rv-av" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=faces')"></div>
+          <b>李 * 珍</b><span class="stars">★★★★★</span><span class="meta">2026.06.18 · 高血压复诊</span>
+        </div>
+        <p>王主任特别耐心，给我妈看了 20 多分钟，解释得很清楚。老人出来心情都好了，不像之前看的医生三言两语就打发了。药方也调得准，血压稳定多了。</p>
+      </div>
+      <div class="rv">
+        <div class="rv-head">
+          <div class="rv-av" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces')"></div>
+          <b>张 * 国</b><span class="stars">★★★★★</span><span class="meta">2026.06.12 · 冠心病介入</span>
+        </div>
+        <p>异地来北京看病的，儿女都不在身边。主任亲自给加的号，术后每天查房，连护士都说少见这么负责的医生。一年了恢复很好，每个月寄感谢信。</p>
+      </div>
+      <div class="rv">
+        <div class="rv-head">
+          <div class="rv-av" style="background-image:url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=faces')"></div>
+          <b>陈 * 芳</b><span class="stars">★★★★★</span><span class="meta">2026.06.05 · 房颤消融</span>
+        </div>
+        <p>给 78 岁的老爷子做的房颤消融。术前主任把每一步风险都画图讲明白了，老人不紧张。术后第二天就能下床，第三天出院。技术真的过硬。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部 CTA -->
+  <div class="cta-bar">
+    <div class="price">
+      <small>挂号费</small>¥50<small>.00</small>
+      <div class="label">医保可报销 ¥40 · 自费 ¥10</div>
+    </div>
+    <div class="actions">
+      <button class="sec">♡ 收藏</button>
+      <button class="sec">⌨ 咨询</button>
+      <button class="pri">立即挂号 06.25 周四 09:00</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="slogan">好医生 · 一号难求</div>
+    <div><span>© 2026 银发通</span> <em>Doctor Profile · 详情页 v1.0</em></div>
+  </div>
+</div>
+</body>
+</html>
+`,
+    "frame-accompany": `<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>银发通 · 公益陪诊预约</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800;900&family=Noto+Serif+SC:wght@500;700;900&family=Ma+Shan+Zheng&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@1,144,600;1,144,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c-primary:#B8451F; --c-primary-dark:#8E3215;
+    --c-accent:#1F4D3A;  --c-accent-2:#2F6B53;
+    --c-gold:#C28840;    --c-gold-2:#E0A55A;
+    --c-bg:#F5EBD8;      --c-paper:#FFFCF5;  --c-paper-2:#FAF1E0;
+    --c-ink-900:#1A1814; --c-ink-700:#3D372F; --c-ink-500:#6B6358; --c-ink-300:#A89E8E;
+    --c-line:#E5D7BC;    --c-line-2:#D4C29E;
+    --r-md:14px; --r-lg:22px; --r-xl:32px; --r-pill:999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--c-bg);color:var(--c-ink-900);font-family:"Noto Sans SC",system-ui,sans-serif;font-weight:500}
+  body{background-image:radial-gradient(1200px 600px at 80% -10%,#EBD5B0 0%,transparent 60%),radial-gradient(800px 500px at -10% 100%,#E8D7B5 0%,transparent 50%)}
+  .wrap{max-width:1380px;margin:0 auto;padding:48px 36px 80px}
+
+  /* Banner */
+  .banner{background:linear-gradient(135deg,#1F4D3A 0%,#2F6B53 100%);border-radius:var(--r-xl);padding:42px 48px;display:grid;grid-template-columns:1.6fr 1fr;gap:32px;align-items:center;color:#FFF7E8;position:relative;overflow:hidden;margin-bottom:32px}
+  .banner::before{content:"";position:absolute;right:-60px;top:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(194,136,64,.3),transparent 70%)}
+  .banner::after{content:"";position:absolute;left:-30px;bottom:-40px;width:200px;height:200px;border:1px dashed rgba(255,247,232,.2);border-radius:50%}
+  .bn-tag{display:inline-block;padding:4px 12px;background:rgba(255,247,232,.15);border:1px solid rgba(255,247,232,.3);border-radius:var(--r-pill);font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:12px}
+  .bn-tag::before{content:"● ";color:var(--c-gold-2);margin-right:4px}
+  .bn-title{font-family:"Noto Serif SC",serif;font-weight:900;font-size:48px;line-height:1.15;margin-bottom:14px;letter-spacing:-1px}
+  .bn-title em{font-family:"Fraunces",serif;font-style:italic;font-weight:600;color:var(--c-gold-2)}
+  .bn-sub{font-size:16px;opacity:.85;line-height:1.6;max-width:540px}
+  .bn-sub b{color:var(--c-gold-2);font-weight:900}
+  .bn-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+  .bn-s{background:rgba(255,247,232,.1);border:1px solid rgba(255,247,232,.2);border-radius:var(--r-md);padding:14px;text-align:center}
+  .bn-s b{font-family:"Bebas Neue";font-size:36px;color:var(--c-gold-2);letter-spacing:1px;display:block;line-height:1}
+  .bn-s span{font-size:12px;opacity:.75;margin-top:4px;display:block}
+  .bn-seal{width:160px;height:160px;background:var(--c-primary);color:#FFF7E8;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;transform:rotate(-8deg);font-family:"Ma Shan Zheng",cursive;font-size:24px;line-height:1.3;position:relative;z-index:1;margin-left:auto;box-shadow:0 16px 40px -12px rgba(184,69,31,.6);border:4px solid #FFF7E8}
+  .bn-seal small{display:block;font-size:11px;opacity:.7;margin-top:6px;font-family:"Noto Sans SC",sans-serif;letter-spacing:2px}
+
+  /* 工具条 */
+  .toolbar{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-lg);padding:18px 22px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin-bottom:24px}
+  .filter{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{padding:8px 16px;background:var(--c-paper-2);border:1px solid var(--c-line);border-radius:var(--r-pill);font-size:14px;font-weight:700;cursor:pointer;color:var(--c-ink-700)}
+  .chip.sel{background:var(--c-primary);color:#FFF7E8;border-color:var(--c-primary)}
+  .chip:hover:not(.sel){border-color:var(--c-gold-2);color:var(--c-primary)}
+  .search{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--c-paper-2);border:1px solid var(--c-line);border-radius:var(--r-pill);min-width:280px}
+  .search input{flex:1;background:transparent;border:0;outline:0;font-size:14px;color:var(--c-ink-900)}
+  .search input::placeholder{color:var(--c-ink-500)}
+  .toolbar-right{font-size:13px;color:var(--c-ink-500)}
+  .toolbar-right b{color:var(--c-primary);font-family:"Bebas Neue";font-size:18px;letter-spacing:1px}
+
+  /* 陪诊员卡片 */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .escort{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:24px;display:grid;grid-template-columns:120px 1fr;gap:20px;position:relative;overflow:hidden;transition:all .2s}
+  .escort:hover{border-color:var(--c-gold-2);transform:translateY(-2px);box-shadow:0 18px 40px -20px rgba(0,0,0,.15)}
+  .escort.featured{background:linear-gradient(135deg,#FFFCF5,#FAF1E0);border-color:var(--c-gold)}
+  .escort.featured::before{content:"金牌陪诊员";position:absolute;right:-30px;top:14px;background:var(--c-primary);color:#FFF7E8;padding:5px 36px;font-size:11px;font-weight:700;transform:rotate(35deg);letter-spacing:1px}
+  .esc-av{width:120px;height:140px;border-radius:var(--r-md);background-size:cover;background-position:center;border:3px solid #FFF;box-shadow:0 6px 14px -4px rgba(0,0,0,.18);position:relative}
+  .esc-av .flag{position:absolute;left:-6px;bottom:-6px;width:34px;height:34px;background:var(--c-primary);color:#FFF7E8;border-radius:50%;border:3px solid #FFF;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900}
+  .esc-info h4{font-family:"Noto Serif SC",serif;font-weight:900;font-size:24px;color:var(--c-ink-900);margin-bottom:2px;display:flex;align-items:center;gap:8px}
+  .esc-info h4 em{font-family:"Fraunces",serif;font-style:italic;font-size:18px;color:var(--c-primary);font-weight:500}
+  .esc-info .role{font-size:13px;color:var(--c-ink-500);margin-bottom:10px;display:flex;gap:6px;align-items:center}
+  .esc-info .role .age{padding:2px 8px;background:var(--c-paper-2);border-radius:4px;font-weight:700;color:var(--c-ink-700)}
+  .esc-info .stats{display:flex;gap:14px;padding:8px 0;border-top:1px dashed var(--c-line);border-bottom:1px dashed var(--c-line);margin:8px 0}
+  .esc-info .stats div{text-align:center;flex:1}
+  .esc-info .stats b{font-family:"Bebas Neue";font-size:22px;color:var(--c-primary);letter-spacing:1px;display:block;line-height:1}
+  .esc-info .stats span{font-size:11px;color:var(--c-ink-500)}
+  .esc-info .tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+  .esc-info .tags span{padding:3px 9px;background:#FBE8D6;color:var(--c-primary-dark);border-radius:4px;font-size:11px;font-weight:700}
+  .esc-info .tags .g{background:#E8F1ED;color:var(--c-accent)}
+  .esc-info .quote{font-family:"Noto Serif SC",serif;font-size:13px;color:var(--c-ink-700);line-height:1.6;font-style:italic;background:var(--c-paper-2);padding:8px 12px;border-radius:6px;border-left:3px solid var(--c-gold);margin-top:4px}
+
+  .esc-action{display:flex;flex-direction:column;gap:8px;align-items:flex-end;justify-content:space-between}
+  .esc-price{text-align:right}
+  .esc-price b{font-family:"Bebas Neue";font-size:32px;color:var(--c-primary);letter-spacing:1px;line-height:1}
+  .esc-price b small{font-size:14px;color:var(--c-ink-500);margin-right:2px}
+  .esc-price .strike{font-size:13px;color:var(--c-ink-300);text-decoration:line-through;margin-top:2px}
+  .esc-price .label{font-size:11px;color:var(--c-accent);background:#E8F1ED;padding:2px 8px;border-radius:4px;display:inline-block;margin-top:4px;font-weight:700}
+  .esc-btn{padding:10px 20px;background:var(--c-primary);color:#FFF7E8;border:0;border-radius:var(--r-md);font-family:"Noto Serif SC",serif;font-weight:900;font-size:14px;cursor:pointer;letter-spacing:1px}
+  .esc-btn:hover{background:var(--c-primary-dark)}
+  .esc-btn.outline{background:transparent;color:var(--c-ink-700);border:1px solid var(--c-line-2);font-size:13px;padding:8px 16px}
+
+  /* 流程说明 */
+  .how{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:32px 0;background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:30px}
+  .how h2{grid-column:1/-1;font-family:"Noto Serif SC",serif;font-weight:900;font-size:28px;color:var(--c-ink-900);display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .how h2 .en{font-family:"DM Serif Display",serif;font-style:italic;font-size:16px;color:var(--c-primary);font-weight:400}
+  .step-card{text-align:center;padding:18px;position:relative}
+  .step-card::after{content:"›";position:absolute;right:-7px;top:30px;font-size:30px;color:var(--c-line-2);font-weight:900}
+  .step-card:last-child::after{display:none}
+  .step-num{width:60px;height:60px;background:var(--c-primary);color:#FFF7E8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue";font-size:32px;letter-spacing:1px;margin:0 auto 12px;box-shadow:0 8px 18px -8px rgba(184,69,31,.5)}
+  .step-card h5{font-family:"Noto Serif SC",serif;font-weight:900;font-size:17px;color:var(--c-ink-900);margin-bottom:6px}
+  .step-card p{font-size:13px;color:var(--c-ink-500);line-height:1.5}
+
+  .footer{margin-top:42px;padding-top:22px;border-top:1px dashed var(--c-line-2);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--c-ink-500)}
+  .footer .slogan{font-family:"Ma Shan Zheng",cursive;font-size:22px;color:var(--c-primary);letter-spacing:3px}
+  .footer em{font-family:"DM Serif Display",serif;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Banner -->
+  <div class="banner">
+    <div>
+      <span class="bn-tag">公益陪诊 · 政府补贴项目</span>
+      <h1 class="bn-title">爸妈一个人去看病<br><em>有我们陪着</em></h1>
+      <p class="bn-sub">专业陪诊员 <b>1 对 1 全程陪同</b>，从挂号、问诊、检查到取药送回家。子女在外地也能放心，爸妈看病不再孤零零。</p>
+      <div class="bn-stats">
+        <div class="bn-s"><b>3.2W</b><span>累计服务长者</span></div>
+        <div class="bn-s"><b>4.95</b><span>家属好评率</span></div>
+        <div class="bn-s"><b>0</b><span>重大事故</span></div>
+      </div>
+    </div>
+    <div class="bn-seal">银发通<br>陪诊员<small>OFFICIAL</small></div>
+  </div>
+
+  <!-- 工具条 -->
+  <div class="toolbar">
+    <div class="filter">
+      <span class="chip sel">全部 36 位</span>
+      <span class="chip">三甲医院专长</span>
+      <span class="chip">会沪语 / 粤语</span>
+      <span class="chip">陪诊 5 年+</span>
+      <span class="chip">会手语</span>
+      <span class="chip">女性陪诊员</span>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input placeholder="按医院 / 科室 / 姓名搜索">
+    </div>
+    <div class="toolbar-right">本周可预约 <b>26</b> 位</div>
+  </div>
+
+  <!-- 陪诊员 -->
+  <div class="grid">
+
+    <div class="escort featured">
+      <div class="esc-av" style="background-image:url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300&h=350&fit=crop&crop=faces')">
+        <div class="flag">♥</div>
+      </div>
+      <div class="esc-info">
+        <h4>林秀梅 <em>· 5 年金牌</em></h4>
+        <div class="role">陪诊师 <span class="age">38 岁</span> · 国家中级陪诊师证</div>
+        <div class="stats">
+          <div><b>1280</b><span>服务次数</span></div>
+          <div><b>4.98</b><span>家属评分</span></div>
+          <div><b>0</b><span>投诉</span></div>
+        </div>
+        <div class="tags">
+          <span>心血管专家</span><span>三甲 8 年导医经验</span><span class="g">会沪语</span>
+        </div>
+        <div class="quote">"老人看病最需要的是耐心。我会让叔叔阿姨把每个字都听明白，再和医生确认。"</div>
+      </div>
+      <div class="esc-action">
+        <div class="esc-price">
+          <b><small>¥</small>168</b>
+          <div class="strike">¥298</div>
+          <div class="label">公益补贴 56%</div>
+        </div>
+        <button class="esc-btn">立即预约</button>
+        <button class="esc-btn outline">查看档期</button>
+      </div>
+    </div>
+
+    <div class="escort">
+      <div class="esc-av" style="background-image:url('https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=300&h=350&fit=crop&crop=faces')">
+        <div class="flag">♥</div>
+      </div>
+      <div class="esc-info">
+        <h4>陈志强 <em>· 4 年资深</em></h4>
+        <div class="role">陪诊师 <span class="age">45 岁</span> · 退休护士长</div>
+        <div class="stats">
+          <div><b>860</b><span>服务次数</span></div>
+          <div><b>4.95</b><span>家属评分</span></div>
+          <div><b>0</b><span>投诉</span></div>
+        </div>
+        <div class="tags">
+          <span>肿瘤科陪诊</span><span>护理学背景</span><span class="g">会粤语</span>
+        </div>
+        <div class="quote">"以前在三甲医院做护士长 22 年，转行陪诊就是想继续陪老人看病。"</div>
+      </div>
+      <div class="esc-action">
+        <div class="esc-price">
+          <b><small>¥</small>198</b>
+          <div class="label">公益补贴 50%</div>
+        </div>
+        <button class="esc-btn">立即预约</button>
+        <button class="esc-btn outline">查看档期</button>
+      </div>
+    </div>
+
+    <div class="escort">
+      <div class="esc-av" style="background-image:url('https://images.unsplash.com/photo-1554151228-14d9def656e4?w=300&h=350&fit=crop&crop=faces')">
+        <div class="flag">♥</div>
+      </div>
+      <div class="esc-info">
+        <h4>赵丽华 <em>· 3 年骨干</em></h4>
+        <div class="role">陪诊师 <span class="age">32 岁</span> · 持证社工师</div>
+        <div class="stats">
+          <div><b>540</b><span>服务次数</span></div>
+          <div><b>4.92</b><span>家属评分</span></div>
+          <div><b>0</b><span>投诉</span></div>
+        </div>
+        <div class="tags">
+          <span>骨科 / 康复</span><span>心理咨询师</span><span class="g">耐心细致</span>
+        </div>
+        <div class="quote">"第一次陪诊的王阿姨结束后拉着我的手哭，'比我女儿还亲'。这份工作值得。"</div>
+      </div>
+      <div class="esc-action">
+        <div class="esc-price">
+          <b><small>¥</small>158</b>
+          <div class="label">公益补贴 60%</div>
+        </div>
+        <button class="esc-btn">立即预约</button>
+        <button class="esc-btn outline">查看档期</button>
+      </div>
+    </div>
+
+    <div class="escort">
+      <div class="esc-av" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=350&fit=crop&crop=faces')">
+        <div class="flag">♥</div>
+      </div>
+      <div class="esc-info">
+        <h4>周建华 <em>· 6 年元老</em></h4>
+        <div class="role">陪诊师 <span class="age">52 岁</span> · 主任医师转陪诊</div>
+        <div class="stats">
+          <div><b>1860</b><span>服务次数</span></div>
+          <div><b>4.99</b><span>家属评分</span></div>
+          <div><b>0</b><span>投诉</span></div>
+        </div>
+        <div class="tags">
+          <span>复杂病例</span><span>多科会诊协调</span><span class="g">会英语</span>
+        </div>
+        <div class="quote">"我原来是医生，退休后发现老人最缺的不是医术，是有人帮他跟医生说话。"</div>
+      </div>
+      <div class="esc-action">
+        <div class="esc-price">
+          <b><small>¥</small>268</b>
+          <div class="label">公益补贴 40%</div>
+        </div>
+        <button class="esc-btn">立即预约</button>
+        <button class="esc-btn outline">查看档期</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 流程 -->
+  <div class="how">
+    <h2>陪诊流程 <span class="en">— How It Works</span></h2>
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h5>在线下单</h5>
+      <p>选择陪诊员和就诊时段，支持子女远程代约</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h5>上门接送</h5>
+      <p>陪诊员提前 30 分钟到家，陪同前往医院</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h5>全程陪同</h5>
+      <p>挂号 / 候诊 / 问诊 / 检查 / 取药 一站搞定</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <h5>送回 + 汇报</h5>
+      <p>送老人安全回家，子女微信收到完整就诊小结</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="slogan">陪伴是最长情的告白</div>
+    <div><span>© 2026 银发通</span> <em>Accompany Service · 陪诊 v1.0</em></div>
+  </div>
+</div>
+</body>
+</html>
+`,
+    "frame-family": `<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>银发通 · 子女端 · 亲情账号</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800;900&family=Noto+Serif+SC:wght@500;700;900&family=Ma+Shan+Zheng&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@1,144,600;1,144,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c-primary:#B8451F; --c-primary-dark:#8E3215;
+    --c-accent:#1F4D3A;  --c-accent-2:#2F6B53;
+    --c-gold:#C28840;    --c-gold-2:#E0A55A;
+    --c-bg:#F5EBD8;      --c-paper:#FFFCF5;  --c-paper-2:#FAF1E0;
+    --c-ink-900:#1A1814; --c-ink-700:#3D372F; --c-ink-500:#6B6358; --c-ink-300:#A89E8E;
+    --c-line:#E5D7BC;    --c-line-2:#D4C29E;
+    --c-blue:#2C5F7C;
+    --r-md:14px; --r-lg:22px; --r-xl:32px; --r-pill:999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--c-bg);color:var(--c-ink-900);font-family:"Noto Sans SC",system-ui,sans-serif;font-weight:500}
+  body{background-image:radial-gradient(1200px 600px at 80% -10%,#EBD5B0 0%,transparent 60%),radial-gradient(800px 500px at -10% 100%,#E8D7B5 0%,transparent 50%);min-height:100vh}
+  .wrap{max-width:1380px;margin:0 auto;padding:48px 36px 80px}
+
+  /* Top switcher */
+  .switcher{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:14px;border-bottom:1px dashed var(--c-line-2)}
+  .switcher .left{display:flex;gap:14px;align-items:center}
+  .me{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--c-primary),var(--c-gold));color:#FFF7E8;display:flex;align-items:center;justify-content:center;font-family:"Noto Serif SC",serif;font-weight:900;font-size:20px;border:3px solid #FFF;box-shadow:0 4px 12px -4px rgba(0,0,0,.15)}
+  .me b{font-family:"Noto Serif SC",serif;font-weight:900;font-size:17px;color:var(--c-ink-900);display:block}
+  .me span{font-size:12px;color:var(--c-ink-500)}
+  .tabs{display:flex;gap:6px;background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-pill);padding:5px}
+  .tab{padding:8px 18px;border-radius:var(--r-pill);font-size:14px;font-weight:700;cursor:pointer;color:var(--c-ink-500)}
+  .tab.sel{background:var(--c-primary);color:#FFF7E8}
+  .tab:hover:not(.sel){color:var(--c-primary)}
+  .bell{position:relative;width:42px;height:42px;background:var(--c-paper);border:1px solid var(--c-line);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .bell::after{content:"";position:absolute;right:8px;top:8px;width:8px;height:8px;background:var(--c-primary);border-radius:50%;border:2px solid var(--c-paper)}
+
+  /* Hero greeting */
+  .greet{background:linear-gradient(135deg,#1F4D3A,#2F6B53);border-radius:var(--r-xl);padding:36px 40px;color:#FFF7E8;display:grid;grid-template-columns:1.5fr 1fr;gap:32px;align-items:center;position:relative;overflow:hidden;margin-bottom:24px}
+  .greet::before{content:"";position:absolute;right:-40px;top:-40px;width:240px;height:240px;background:radial-gradient(circle,rgba(194,136,64,.25),transparent 70%)}
+  .greet .date{font-family:"DM Serif Display",serif;font-style:italic;font-size:16px;opacity:.7;letter-spacing:1px;margin-bottom:10px}
+  .greet h1{font-family:"Noto Serif SC",serif;font-weight:900;font-size:42px;line-height:1.15;letter-spacing:-1px;margin-bottom:12px}
+  .greet h1 em{font-family:"Fraunces",serif;font-style:italic;font-weight:600;color:var(--c-gold-2)}
+  .greet p{font-size:15px;opacity:.85;line-height:1.6;max-width:520px}
+  .greet p b{color:var(--c-gold-2);font-weight:900}
+  .greet-card{background:rgba(255,247,232,.1);border:1px solid rgba(255,247,232,.2);border-radius:var(--r-lg);padding:20px;backdrop-filter:blur(10px);position:relative;z-index:1}
+  .greet-card h5{font-family:"Noto Serif SC",serif;font-weight:900;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .greet-card h5::before{content:"";width:18px;height:2px;background:var(--c-gold-2)}
+  .greet-card .row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-top:1px dashed rgba(255,247,232,.15);font-size:14px}
+  .greet-card .row:first-of-type{border-top:0}
+  .greet-card .row b{font-family:"Bebas Neue";font-size:22px;color:var(--c-gold-2);letter-spacing:1px}
+
+  /* 亲情成员 */
+  .section{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:28px;margin-bottom:22px}
+  .section h3{font-family:"Noto Serif SC",serif;font-weight:900;font-size:26px;color:var(--c-ink-900);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+  .section h3 .en{font-family:"DM Serif Display",serif;font-style:italic;font-size:15px;color:var(--c-primary);font-weight:400}
+  .section h3::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--c-line-2),transparent)}
+
+  .members{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .mem{background:var(--c-paper-2);border:2px solid transparent;border-radius:var(--r-lg);padding:18px;text-align:center;cursor:pointer;position:relative;transition:all .2s}
+  .mem:hover{border-color:var(--c-gold-2);transform:translateY(-2px)}
+  .mem.sel{background:#FFF;border-color:var(--c-primary);box-shadow:0 12px 28px -16px rgba(184,69,31,.4)}
+  .mem .av{width:80px;height:80px;border-radius:50%;background-size:cover;background-position:center;margin:0 auto 10px;border:4px solid #FFF;box-shadow:0 4px 12px -4px rgba(0,0,0,.15);position:relative}
+  .mem .av::after{content:"";position:absolute;right:2px;bottom:2px;width:18px;height:18px;background:var(--c-accent);border:3px solid #FFF;border-radius:50%}
+  .mem .av.warn::after{background:var(--c-gold)}
+  .mem .av.alert::after{background:var(--c-primary)}
+  .mem h4{font-family:"Noto Serif SC",serif;font-weight:900;font-size:19px;color:var(--c-ink-900);margin-bottom:2px}
+  .mem .rel{font-size:12px;color:var(--c-ink-500);margin-bottom:8px}
+  .mem .health{display:flex;justify-content:center;gap:4px;margin-bottom:4px}
+  .mem .health .dot{width:8px;height:8px;border-radius:50%;background:var(--c-accent)}
+  .mem .health .dot.y{background:var(--c-gold)}
+  .mem .health .dot.r{background:var(--c-primary)}
+  .mem .status{font-size:11px;color:var(--c-ink-500);font-weight:700}
+  .mem .add{width:80px;height:80px;border-radius:50%;background:#FFF;border:2px dashed var(--c-line-2);margin:0 auto 10px;display:flex;align-items:center;justify-content:center;color:var(--c-ink-300);font-size:36px;font-weight:300}
+  .mem .add:hover{color:var(--c-primary);border-color:var(--c-primary)}
+  .mem.add-card h4{color:var(--c-ink-500)}
+
+  /* 代办任务 */
+  .tasks{display:flex;flex-direction:column;gap:10px}
+  .task{background:var(--c-paper-2);border:1px solid var(--c-line);border-radius:var(--r-md);padding:18px 22px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;position:relative;overflow:hidden}
+  .task.urgent{border-left:5px solid var(--c-primary);background:#FDF4EC}
+  .task.urgent::after{content:"紧急";position:absolute;right:20px;top:20px;background:var(--c-primary);color:#FFF7E8;padding:3px 10px;border-radius:var(--r-pill);font-size:11px;font-weight:700}
+  .task-icon{width:54px;height:54px;background:#FFF;border:1px solid var(--c-line);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .task-icon svg{width:28px;height:28px}
+  .task-body h4{font-family:"Noto Serif SC",serif;font-weight:900;font-size:18px;color:var(--c-ink-900);margin-bottom:4px;display:flex;align-items:center;gap:10px}
+  .task-body h4 .tag{padding:2px 8px;background:#E8F1ED;color:var(--c-accent);border-radius:4px;font-size:11px;font-weight:700;font-family:"Noto Sans SC"}
+  .task-body h4 .tag.hot{background:#FBE8D6;color:var(--c-primary)}
+  .task-body p{font-size:13px;color:var(--c-ink-500)}
+  .task-body p b{color:var(--c-primary);font-weight:900}
+  .task-act{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+  .task-act .time{font-family:"Bebas Neue";font-size:18px;color:var(--c-primary);letter-spacing:1px}
+  .task-act button{padding:8px 16px;background:var(--c-primary);color:#FFF7E8;border:0;border-radius:var(--r-md);font-size:13px;font-weight:700;cursor:pointer;letter-spacing:1px}
+  .task-act button.outline{background:transparent;color:var(--c-ink-700);border:1px solid var(--c-line-2)}
+  .task-act button:hover{background:var(--c-primary-dark)}
+
+  /* 健康数据 */
+  .grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:22px}
+  .health-card{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:28px}
+  .health-card h3{font-family:"Noto Serif SC",serif;font-weight:900;font-size:24px;color:var(--c-ink-900);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+  .health-card h3 .en{font-family:"DM Serif Display",serif;font-style:italic;font-size:14px;color:var(--c-primary);font-weight:400}
+  .vital-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .vital{background:var(--c-paper-2);border-radius:var(--r-md);padding:16px;position:relative;overflow:hidden}
+  .vital.alert{background:linear-gradient(135deg,#FDF4EC,#F5EBD8);border:1px solid #F2C499}
+  .vital .label{font-size:12px;color:var(--c-ink-500);font-weight:700;letter-spacing:1px;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+  .vital .label svg{width:14px;height:14px}
+  .vital .val{font-family:"Bebas Neue";font-size:42px;line-height:1;letter-spacing:1px}
+  .vital .val small{font-size:14px;color:var(--c-ink-500);margin-left:6px;font-family:"Noto Sans SC";letter-spacing:0;font-weight:700}
+  .vital .val.ok{color:var(--c-accent)}
+  .vital .val.warn{color:var(--c-gold)}
+  .vital .val.alert{color:var(--c-primary)}
+  .vital .trend{position:absolute;right:14px;top:14px;padding:2px 8px;border-radius:var(--r-pill);font-size:11px;font-weight:700}
+  .vital .trend.up{background:#FBE8D6;color:var(--c-primary)}
+  .vital .trend.dn{background:#E8F1ED;color:var(--c-accent)}
+  .vital .trend.flat{background:#EFE7D7;color:var(--c-ink-500)}
+  .vital .sub{font-size:12px;color:var(--c-ink-500);margin-top:6px}
+
+  /* 用药 */
+  .meds{display:flex;flex-direction:column;gap:10px}
+  .med{display:grid;grid-template-columns:50px 1fr auto;gap:14px;align-items:center;background:var(--c-paper-2);border-radius:var(--r-md);padding:14px 18px;border-left:4px solid var(--c-accent)}
+  .med .pill{width:50px;height:50px;background:#FFF;border-radius:12px;display:flex;align-items:center;justify-content:center;border:1px solid var(--c-line)}
+  .med .pill svg{width:30px;height:30px}
+  .med h5{font-family:"Noto Serif SC",serif;font-weight:900;font-size:16px;color:var(--c-ink-900);margin-bottom:2px}
+  .med p{font-size:12px;color:var(--c-ink-500)}
+  .med .time-tag{padding:5px 10px;background:#FFF;border:1px solid var(--c-line);border-radius:6px;font-size:12px;color:var(--c-ink-700);font-weight:700}
+  .med .time-tag .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--c-accent);margin-right:4px}
+  .med .time-tag .dot.y{background:var(--c-gold)}
+  .med .time-tag .dot.r{background:var(--c-primary)}
+
+  /* 提醒栏 */
+  .alerts{display:flex;flex-direction:column;gap:10px}
+  .alert-row{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;background:var(--c-paper-2);border-radius:var(--r-md);padding:12px 16px}
+  .alert-row .ic{width:42px;height:42px;background:#FFF;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid var(--c-line)}
+  .alert-row .ic svg{width:22px;height:22px}
+  .alert-row p{font-size:14px;color:var(--c-ink-700);line-height:1.5}
+  .alert-row p b{color:var(--c-primary-dark);font-weight:900}
+  .alert-row .when{font-family:"Bebas Neue";font-size:16px;color:var(--c-ink-500);letter-spacing:1px}
+
+  .footer{margin-top:42px;padding-top:22px;border-top:1px dashed var(--c-line-2);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--c-ink-500)}
+  .footer .slogan{font-family:"Ma Shan Zheng",cursive;font-size:22px;color:var(--c-primary);letter-spacing:3px}
+  .footer em{font-family:"DM Serif Display",serif;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 切换器 -->
+  <div class="switcher">
+    <div class="left">
+      <div class="me">思</div>
+      <div><b>李思雨</b><span>女儿 · 北京 · 已绑定 3 位家人</span></div>
+    </div>
+    <div class="tabs">
+      <span class="tab sel">亲情账号</span>
+      <span class="tab">代办任务</span>
+      <span class="tab">健康档案</span>
+      <span class="tab">消息中心</span>
+    </div>
+    <div class="bell">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--c-ink-700)" stroke-width="2"><path d="M18 16v-5a6 6 0 0 0-12 0v5l-2 3h16zM10 21a2 2 0 0 0 4 0"/></svg>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="greet">
+    <div>
+      <div class="date">Tuesday, June 22, 2026 · 北京 晴 28°</div>
+      <h1>思雨，<em>爸妈今天都挺好的</em><br>但妈的高压有点高</h1>
+      <p>过去 24 小时：妈妈血压均值 <b>148/92</b>（↑ 偏高）、步数 2,348 步（达标）、用药 1 次未服（硝苯地平）。<b>建议：</b>今晚打电话提醒妈按时吃药，明早复测血压。</p>
+    </div>
+    <div class="greet-card">
+      <h5>今日概览</h5>
+      <div class="row"><span>待办任务</span><b>4</b></div>
+      <div class="row"><span>用药异常</span><b>1</b></div>
+      <div class="row"><span>健康预警</span><b>2</b></div>
+      <div class="row"><span>本月陪诊</span><b>2</b> 次</div>
+    </div>
+  </div>
+
+  <!-- 亲情成员 -->
+  <div class="section">
+    <h3>我关爱的家人 <span class="en">— My Family</span><span style="margin-left:auto;font-size:14px;color:var(--c-ink-500);font-weight:500">3 / 8 位</span></h3>
+    <div class="members">
+      <div class="mem sel">
+        <div class="av warn" style="background-image:url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop&crop=faces')"></div>
+        <h4>张秀英</h4>
+        <div class="rel">妈妈 · 68 岁</div>
+        <div class="health"><div class="dot y"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="status">1 项需关注</div>
+      </div>
+      <div class="mem">
+        <div class="av" style="background-image:url('https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=200&h=200&fit=crop&crop=faces')"></div>
+        <h4>李建国</h4>
+        <div class="rel">爸爸 · 71 岁</div>
+        <div class="health"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="status">一切正常</div>
+      </div>
+      <div class="mem">
+        <div class="av alert" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=faces')"></div>
+        <h4>王桂芳</h4>
+        <div class="rel">姥姥 · 89 岁</div>
+        <div class="health"><div class="dot r"></div><div class="dot y"></div><div class="dot"></div></div>
+        <div class="status">2 项需关注</div>
+      </div>
+      <div class="mem add-card">
+        <div class="add">+</div>
+        <h4>添加家人</h4>
+        <div class="rel">扫码 / 输手机号</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 健康数据 -->
+  <div class="grid2">
+    <div class="health-card">
+      <h3>妈妈 · 张秀英 实时健康 <span class="en">— Real-time</span></h3>
+      <div class="vital-grid">
+        <div class="vital alert">
+          <div class="label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+            血压
+          </div>
+          <div class="val alert">148<small>/92</small></div>
+          <div class="sub">↑ 较昨日 +6 mmHg</div>
+          <div class="trend up">↑ 偏高</div>
+        </div>
+        <div class="vital">
+          <div class="label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+            心率
+          </div>
+          <div class="val ok">76<small>bpm</small></div>
+          <div class="sub">正常范围 60-100</div>
+          <div class="trend flat">— 平稳</div>
+        </div>
+        <div class="vital">
+          <div class="label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+            血糖
+          </div>
+          <div class="val ok">5.8<small>mmol/L</small></div>
+          <div class="sub">餐后 2h · 正常</div>
+          <div class="trend dn">↓ 良好</div>
+        </div>
+        <div class="vital">
+          <div class="label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6z"/></svg>
+            血氧
+          </div>
+          <div class="val ok">97<small>%</small></div>
+          <div class="sub">夜间平均 96-98%</div>
+          <div class="trend flat">— 平稳</div>
+        </div>
+        <div class="vital">
+          <div class="label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h12"/></svg>
+            睡眠
+          </div>
+          <div class="val ok">7.2<small>小时</small></div>
+          <div class="sub">深睡 1.5h · REM 1.8h</div>
+          <div class="trend up">↑ 改善</div>
+        </div>
+        <div class="vital">
+          <div class="label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3v18M6 8h6a4 4 0 0 1 0 8H6"/></svg>
+            步数
+          </div>
+          <div class="val ok">2,348<small>步</small></div>
+          <div class="sub">完成今日目标 78%</div>
+          <div class="trend up">↑ 达标</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="health-card">
+      <h3>今日用药 <span class="en">— Medication</span></h3>
+      <div class="meds">
+        <div class="med">
+          <div class="pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B8451F" stroke-width="2"><rect x="3" y="9" width="18" height="6" rx="3"/><path d="M12 9v6"/></svg>
+          </div>
+          <div>
+            <h5>硝苯地平控释片</h5>
+            <p>降压 · 1 片/次 · 30mg · 餐后</p>
+          </div>
+          <div class="time-tag"><span class="dot r"></span>早 8:00 未服</div>
+        </div>
+        <div class="med">
+          <div class="pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1F4D3A" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div>
+            <h5>阿司匹林肠溶片</h5>
+            <p>抗血小板 · 1 片/次 · 100mg · 睡前</p>
+          </div>
+          <div class="time-tag"><span class="dot y"></span>晚 9:00 待服</div>
+        </div>
+        <div class="med">
+          <div class="pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#C28840" stroke-width="2"><path d="M3 12h18M12 3v18"/></svg>
+          </div>
+          <div>
+            <h5>钙片 + 维生素 D</h5>
+            <p>补钙 · 1 片/次 · 随餐</p>
+          </div>
+          <div class="time-tag"><span class="dot"></span>午 12:00 已服</div>
+        </div>
+        <div class="med">
+          <div class="pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2C5F7C" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+          </div>
+          <div>
+            <h5>硫酸氢氯吡格雷</h5>
+            <p>抗血栓 · 1 片/次 · 75mg</p>
+          </div>
+          <div class="time-tag"><span class="dot"></span>早 8:00 已服</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 代办任务 -->
+  <div class="section" style="margin-top:22px">
+    <h3>代办任务 <span class="en">— To-do for Family</span><span style="margin-left:auto;padding:4px 12px;background:var(--c-primary);color:#FFF7E8;border-radius:var(--r-pill);font-size:13px;font-weight:700">4 项待办</span></h3>
+    <div class="tasks">
+      <div class="task urgent">
+        <div class="task-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#B8451F" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <div class="task-body">
+          <h4>妈妈 · 06.25 周四 09:00 心内科复诊 <span class="tag hot">已预约</span></h4>
+          <p>北京协和医院（东院）· 王建华主任 · 已医保结算 ¥12 · 需提醒妈前一天准备</p>
+        </div>
+        <div class="task-act">
+          <div class="time">3 天后</div>
+          <button>提醒妈准备</button>
+          <button class="outline">申请陪诊</button>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1F4D3A" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="task-body">
+          <h4>爸爸 · 高血压药月度开方 <span class="tag">待开方</span></h4>
+          <p>距上次开方 28 天 · 苯磺酸氨氯地平片还剩 3 天的量 · 可在线复诊续方</p>
+        </div>
+        <div class="task-act">
+          <div class="time">2 天后</div>
+          <button>在线续方</button>
+          <button class="outline">提醒爸</button>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#C28840" stroke-width="2"><rect x="3" y="9" width="18" height="6" rx="3"/><path d="M12 9v6"/></svg>
+        </div>
+        <div class="task-body">
+          <h4>妈妈 · 硝苯地平漏服提醒 <span class="tag hot">异常</span></h4>
+          <p>智能药盒显示今早 8:00 未服药 · 妈之前也偶尔忘记 · 建议开启语音提醒</p>
+        </div>
+        <div class="task-act">
+          <div class="time">刚刚</div>
+          <button>打电话</button>
+          <button class="outline">语音提醒</button>
+        </div>
+      </div>
+      <div class="task">
+        <div class="task-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2C5F7C" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="task-body">
+          <h4>姥姥 · 06.28 周日 体检陪诊 <span class="tag">已约陪诊</span></h4>
+          <p>三甲医院体检中心 · 林秀梅陪诊员已确认 · 7:30 上门 · 子女远程看报告</p>
+        </div>
+        <div class="task-act">
+          <div class="time">6 天后</div>
+          <button>查看报告</button>
+          <button class="outline">详情</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 智能提醒 -->
+  <div class="section">
+    <h3>智能提醒 <span class="en">— Smart Alerts</span></h3>
+    <div class="alerts">
+      <div class="alert-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#B8451F" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
+        <p>妈妈今早血压 <b>148/92 mmHg</b>，连续 3 天偏高，建议预约心内科复诊（已自动加入待办）</p>
+        <div class="when">06:00</div>
+      </div>
+      <div class="alert-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#C28840" stroke-width="2"><path d="M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg></div>
+        <p>妈妈 <b>硝苯地平</b> 漏服 1 次，已通过智能药盒提醒妈本人，建议今晚再电话确认</p>
+        <div class="when">08:15</div>
+      </div>
+      <div class="alert-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#1F4D3A" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h12"/></svg></div>
+        <p>爸爸今日步数 <b>4,210 步</b>，超额完成 · 已自动记入"运动奖励"勋章</p>
+        <div class="when">14:30</div>
+      </div>
+      <div class="alert-row">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2C5F7C" stroke-width="2"><path d="M12 2L4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6z"/></svg></div>
+        <p>姥姥周一体检报告已出：<b>骨密度 T 值 -2.8</b>，建议加挂骨科</p>
+        <div class="when">昨日</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="slogan">爸妈在老家 · 我们在身边</div>
+    <div><span>© 2026 银发通</span> <em>Family Dashboard · 子女端 v1.0</em></div>
+  </div>
+</div>
+</body>
+</html>
+`,
+    "frame-queue": `<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>银发通 · 候诊叫号实时屏</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800;900&family=Noto+Serif+SC:wght@500;700;900&family=Ma+Shan+Zheng&family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@1,144,600;1,144,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --c-primary:#B8451F; --c-primary-dark:#8E3215;
+    --c-accent:#1F4D3A;  --c-accent-2:#2F6B53;
+    --c-gold:#C28840;    --c-gold-2:#E0A55A;
+    --c-bg:#F5EBD8;      --c-paper:#FFFCF5;  --c-paper-2:#FAF1E0;
+    --c-ink-900:#1A1814; --c-ink-700:#3D372F; --c-ink-500:#6B6358; --c-ink-300:#A89E8E;
+    --c-line:#E5D7BC;    --c-line-2:#D4C29E;
+    --c-blue:#2C5F7C;
+    --r-md:14px; --r-lg:22px; --r-xl:32px; --r-pill:999px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--c-bg);color:var(--c-ink-900);font-family:"Noto Sans SC",system-ui,sans-serif;font-weight:500;min-height:100vh}
+  body{background-image:radial-gradient(1200px 600px at 80% -10%,#EBD5B0 0%,transparent 60%),radial-gradient(800px 500px at -10% 100%,#E8D7B5 0%,transparent 50%)}
+  .wrap{max-width:1380px;margin:0 auto;padding:36px 36px 60px}
+
+  /* Top status */
+  .top-bar{background:var(--c-accent);color:#FFF7E8;border-radius:var(--r-lg);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;font-size:15px}
+  .top-bar .left{display:flex;align-items:center;gap:18px}
+  .top-bar .live{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:1px}
+  .top-bar .live .dot{width:10px;height:10px;background:#FF6B5A;border-radius:50%;animation:pulse 1.5s infinite;box-shadow:0 0 12px #FF6B5A}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+  .top-bar .right{display:flex;gap:18px;align-items:center;font-family:"DM Serif Display",serif;font-style:italic}
+  .top-bar .right b{font-family:"Bebas Neue";font-size:18px;color:var(--c-gold-2);letter-spacing:1px;font-style:normal}
+
+  /* Hero */
+  .hero{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;margin-bottom:24px}
+
+  /* 当前叫号大屏 */
+  .now{background:linear-gradient(135deg,#1F4D3A 0%,#0F2E22 100%);border-radius:var(--r-xl);padding:42px 40px;color:#FFF7E8;position:relative;overflow:hidden;min-height:480px}
+  .now::before{content:"";position:absolute;right:-100px;top:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(194,136,64,.25),transparent 60%)}
+  .now::after{content:"";position:absolute;left:-60px;bottom:-80px;width:280px;height:280px;border:1px dashed rgba(255,247,232,.2);border-radius:50%}
+  .now-dept{display:flex;align-items:center;gap:12px;margin-bottom:14px;font-size:14px;opacity:.85;letter-spacing:1px}
+  .now-dept .tag{padding:4px 12px;background:rgba(255,247,232,.15);border:1px solid rgba(255,247,232,.25);border-radius:var(--r-pill);font-weight:700}
+  .now-label{font-family:"Noto Serif SC",serif;font-weight:900;font-size:36px;margin-bottom:6px;letter-spacing:2px}
+  .now-label .en{font-family:"DM Serif Display",serif;font-style:italic;font-weight:400;font-size:22px;opacity:.7;margin-left:10px;letter-spacing:1px}
+  .now-num{font-family:"Bebas Neue";font-size:220px;line-height:1;color:var(--c-gold-2);letter-spacing:8px;margin:8px 0;position:relative;z-index:1;text-shadow:0 8px 30px rgba(194,136,64,.3)}
+  .now-num::after{content:"";display:block;height:6px;background:linear-gradient(90deg,var(--c-gold-2),transparent);margin-top:8px;border-radius:3px;width:200px}
+  .now-name{font-family:"Noto Serif SC",serif;font-weight:900;font-size:28px;margin:14px 0 6px}
+  .now-room{display:flex;gap:18px;font-size:16px;opacity:.85}
+  .now-room b{color:var(--c-gold-2);font-weight:900;font-family:"Bebas Neue";font-size:24px;letter-spacing:1px}
+  .now-seal{position:absolute;right:36px;top:36px;width:108px;height:108px;border:3px solid var(--c-primary);border-radius:50%;color:#FFF7E8;background:var(--c-primary);display:flex;align-items:center;justify-content:center;text-align:center;font-family:"Ma Shan Zheng",cursive;font-size:22px;line-height:1.2;transform:rotate(-12deg);z-index:2;box-shadow:0 0 0 4px rgba(255,247,232,.1)}
+  .now-seal small{display:block;font-size:10px;opacity:.8;margin-top:4px;font-family:"Noto Sans SC";letter-spacing:2px}
+
+  /* 您的排队 */
+  .mine{background:var(--c-primary);border-radius:var(--r-xl);padding:36px 32px;color:#FFF7E8;position:relative;overflow:hidden;min-height:480px;display:flex;flex-direction:column}
+  .mine::before{content:"";position:absolute;right:-50px;bottom:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,247,232,.15),transparent 70%)}
+  .mine-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;font-size:14px;letter-spacing:1px;opacity:.9}
+  .mine-head::before{content:"";width:6px;height:6px;background:var(--c-gold-2);border-radius:50%;animation:pulse 1.5s infinite}
+  .mine-label{font-family:"Noto Serif SC",serif;font-weight:900;font-size:22px;margin-bottom:4px;letter-spacing:1px}
+  .mine-num{font-family:"Bebas Neue";font-size:128px;line-height:1;color:#FFF7E8;letter-spacing:4px;margin:8px 0;text-shadow:0 4px 20px rgba(0,0,0,.2)}
+  .mine-num::after{content:"";display:block;height:4px;background:linear-gradient(90deg,#FFF7E8,transparent);margin-top:8px;border-radius:2px;width:140px}
+  .mine-info{flex:1;display:flex;flex-direction:column;gap:14px;margin-top:24px;padding-top:24px;border-top:1px dashed rgba(255,247,232,.3)}
+  .mine-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px dashed rgba(255,247,232,.18)}
+  .mine-row:last-child{border-bottom:0}
+  .mine-row span{font-size:14px;opacity:.8}
+  .mine-row b{font-family:"Bebas Neue";font-size:28px;letter-spacing:1px;color:#FFF7E8}
+  .mine-row b.accent{color:var(--c-gold-2);font-size:36px}
+  .mine-foot{margin-top:14px;padding:14px;background:rgba(255,247,232,.1);border-radius:var(--r-md);font-size:13px;line-height:1.6;border-left:3px solid var(--c-gold-2)}
+  .mine-foot b{color:var(--c-gold-2);font-weight:900}
+
+  /* 中段：进度条 + 状态 */
+  .progress-card{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:28px;margin-bottom:22px}
+  .progress-card h3{font-family:"Noto Serif SC",serif;font-weight:900;font-size:24px;color:var(--c-ink-900);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .progress-card h3 .en{font-family:"DM Serif Display",serif;font-style:italic;font-size:15px;color:var(--c-primary);font-weight:400}
+  .progress-bar{height:14px;background:var(--c-paper-2);border-radius:var(--r-pill);overflow:hidden;position:relative;margin:18px 0 14px}
+  .progress-bar .fill{height:100%;background:linear-gradient(90deg,var(--c-accent-2),var(--c-gold-2));border-radius:var(--r-pill);position:relative;width:78%}
+  .progress-bar .fill::after{content:"";position:absolute;right:-2px;top:50%;transform:translateY(-50%);width:24px;height:24px;background:#FFF;border:4px solid var(--c-gold-2);border-radius:50%;box-shadow:0 4px 12px -2px rgba(0,0,0,.2)}
+  .progress-labels{display:flex;justify-content:space-between;font-size:13px;color:var(--c-ink-500);font-weight:700}
+  .progress-labels b{color:var(--c-primary);font-family:"Bebas Neue";font-size:18px;letter-spacing:1px;display:block}
+
+  /* 流程节点 */
+  .milestones{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:18px}
+  .ms{text-align:center;position:relative;padding:14px 8px}
+  .ms::after{content:"";position:absolute;right:-15px;top:30px;width:30px;height:2px;background:var(--c-line-2)}
+  .ms:last-child::after{display:none}
+  .ms .dot{width:40px;height:40px;background:var(--c-paper-2);border:2px solid var(--c-line-2);border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;color:var(--c-ink-500);font-size:14px;font-weight:900;font-family:"Bebas Neue";letter-spacing:1px}
+  .ms.done .dot{background:var(--c-accent);color:#FFF7E8;border-color:var(--c-accent)}
+  .ms.now .dot{background:var(--c-primary);color:#FFF7E8;border-color:var(--c-primary);box-shadow:0 0 0 6px rgba(184,69,31,.2);animation:pulse 2s infinite}
+  .ms b{font-family:"Noto Serif SC",serif;font-weight:900;font-size:14px;color:var(--c-ink-900);display:block;margin-bottom:2px}
+  .ms.now b{color:var(--c-primary)}
+  .ms span{font-size:12px;color:var(--c-ink-500)}
+
+  /* 底部 row */
+  .row2{display:grid;grid-template-columns:1.4fr 1fr;gap:22px}
+
+  /* 已过 / 待诊列表 */
+  .list{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:28px}
+  .list h3{font-family:"Noto Serif SC",serif;font-weight:900;font-size:24px;color:var(--c-ink-900);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .list h3 .en{font-family:"DM Serif Display",serif;font-style:italic;font-size:15px;color:var(--c-primary);font-weight:400}
+  .col-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .col h4{font-family:"Noto Serif SC",serif;font-weight:900;font-size:15px;color:var(--c-ink-700);margin-bottom:10px;display:flex;align-items:center;gap:6px;padding-bottom:6px;border-bottom:1px dashed var(--c-line-2)}
+  .col h4 .dot{width:8px;height:8px;border-radius:50%;background:var(--c-accent)}
+  .col.next h4 .dot{background:var(--c-primary)}
+  .col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .col li{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--c-paper-2);border-radius:8px;font-size:14px;color:var(--c-ink-700);font-weight:700}
+  .col li b{font-family:"Bebas Neue";font-size:20px;color:var(--c-ink-900);letter-spacing:1px;min-width:48px}
+  .col li.next-li{background:#FBE8D6;border:1px solid #F2C499;color:var(--c-primary-dark);font-size:15px}
+  .col li.next-li b{color:var(--c-primary);font-size:24px}
+  .col li.next-li::after{content:"下一位";margin-left:auto;font-size:11px;background:var(--c-primary);color:#FFF7E8;padding:2px 8px;border-radius:4px;font-weight:700}
+
+  /* 提示卡 */
+  .tips{background:var(--c-paper);border:1px solid var(--c-line);border-radius:var(--r-xl);padding:28px;display:flex;flex-direction:column;gap:14px}
+  .tips h3{font-family:"Noto Serif SC",serif;font-weight:900;font-size:24px;color:var(--c-ink-900);display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .tips h3 .en{font-family:"DM Serif Display",serif;font-style:italic;font-size:15px;color:var(--c-primary);font-weight:400}
+  .tip{display:flex;gap:12px;padding:12px 14px;background:var(--c-paper-2);border-radius:var(--r-md);border-left:3px solid var(--c-gold);font-size:14px;color:var(--c-ink-700);line-height:1.6}
+  .tip b{color:var(--c-primary-dark);font-weight:900}
+  .tip.alert{background:#FDF4EC;border-color:var(--c-primary)}
+  .tip .ico{width:24px;height:24px;flex-shrink:0;margin-top:2px}
+
+  .footer{margin-top:42px;padding-top:22px;border-top:1px dashed var(--c-line-2);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--c-ink-500)}
+  .footer .slogan{font-family:"Ma Shan Zheng",cursive;font-size:22px;color:var(--c-primary);letter-spacing:3px}
+  .footer em{font-family:"DM Serif Display",serif;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 顶部状态 -->
+  <div class="top-bar">
+    <div class="left">
+      <span class="live"><span class="dot"></span>实时叫号 · LIVE</span>
+      <span>·</span>
+      <span>2026 / 06 / 22 · 周一 10:42:35</span>
+      <span>·</span>
+      <span>北京协和医院（东院）8 号楼 5 层</span>
+    </div>
+    <div class="right">
+      <span>call no.</span>
+      <b>SCREEN 03 / 心内科</b>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="now">
+      <div class="now-seal">实时<br>叫号<small>REAL-TIME</small></div>
+      <div class="now-dept">
+        <span class="tag">心血管内科</span>
+        <span class="tag">5 号诊室</span>
+        <span class="tag">王建华 主任</span>
+      </div>
+      <div class="now-label">正在就诊 <span class="en">— Now Serving</span></div>
+      <div class="now-num">A028</div>
+      <div class="now-name">陈 * 山 · 男 · 65 岁</div>
+      <div class="now-room">
+        <span>请到 <b>5 号诊室</b> 门口候诊</span>
+        <span>·</span>
+        <span>主治医生：王建华</span>
+      </div>
+    </div>
+
+    <div class="mine">
+      <div class="mine-head">您正在候诊</div>
+      <div class="mine-label">您的排队号</div>
+      <div class="mine-num">A031</div>
+      <div class="mine-info">
+        <div class="mine-row"><span>您前面还有</span><b class="accent">3</b></div>
+        <div class="mine-row"><span>预计等待</span><b>≈ 18 分钟</b></div>
+        <div class="mine-row"><span>已等候</span><b>42 分钟</b></div>
+        <div class="mine-row"><span>就诊人</span><b>张秀英</b></div>
+        <div class="mine-foot">
+          💡 <b>温馨提醒：</b>还差 3 位 · 您可下楼到 <b>1 楼咖啡厅</b> 休息，<b>轮到你前 3 位</b>会发微信提醒。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 进度 -->
+  <div class="progress-card">
+    <h3>就诊进度 <span class="en">— Your Journey</span><span style="margin-left:auto;font-family:'Bebas Neue';font-size:24px;color:var(--c-primary)">5 / 7</span></h3>
+    <div class="progress-bar"><div class="fill"></div></div>
+    <div class="progress-labels">
+      <div>08:00<b>到院签到</b></div>
+      <div>08:35<b>候诊开始</b></div>
+      <div>10:15<b>已抽血化验</b></div>
+      <div>10:42<b>等待叫号</b></div>
+      <div>11:00<b>预计就诊</b></div>
+    </div>
+
+    <div class="milestones">
+      <div class="ms done">
+        <div class="dot">✓</div>
+        <b>预约挂号</b><span>06.18 完成</span>
+      </div>
+      <div class="ms done">
+        <div class="dot">✓</div>
+        <b>签到取号</b><span>08:00 完成</span>
+      </div>
+      <div class="ms done">
+        <div class="dot">✓</div>
+        <b>化验检查</b><span>10:15 完成</span>
+      </div>
+      <div class="ms now">
+        <div class="dot">4</div>
+        <b>等待叫号</b><span>您在这里</span>
+      </div>
+      <div class="ms">
+        <div class="dot">5</div>
+        <b>就诊问诊</b><span>预计 11:00</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 列表 + 提示 -->
+  <div class="row2">
+    <div class="list">
+      <h3>队列动态 <span class="en">— Queue</span></h3>
+      <div class="col-grid">
+        <div class="col">
+          <h4><span class="dot"></span>已过号 · Served</h4>
+          <ul>
+            <li><b>A026</b>刘 * 英</li>
+            <li><b>A027</b>周 * 民</li>
+            <li><b>A028</b>陈 * 山</li>
+            <li style="opacity:.6"><b>A025</b>赵 * 红</li>
+            <li style="opacity:.6"><b>A024</b>吴 * 强</li>
+          </ul>
+        </div>
+        <div class="col next">
+          <h4><span class="dot"></span>即将叫号 · Up Next</h4>
+          <ul>
+            <li class="next-li"><b>A029</b>李 * 珍</li>
+            <li><b>A030</b>孙 * 慧</li>
+            <li><b>A031</b>张 * 英（您）</li>
+            <li style="opacity:.6"><b>A032</b>钱 * 伟</li>
+            <li style="opacity:.6"><b>A033</b>郑 * 芳</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips">
+      <h3>实时提示 <span class="en">— Tips</span></h3>
+      <div class="tip alert">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#B8451F" stroke-width="2"><path d="M12 2L2 21h20L12 2z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <div>您的 <b>女儿 · 思雨</b>正在远程关注您的就诊，已为您预约 <b>3 位前自动提醒</b>。</div>
+      </div>
+      <div class="tip">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#1F4D3A" stroke-width="2"><path d="M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+        <div>心电图检查结果已出，请到 <b>5 号诊室</b> 门口候诊，<b>无需再排队</b>。</div>
+      </div>
+      <div class="tip">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#C28840" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <div>医保已实时结算，本次就诊 <b>个人仅需支付 ¥12</b>。</div>
+      </div>
+      <div class="tip">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#2C5F7C" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+        <div>如需临时离开，请到 <b>导诊台</b> 报备，超过 3 个号将重新排队。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="slogan">看得见的等待 · 不慌不忙</div>
+    <div><span>© 2026 银发通</span> <em>Queue Screen · 叫号 v1.0</em></div>
+  </div>
+</div>
+</body>
+</html>
+`
+    };
+
+    // 注入到 iframe
+    Object.entries(templates).forEach(([fid, html]) => {
+      const f = document.getElementById(fid);
+      if (f) f.srcdoc = html;
+    });
+
+    // tab 切换
+    const tabs = document.querySelectorAll('.tab');
+    const frames = document.querySelectorAll('iframe');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        frames.forEach(f => f.classList.remove('active'));
+        tab.classList.add('active');
+        const target = document.getElementById(tab.dataset.target);
+        if (target) target.classList.add('active');
+      });
+    });
+
+    // 键盘左右切换
+    document.addEventListener('keydown', (e) => {
+      const active = document.querySelector('.tab.active');
+      if (!active) return;
+      const all = Array.from(tabs);
+      const idx = all.indexOf(active);
+      if (e.key === 'ArrowRight' && idx < all.length - 1) all[idx + 1].click();
+      else if (e.key === 'ArrowLeft' && idx > 0) all[idx - 1].click();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# 开发模式：挂载本地代码到容器，改代码后只需重启不需重建
+# 生产环境不使用此文件
+services:
+  backend:
+    volumes:
+      - ./backend/app:/app/app
+    command: >
+      sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
