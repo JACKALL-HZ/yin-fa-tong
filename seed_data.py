@@ -9,12 +9,12 @@ HEADERS = {"Content-Type": "application/json"}
 # ======== 1. 管理员登录 ========
 def login():
     # 尝试登录已存在的 admin
-    r = requests.post(f"{BASE}/auth/login", json={"username": "admin_yinfa_tong", "password": "123456"})
+    r = requests.post(f"{BASE}/auth/login", json={"username": "yftadmin2026", "password": "123456"})
     if r.status_code == 200:
         print("[OK] 管理员登录成功")
         return r.json()["data"]["access_token"]
     # 注册新管理员
-    r = requests.post(f"{BASE}/auth/register", json={"username": "admin_yinfa_tong", "password": "123456", "user_type": 3})
+    r = requests.post(f"{BASE}/auth/register", json={"username": "yftadmin2026", "password": "123456", "user_type": 3})
     if r.status_code == 200:
         print("[OK] 管理员注册+登录成功")
         return r.json()["data"]["access_token"]
@@ -168,6 +168,6 @@ print(f"  排班: {schedule_count} 条")
 print(f"  志愿者: {vol_count} 位")
 print("=" * 50)
 print(f"  挂号可用日期: {today + timedelta(days=1)} ~ {today + timedelta(days=7)}")
-print(f"  管理员: admin_yinfa_tong / 123456")
+print(f"  管理员: yftadmin2026 / 123456")
 print(f"  前端: http://localhost")
 print("=" * 50)
