@@ -239,9 +239,10 @@ async def handle_alipay_notify(session: AsyncSession, params: dict) -> bool:
 
         sorted_params = sorted(verify_params.items())
         sign_str = "&".join(f"{k}={v}" for k, v in sorted_params)
+        public_key_pem = _format_public_key(settings.ALIPAY_PUBLIC_KEY)
 
         try:
-            is_valid = verify_with_rsa(settings.ALIPAY_PUBLIC_KEY.encode(), sign_str.encode(), sign)
+            is_valid = verify_with_rsa(public_key_pem.encode(), sign_str.encode(), sign.encode() if isinstance(sign, str) else sign)
             if not is_valid:
                 logger.warning("支付宝回调验签失败")
                 return False
@@ -386,7 +387,9 @@ async def sync_payment_status(
         request = AlipayTradeQueryRequest(biz_model=model)
         raw = client.execute(request)
 
-        # SDK 可能返回 str 或 dict，统一处理
+        # SDK 可能返回 str / bytes / dict，统一处理
+        if isinstance(raw, bytes):
+            raw = raw.decode("utf-8")
         if isinstance(raw, str):
             response = _json.loads(raw)
         else:
