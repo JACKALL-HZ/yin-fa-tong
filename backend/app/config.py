@@ -61,6 +61,10 @@ class Settings(BaseSettings):
     DIFY_CHAT_ENDPOINT: str = "/v1/chat-messages"
     DIFY_TIMEOUT: int = 60
 
+    # ---- 阿里云短信 ----
+    ALIYUN_ACCESS_KEY_ID: str = ""
+    ALIYUN_ACCESS_KEY_SECRET: str = ""
+
     # ── 支付宝沙箱 ──
     ALIPAY_APP_ID: str = ""
     ALIPAY_PRIVATE_KEY: str = ""

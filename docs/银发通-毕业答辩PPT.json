@@ -1,0 +1,677 @@
+{
+  "ppt_id": "yft-defense-2026",
+  "ppt_title": "银发通·适老化智慧就医服务平台 — 毕业设计答辩",
+  "template_url": "",
+  "design_notes": {
+    "style": "蓝白主色调 + 橙色强调色，科技感与温暖感兼具",
+    "fonts": "标题：思源黑体 Bold 36pt / 正文：思源黑体 Regular 18pt / 代码：Consolas 14pt",
+    "layout_rules": "每页信息密度适中，要点不超过6条，图表/代码与文字混排",
+    "color_scheme": {
+      "primary": "#1E88E5",
+      "secondary": "#FF6F00",
+      "background": "#F5F7FA",
+      "text": "#212121",
+      "accent": "#00ACC1"
+    }
+  },
+  "pages": [
+    {
+      "page_index": 0,
+      "section": "封面",
+      "title": "银发通 · 适老化智慧就医服务平台",
+      "subtitle": "毕业设计答辩",
+      "content": [
+        "答辩人：XXX",
+        "指导教师：XXX",
+        "专业班级：XXX",
+        "日期：2026年X月"
+      ],
+      "layout": "cover",
+      "image_url": "",
+      "design_hint": "大标题居中，副标题下方，底部居中展示答辩人信息，背景用蓝白渐变+医疗科技线条元素"
+    },
+    {
+      "page_index": 1,
+      "section": "目录",
+      "title": "答辩提纲",
+      "content": [
+        "01 项目背景与行业痛点",
+        "02 系统功能与业务流程",
+        "03 技术架构与全景技术栈",
+        "04 核心技术点深度讲解",
+        "05 系统功能展示",
+        "06 总结与展望"
+      ],
+      "layout": "toc",
+      "image_url": "",
+      "design_hint": "左侧竖排编号+标题，右侧配以项目截图或架构缩略图，6个章节用不同色块区分"
+    },
+    {
+      "page_index": 2,
+      "section": "01 项目背景与行业痛点",
+      "title": "老龄化社会背景",
+      "content": [
+        "📊 截至2025年，我国60岁以上人口突破3亿，占比超21%",
+        "🏥 数字化医疗全面普及，但老年群体普遍存在"数字鸿沟"",
+        "👴 老年人不会线上挂号缴费、线下排队耗时久、无法精准描述病症",
+        "📱 现有就医平台操作链路长、字体小、功能繁杂，老年人学习成本极高",
+        "🎯 国家卫健委持续推进医疗机构适老化线上就医服务建设"
+      ],
+      "layout": "content_with_stats",
+      "image_url": "",
+      "design_hint": "左侧放数据卡片（3亿、21%等大数字），右侧放老年就医场景插图，底部引用政策文件"
+    },
+    {
+      "page_index": 3,
+      "section": "01 项目背景与行业痛点",
+      "title": "老年患者端痛点分析",
+      "content": [
+        "❌ 常规就医软件字体偏小、功能繁杂、操作链路长",
+        "❌ 线下人工窗口挂号缴费排队时长超过2小时",
+        "❌ 老年人病症表述能力有限，盲目自选科室极易挂错",
+        "❌ 无标准化候诊编号，无法实时查看排队进度",
+        "❌ 异地子女无法代为挂号分诊、陪同就诊"
+      ],
+      "layout": "pain_points",
+      "image_url": "",
+      "design_hint": "痛点列表左侧配❌图标，每个痛点配简短数据支撑，右侧放对比图（传统就医 vs 银发通）"
+    },
+    {
+      "page_index": 4,
+      "section": "01 项目背景与行业痛点",
+      "title": "子女代办端 & 医院运营端痛点",
+      "content": [
+        "子女代办端：",
+        "  • 无专属入口统一绑定多位长辈信息",
+        "  • 无法协助老人精准分诊挂号",
+        "  • 无正规平台预约线下陪护人员",
+        "",
+        "医院运营端：",
+        "  • 线下窗口客流集中，人力运营成本高",
+        "  • 老年优先号源无系统化管控，易超卖丢失",
+        "  • 缺少可视化数据看板，运营数据无法统计"
+      ],
+      "layout": "two_column",
+      "image_url": "",
+      "design_hint": "左右两栏分别展示子女端和医院端痛点，用图标+要点列表形式"
+    },
+    {
+      "page_index": 5,
+      "section": "01 项目背景与行业痛点",
+      "title": "银发通解决方案总览",
+      "content": [
+        "🎯 产品定位：面向老年群体的轻量化便民就医辅助系统",
+        "",
+        "三大核心业务：",
+        "  1️⃣ 线上预约挂号 + 智能候诊提醒",
+        "  2️⃣ AI 本地化智能导诊（方言口语适配）",
+        "  3️⃣ 公益志愿者一对一陪诊（核心创新点）",
+        "",
+        "四大用户角色：老年患者 | 子女代办 | 医院管理员 | 志愿者"
+      ],
+      "layout": "solution_overview",
+      "image_url": "",
+      "design_hint": "顶部产品定位，中间三大业务用卡片式布局，底部四大角色用头像图标展示"
+    },
+    {
+      "page_index": 6,
+      "section": "02 系统功能与业务流程",
+      "title": "功能分层架构（P0-P2）",
+      "content": [
+        "P0 核心必做（13个模块）",
+        "  搭建就医基础闭环：挂号、缴费、候诊、消息核心链路",
+        "",
+        "P1 增强加分（4个模块）",
+        "  优化适老就医体验，提升产品易用性",
+        "",
+        "P2 特色亮点（3个模块）",
+        "  打造项目差异化创新点：AI导诊、陪诊服务、体检报告解读",
+        "",
+        "后台管理（7个模块）",
+        "  支撑平台简易运维，保障业务正常运转"
+      ],
+      "layout": "priority_pyramid",
+      "image_url": "",
+      "design_hint": "金字塔式布局，P0在底层最大，P2在顶层最小，每层用不同颜色区分"
+    },
+    {
+      "page_index": 7,
+      "section": "02 系统功能与业务流程",
+      "title": "全局主业务流程",
+      "content": [
+        "用户打开银发通 → 注册/登录",
+        "    ↓",
+        "选择功能：预约挂号 | AI导诊 | 陪诊服务 | 个人中心",
+        "    ↓",
+        "预约挂号 → 查看排班号源 → 确认预约 → 支付",
+        "    ↓",
+        "支付成功 → 候诊排队 → 到号就诊 → 就诊完成",
+        "",
+        "支付超时(15min) → 自动取消 + 号源回滚"
+      ],
+      "layout": "flowchart",
+      "image_url": "",
+      "design_hint": "用流程图展示，主流程用蓝色箭头，超时分支用橙色虚线，关键节点加圆角框"
+    },
+    {
+      "page_index": 8,
+      "section": "02 系统功能与业务流程",
+      "title": "预约挂号业务时序",
+      "content": [
+        "用户 → 前端：选择科室/医生/时段",
+        "前端 → 后端：POST /api/reserves",
+        "后端 → Redis：SET NX 预约去重检查",
+        "后端 → Redis：Lua脚本原子扣减号源",
+        "后端 → MySQL：创建预约订单",
+        "后端 → RabbitMQ：发送15分钟延时消息",
+        "后端 → 前端：返回预约成功 + 候诊编号",
+        "",
+        "⏰ 15分钟后 RabbitMQ → 后端：检查支付状态",
+        "    已支付 → 跳过 | 未支付 → 取消 + 释放号源"
+      ],
+      "layout": "sequence_diagram",
+      "image_url": "",
+      "design_hint": "时序图形式，左侧用户/前端/后端/中间件四列，箭头表示调用方向，延时消息用虚线"
+    },
+    {
+      "page_index": 9,
+      "section": "03 技术架构与全景技术栈",
+      "title": "系统技术架构全景图",
+      "content": [
+        "前端层：Vue3 + TypeScript + Element Plus + Pinia + Vue Router",
+        "    ↕ Axios HTTP",
+        "反向代理层：Nginx（SPA回退 + API转发 + 安全头）",
+        "    ↕",
+        "应用层：FastAPI + Uvicorn ASGI（中间件 / 依赖注入 / 全局异常）",
+        "    ↕",
+        "业务模块层：Auth / Hospital / Department / Doctor / Schedule",
+        "           Reserve / Queue / Payment / Guide / Search",
+        "           Accompany / Reminder / Message / Report / Statistics",
+        "    ↕",
+        "基础设施层：MySQL 8.0 | Redis 7 | RabbitMQ 3 | Elasticsearch 8"
+      ],
+      "layout": "architecture_layers",
+      "image_url": "",
+      "design_hint": "五层架构从上到下，每层用不同背景色块，层间用箭头连接，整体呈金字塔形"
+    },
+    {
+      "page_index": 10,
+      "section": "03 技术架构与全景技术栈",
+      "title": "前端技术栈详解",
+      "content": [
+        "框架：Vue 3.4 + TypeScript 5.3",
+        "  → 组合式API + 类型安全",
+        "",
+        "UI组件库：Element Plus 2.x",
+        "  → 适老化大字体模式支持",
+        "",
+        "状态管理：Pinia",
+        "  → 双模式切换（长者/子女）",
+        "",
+        "路由：Vue Router 4",
+        "  → 路由守卫 + 权限控制",
+        "",
+        "HTTP：Axios",
+        "  → 请求拦截注入Token + 60s超时适配AI长链路"
+      ],
+      "layout": "tech_detail",
+      "image_url": "",
+      "design_hint": "左侧技术栈图标列表，右侧对应代码片段或配置截图"
+    },
+    {
+      "page_index": 11,
+      "section": "03 技术架构与全景技术栈",
+      "title": "后端技术栈详解",
+      "content": [
+        "Web框架：FastAPI 0.111 + Uvicorn 0.30",
+        "  → 异步高性能 + 自动OpenAPI文档",
+        "ORM：SQLAlchemy 2.0.31 (async)",
+        "  → 声明式映射 + 连接池管理",
+        "数据校验：Pydantic v2 2.7.4",
+        "  → 请求/响应Schema强类型校验",
+        "数据库迁移：Alembic 1.13.1",
+        "认证：python-jose + bcrypt",
+        "  → JWT签发 + 密码单向哈希",
+        "定时任务：APScheduler 3.10.4",
+        "  → 异步调度器，订单过期+号源对账"
+      ],
+      "layout": "tech_detail",
+      "image_url": "",
+      "design_hint": "表格形式展示技术组件+版本+用途，右侧配FastAPI自动文档截图"
+    },
+    {
+      "page_index": 12,
+      "section": "03 技术架构与全景技术栈",
+      "title": "中间件与基础设施技术栈",
+      "content": [
+        "缓存：Redis 7 + redis[async] 5.0.7",
+        "  → 号源管理 / 候诊队列 / Token缓存 / Lua原子脚本",
+        "消息队列：RabbitMQ 3 + aio-pika 9.4.2",
+        "  → Direct直连 + Delay延迟双交换机",
+        "搜索引擎：Elasticsearch 8 + IK分词器",
+        "  → 医院/科室/医生/症状四类数据模糊搜索",
+        "AI集成：Dify Chatflow (httpx)",
+        "  → 智能导诊 + 用药建议（可降级到本地规则引擎）",
+        "支付：alipay-sdk-python 3.7.33",
+        "  → 支付宝沙箱支付 + RSA2验签"
+      ],
+      "layout": "tech_detail",
+      "image_url": "",
+      "design_hint": "四个中间件用图标+卡片式布局，每个卡片包含技术名+版本+核心用途"
+    },
+    {
+      "page_index": 13,
+      "section": "03 技术架构与全景技术栈",
+      "title": "后端分层架构（Router → Service → Repository）",
+      "content": [
+        "Router层（router.py）",
+        "  定义API端点，参数校验，调用Service",
+        "",
+        "Service层（service.py）",
+        "  核心业务逻辑，事务边界管理",
+        "",
+        "Repository层（repository.py）",
+        "  SQLAlchemy ORM查询，数据访问",
+        "",
+        "Models层（models.py）+ Schemas层（schemas.py）",
+        "  数据库表结构定义 + Pydantic请求/响应模型"
+      ],
+      "layout": "layer_diagram",
+      "image_url": "",
+      "design_hint": "五层从上到下堆叠，每层用不同蓝色深度，右侧标注各层职责，左侧标注对应文件"
+    },
+    {
+      "page_index": 14,
+      "section": "04 核心技术点深度讲解",
+      "title": "六大核心技术概览",
+      "content": [
+        "① Redis Lua 原子脚本 — 号源并发控制",
+        "② RabbitMQ 延迟队列 — 支付超时自动取消",
+        "③ Elasticsearch + IK — 中文模糊搜索",
+        "④ Dify AI 集成 — 智能导诊服务",
+        "⑤ 支付宝沙箱支付 — 在线缴费集成",
+        "⑥ JWT + bcrypt — 多端认证鉴权"
+      ],
+      "layout": "tech_overview_cards",
+      "image_url": "",
+      "design_hint": "六个技术点用六宫格卡片布局，每个卡片有图标+编号+标题+一行简介"
+    },
+    {
+      "page_index": 15,
+      "section": "04 核心技术点深度讲解",
+      "title": "① Redis Lua 原子脚本 — 号源并发控制",
+      "content": [
+        "业务场景：高并发挂号时，多用户同时抢同一号源",
+        "",
+        "核心方案：Lua脚本保证 GET + DECRBY 原子执行",
+        "  → 先检查余量再扣减，防止并发超卖",
+        "  → 返回 1=成功 / 0=号源不足",
+        "",
+        "三大Lua脚本：",
+        "  1. 原子扣减号源（预约时）",
+        "  2. 号源回滚（取消/超时时）",
+        "  3. 管理员增量调整（运维时）",
+        "",
+        "配合 Redis SET NX 实现预约去重（TTL=900s）"
+      ],
+      "layout": "code_explanation",
+      "image_url": "",
+      "design_hint": "左侧放Lua脚本代码片段（语法高亮），右侧放流程图说明原子操作过程"
+    },
+    {
+      "page_index": 16,
+      "section": "04 核心技术点深度讲解",
+      "title": "① 号源一致性保障三层机制",
+      "content": [
+        "第1层：Redis Lua 原子操作（实时扣减）",
+        "  → 防并发超卖，响应时间 ≤ 1ms",
+        "",
+        "第2层：RabbitMQ 延时消息（15分钟超时）",
+        "  → 支付超时自动取消，释放占用号源",
+        "",
+        "第3层：APScheduler 定时对账（每小时）",
+        "  → 以MySQL为准修复Redis，兜底极端情况",
+        "",
+        "降级策略：RabbitMQ不可用时，定时任务兜底处理超时"
+      ],
+      "layout": "three_layer_defense",
+      "image_url": "",
+      "design_hint": "三层防御用递进式图示，从上到下逐层加深，每层标注作用和时机"
+    },
+    {
+      "page_index": 17,
+      "section": "04 核心技术点深度讲解",
+      "title": "② RabbitMQ 延迟队列 — 支付超时自动取消",
+      "content": [
+        "技术选型：RabbitMQ x-delayed-message 插件",
+        "  优势：精确投递 / 无需轮询 / 消息持久化",
+        "",
+        "交换机设计：",
+        "  ex_reserve  → Direct → 挂号成功通知",
+        "  ex_queue    → Direct → 候诊顺位通知",
+        "  ex_accompany → Direct → 陪诊申请通知",
+        "  ex_delay    → X_DELAYED_MESSAGE → 延时任务",
+        "",
+        "消息流程：",
+        "  发送 → ex_delay 持有(15min) → q_delay_tasks 消费",
+        "  → 检查 pay_status → 已支付跳过 / 未支付取消+释放"
+      ],
+      "layout": "code_explanation",
+      "image_url": "",
+      "design_hint": "左侧交换机拓扑图，右侧消息生命周期时间线，关键代码片段嵌入"
+    },
+    {
+      "page_index": 18,
+      "section": "04 核心技术点深度讲解",
+      "title": "③ Elasticsearch + IK 分词 — 中文模糊搜索",
+      "content": [
+        "索引设计：4个索引覆盖核心数据",
+        "  yft_hospital / yft_department / yft_doctor / yft_symptom",
+        "",
+        "分词策略：索引时最细粒度，搜索时智能粒度",
+        "  索引时 ik_max_word：高召回率",
+        "    "心血管内科" → 心/血管/内科/心血管/血管内/心血管内/心血管内科",
+        "  搜索时 ik_smart：高精确率",
+        "    "心血管内科" → 心血管/内科",
+        "",
+        "同步策略：Post-commit Hook 增量同步 + 全量重建兜底",
+        "查询方式：跨4索引 multi_match + 字段加权（doctor_name^3）"
+      ],
+      "layout": "code_explanation",
+      "image_url": "",
+      "design_hint": "上方分词对比图，下方索引结构表格，右侧ES查询代码片段"
+    },
+    {
+      "page_index": 19,
+      "section": "04 核心技术点深度讲解",
+      "title": "④ AI 智能导诊 — Dify + 本地规则引擎双层架构",
+      "content": [
+        "双层架构设计（优雅降级）：",
+        "  用户输入症状 → Dify AI 优先处理",
+        "      ↓ (AI不可用时)",
+        "  本地规则引擎兜底",
+        "",
+        "Dify AI 集成：",
+        "  Chatflow模式 / 60秒超时 / 自动重试",
+        "  返回JSON：科室推荐 + 置信度 + 用药建议",
+        "",
+        "本地规则引擎：",
+        "  滑动窗口分词(2-5字) + 症状词库加权匹配",
+        "  词库覆盖：心血管/内分泌/神经/呼吸/消化/骨科/老年病科",
+        "",
+        "语音搜索接口：适配方言口语问诊场景"
+      ],
+      "layout": "dual_engine",
+      "image_url": "",
+      "design_hint": "上方双层架构流程图（AI层+规则层），下方症状词库示例表"
+    },
+    {
+      "page_index": 20,
+      "section": "04 核心技术点深度讲解",
+      "title": "⑤ 支付宝沙箱支付集成",
+      "content": [
+        "双模式切换：sandbox（沙箱API）/ mock（本地模拟）",
+        "",
+        "支付创建流程：",
+        "  1. 校验预约订单 + 幂等复用",
+        "  2. 通过 reserve → schedule → doctor 链路查询挂号费",
+        "  3. 调用支付宝 page_execute 生成支付页URL",
+        "  4. 前端 window.location.href 跳转支付宝",
+        "",
+        "异步回调处理：",
+        "  1. RSA2 公钥验签（fail-closed）",
+        "  2. WHERE pay_status=1 防并发重复回调",
+        "  3. 更新预约状态 + 入候诊队列",
+        "",
+        "幂等策略：四层幂等保护（创建/回调/同步/入队）"
+      ],
+      "layout": "payment_flow",
+      "image_url": "",
+      "design_hint": "支付流程时序图 + 幂等策略表格，配支付宝沙箱页面截图"
+    },
+    {
+      "page_index": 21,
+      "section": "04 核心技术点深度讲解",
+      "title": "⑥ JWT 认证与多端鉴权",
+      "content": [
+        "密码安全：bcrypt 单向哈希",
+        "  → 自带盐值，相同密码每次哈希结果不同",
+        "  → 计算故意慢(~100ms)，防暴力破解",
+        "",
+        "JWT Token 设计：",
+        "  payload = {sub: user_id, type: user_type, exp: 24h}",
+        "  algorithm = HS256",
+        "",
+        "认证中间件：FastAPI Depends 依赖注入",
+        "  get_current_user → 任何需要登录的接口自动鉴权",
+        "  require_admin → 管理员权限守卫",
+        "",
+        "多端登录：账号密码 / 微信(模拟) / 支付宝OAuth(真实)"
+      ],
+      "layout": "code_explanation",
+      "image_url": "",
+      "design_hint": "左侧JWT生成/验证代码，右侧认证流程图，底部多端登录方式对比表"
+    },
+    {
+      "page_index": 22,
+      "section": "04 核心技术点深度讲解",
+      "title": "FastAPI 应用生命周期与降级策略",
+      "content": [
+        "lifespan 管理：启动阶段初始化 → 运行阶段 → 关闭阶段反序释放",
+        "",
+        "组件降级策略：",
+        "  Redis：不可降级，启动失败则核心功能不可用",
+        "  RabbitMQ：可降级，MQ不可用时预约创建不阻断，定时任务兜底",
+        "  Dify AI：可降级，不可用时自动回退到本地规则引擎",
+        "  Elasticsearch：可降级，搜索功能不可用不影响核心挂号流程",
+        "",
+        "中间件链：CORS → RequestID → RequestLogging",
+        "全局异常处理：自定义异常类层次 + 统一JSON响应格式"
+      ],
+      "layout": "lifecycle_diagram",
+      "image_url": "",
+      "design_hint": "左侧lifespan生命周期图，右侧降级策略表格（绿色=可降级/红色=不可降级）"
+    },
+    {
+      "page_index": 23,
+      "section": "04 核心技术点深度讲解",
+      "title": "陪诊服务 — 状态机与时间驱动设计",
+      "content": [
+        "订单五状态流转：",
+        "  1 待审核 → 2 待服务 → 3 服务中 → 4 已完成",
+        "      ↓         ↓         ↓",
+        "      5 已取消  5 已取消   (过期自动→4)",
+        "",
+        "状态变更校验：每次操作校验当前状态，防止非法跳转",
+        "",
+        "时间驱动自动过期（读时更新）：",
+        "  accompany_date < today → 待审核/待服务→已取消",
+        "  accompany_date < today → 服务中→已完成",
+        "",
+        "评价系统：服务完成后用户评分，自动重算志愿者平均分",
+        "RabbitMQ通知：订单创建→ex_accompany→管理员通知"
+      ],
+      "layout": "state_machine",
+      "image_url": "",
+      "design_hint": "状态机流转图居中，周围标注各状态触发条件和角色"
+    },
+    {
+      "page_index": 24,
+      "section": "05 系统功能展示",
+      "title": "用户端功能 — 长者模式 & 子女模式",
+      "content": [
+        "首页一键切换双UI模式：",
+        "  长者模式：大字体 / 大按钮 / 简化操作链路",
+        "  子女模式：标准UI / 完整功能 / 多长辈绑定",
+        "",
+        "核心功能页面：",
+        "  🏠 首页：医院/科室/医生快速入口",
+        "  📅 预约挂号：排班表 → 选时段 → 确认预约",
+        "  🤖 AI导诊：输入症状 → 推荐科室 → 跳转挂号",
+        "  👥 陪诊服务：浏览志愿者 → 提交申请",
+        "  💊 健康提醒：用药提醒 / 复诊提醒",
+        "  📋 体检报告：AI大白话通俗解读"
+      ],
+      "layout": "feature_showcase",
+      "image_url": "",
+      "design_hint": "左右分屏展示长者模式和子女模式的界面截图，下方功能列表"
+    },
+    {
+      "page_index": 25,
+      "section": "05 系统功能展示",
+      "title": "管理员后台功能",
+      "content": [
+        "数据看板：就诊高峰 / 号源使用 / 陪诊订单统计",
+        "",
+        "医院管理：医院信息维护 + 等级分类",
+        "科室管理：科室增删改查 + 关联医院",
+        "医生管理：医生档案 + 关联科室",
+        "排班管理：排班表维护 + 号源数量设置（含老年优先号源）",
+        "",
+        "预约管理：预约订单列表 + 状态跟踪",
+        "志愿者管理：志愿者信息审核 + 服务评价查看",
+        "陪诊订单：审核/通过/拒绝/开始/完成全流程管理",
+        "",
+        "ES同步管理：全量同步 / 增量同步状态监控"
+      ],
+      "layout": "admin_dashboard",
+      "image_url": "",
+      "design_hint": "左侧后台菜单截图，右侧功能模块九宫格展示"
+    },
+    {
+      "page_index": 26,
+      "section": "05 系统功能展示",
+      "title": "数据库设计（12张核心表）",
+      "content": [
+        "用户体系：tb_user / tb_elder_bind",
+        "  用户表 + 长辈绑定关系表",
+        "",
+        "医院体系：tb_hospital / tb_department / tb_doctor",
+        "  医院 → 科室 → 医生 三级关联",
+        "",
+        "预约体系：tb_schedule / tb_reserve / tb_payment",
+        "  排班号源 → 预约订单 → 支付记录",
+        "",
+        "服务体系：tb_volunteer / tb_accompany_order",
+        "  志愿者信息 → 陪诊订单",
+        "",
+        "其他：tb_queue / tb_message / tb_reminder / tb_report"
+      ],
+      "layout": "database_erd",
+      "image_url": "",
+      "design_hint": "ER关系图展示12张表的关联关系，用不同颜色区分业务域"
+    },
+    {
+      "page_index": 27,
+      "section": "05 系统功能展示",
+      "title": "Docker Compose 一键部署",
+      "content": [
+        "容器编排：6个服务一键启动",
+        "  mysql:8.0 → 持久化存储",
+        "  redis:7 → 缓存/队列/锁",
+        "  rabbitmq:3 → 消息队列（含延迟插件）",
+        "  elasticsearch:8 → 全文搜索（含IK分词器）",
+        "  backend → FastAPI + Uvicorn",
+        "  frontend → Nginx + Vue3 SPA",
+        "",
+        "Nginx 反向代理：",
+        "  / → 前端静态资源（SPA回退）",
+        "  /api/ → 后端API转发（120s超时）",
+        "  /uploads/ → 文件上传代理",
+        "",
+        "端口策略：生产仅暴露80端口，数据层完全隔离"
+      ],
+      "layout": "deployment",
+      "image_url": "",
+      "design_hint": "Docker容器拓扑图 + Nginx配置要点 + 端口映射表格"
+    },
+    {
+      "page_index": 28,
+      "section": "06 总结与展望",
+      "title": "项目成果总结",
+      "content": [
+        "✅ 业务成果：",
+        "  • 完成3大核心业务 + 7个后台管理模块的全栈开发",
+        "  • 覆盖挂号→导诊→陪诊→支付→候诊→报告完整就医闭环",
+        "",
+        "✅ 技术成果：",
+        "  • 6大核心技术点实现（Redis原子操作/延迟队列/ES搜索/AI导诊/支付集成/JWT认证）",
+        "  • 号源一致性三层保障机制（Lua原子 → MQ延时 → 定时对账）",
+        "  • 全链路降级设计（MQ/AI/ES均可优雅降级）",
+        "  • Docker Compose 一键部署，生产环境安全隔离",
+        "",
+        "✅ 工程规范：",
+        "  • 统一分层架构（Router→Service→Repository）",
+        "  • 全局软删除 + 统一异常处理 + Pydantic Schema校验"
+      ],
+      "layout": "summary_cards",
+      "image_url": "",
+      "design_hint": "三列卡片布局（业务成果/技术成果/工程规范），每列用图标+要点列表"
+    },
+    {
+      "page_index": 29,
+      "section": "06 总结与展望",
+      "title": "技术亮点与创新点",
+      "content": [
+        "🏆 技术亮点：",
+        "  • Redis Lua 原子脚本实现号源零超卖",
+        "  • RabbitMQ 延迟队列替代定时轮询，精确高效",
+        "  • IK分词器 双策略（索引最细/搜索智能）提升搜索体验",
+        "  • Dify AI + 本地规则引擎双层架构，优雅降级",
+        "  • Post-commit Hook 保证DB与ES最终一致性",
+        "",
+        "💡 创新点：",
+        "  • 公益志愿者陪诊服务（项目核心差异化）",
+        "  • 长者/子女一键切换双UI模式",
+        "  • 方言口语适配的AI智能导诊",
+        "  • 体检报告AI大白话通俗解读"
+      ],
+      "layout": "highlights",
+      "image_url": "",
+      "design_hint": "上方技术亮点用图标列表，下方创新点用卡片+效果图展示"
+    },
+    {
+      "page_index": 30,
+      "section": "06 总结与展望",
+      "title": "未来展望",
+      "content": [
+        "短期优化：",
+        "  • 接入真实医院HIS系统，对接实际号源数据",
+        "  • 优化AI导诊模型，引入更多医学知识库",
+        "  • 增加微信小程序端，扩大用户覆盖",
+        "",
+        "中期扩展：",
+        "  • 接入医保在线结算，打通支付闭环",
+        "  • 引入实时通讯（WebSocket），候诊动态推送",
+        "  • 志愿者GPS定位，实时追踪陪诊服务",
+        "",
+        "长期愿景：",
+        "  • 构建区域医疗服务平台，接入多家社区医院",
+        "  • AI健康档案管理，慢病智能随访",
+        "  • 适老化设计标准输出，赋能更多医疗场景"
+      ],
+      "layout": "roadmap",
+      "image_url": "",
+      "design_hint": "时间轴布局（短期/中期/长期），每个阶段用渐变色块，配对应图标"
+    },
+    {
+      "page_index": 31,
+      "section": "致谢",
+      "title": "感谢聆听",
+      "subtitle": "敬请各位老师批评指正",
+      "content": [
+        "项目名称：银发通 · 适老化智慧就医服务平台",
+        "技术栈：Vue3 + FastAPI + MySQL + Redis + RabbitMQ + Elasticsearch + Docker",
+        "",
+        "答辩人：XXX",
+        "指导教师：XXX",
+        "",
+        "📧 联系方式：xxx@xxx.com",
+        "🔗 项目地址：github.com/xxx/yinfa-tong"
+      ],
+      "layout": "ending",
+      "image_url": "",
+      "design_hint": "居中大标题，下方项目信息和技术栈标签，底部联系方式，背景与封面呼应"
+    }
+  ]
+}

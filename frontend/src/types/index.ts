@@ -18,6 +18,8 @@ export interface PageResponse<T> {
 export interface LoginRequest { username: string; password: string }
 export interface RegisterRequest { username: string; password: string; nickname?: string; user_type?: number; admin_code?: string }
 export interface AlipayLoginRequest { auth_code: string }
+export interface SmsLoginRequest { phone: string; code: string }
+export interface AdminLoginRequest { username: string; password: string }
 export interface TokenResponse { access_token: string; token_type: string; user_id: number; nickname: string; user_type: number }
 export interface UserInfo {
   id: number; username: string; nickname: string; user_type: number

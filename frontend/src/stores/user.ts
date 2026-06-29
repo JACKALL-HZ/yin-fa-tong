@@ -21,6 +21,10 @@ export const useUserStore = defineStore('user', () => {
     await authApi.register({ username, password, nickname, user_type, admin_code })
   }
 
+  async function registerWithCode(phone: string, code: string, password: string) {
+    await authApi.registerWithCode(phone, code, password)
+  }
+
   async function alipayLogin(authCode: string) {
     const res = await authApi.alipayLogin(authCode)
     if (res.data?.code === 200 && res.data.data) {
@@ -31,6 +35,24 @@ export const useUserStore = defineStore('user', () => {
       await fetchMe()
     }
     return res
+  }
+
+  async function smsLogin(phone: string, code: string) {
+    const res = await authApi.smsLogin(phone, code)
+    const d = res.data.data
+    token.value = d.access_token
+    localStorage.setItem('token', d.access_token)
+    localStorage.setItem('user_type', String(d.user_type))
+    await fetchMe()
+  }
+
+  async function adminLogin(username: string, password: string) {
+    const res = await authApi.adminLogin(username, password)
+    const d = res.data.data
+    token.value = d.access_token
+    localStorage.setItem('token', d.access_token)
+    localStorage.setItem('user_type', String(d.user_type))
+    await fetchMe()
   }
 
   async function fetchMe() {
@@ -47,5 +69,5 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('user_type')
   }
 
-  return { token, info, isLoggedIn, isAdmin, profileComplete, login, register, alipayLogin, fetchMe, logout }
+  return { token, info, isLoggedIn, isAdmin, profileComplete, login, register, registerWithCode, alipayLogin, smsLogin, adminLogin, fetchMe, logout }
 })

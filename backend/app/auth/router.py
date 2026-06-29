@@ -7,9 +7,13 @@ from app.shared.database import get_db
 from app.shared.response import ApiResponse
 from app.auth.schemas import (
     RegisterRequest,
+    RegisterWithCodeRequest,
     LoginRequest,
     WxLoginRequest,
     AlipayLoginRequest,
+    SendSmsCodeRequest,
+    SmsLoginRequest,
+    AdminLoginRequest,
     TokenResponse,
     UserInfoResponse,
 )
@@ -22,6 +26,13 @@ router = APIRouter(prefix="/api/auth", tags=["认证"])
 async def register(req: RegisterRequest, session: AsyncSession = Depends(get_db)):
     """账号密码注册"""
     data = await service.register(session, req)
+    return ApiResponse.ok(data, message="注册成功")
+
+
+@router.post("/register/code", response_model=ApiResponse[TokenResponse])
+async def register_with_code(req: RegisterWithCodeRequest, session: AsyncSession = Depends(get_db)):
+    """手机号+验证码注册"""
+    data = await service.register_with_code(session, req)
     return ApiResponse.ok(data, message="注册成功")
 
 
@@ -43,6 +54,27 @@ async def wx_login(req: WxLoginRequest, session: AsyncSession = Depends(get_db))
 async def alipay_login(req: AlipayLoginRequest, session: AsyncSession = Depends(get_db)):
     """支付宝 OAuth 扫码登录"""
     data = await service.alipay_login(session, req)
+    return ApiResponse.ok(data, message="登录成功")
+
+
+@router.post("/sms/send", response_model=ApiResponse)
+async def send_sms_code(req: SendSmsCodeRequest, session: AsyncSession = Depends(get_db)):
+    """发送短信验证码"""
+    await service.send_sms_code(session, req)
+    return ApiResponse.ok(message="验证码发送成功")
+
+
+@router.post("/sms/login", response_model=ApiResponse[TokenResponse])
+async def sms_login(req: SmsLoginRequest, session: AsyncSession = Depends(get_db)):
+    """手机号验证码登录/注册"""
+    data = await service.sms_login(session, req)
+    return ApiResponse.ok(data, message="登录成功")
+
+
+@router.post("/admin/login", response_model=ApiResponse[TokenResponse])
+async def admin_login(req: AdminLoginRequest, session: AsyncSession = Depends(get_db)):
+    """管理员登录"""
+    data = await service.admin_login(session, req)
     return ApiResponse.ok(data, message="登录成功")
 
 

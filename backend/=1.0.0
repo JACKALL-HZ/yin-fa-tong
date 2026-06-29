@@ -1,0 +1,55 @@
+Looking in indexes: https://mirrors.aliyun.com/pypi/simple/
+Collecting alibabacloud_dypnsapi20170525
+  Downloading https://mirrors.aliyun.com/pypi/packages/57/74/e6b05f16495071367eb2181a0cf6fd588485bc96662a3038803f17bda911/alibabacloud_dypnsapi20170525-2.0.0-py3-none-any.whl (22 kB)
+Collecting alibabacloud-endpoint-util<1.0.0,>=0.0.4 (from alibabacloud_dypnsapi20170525)
+  Downloading https://mirrors.aliyun.com/pypi/packages/92/7d/8cc92a95c920e344835b005af6ea45a0db98763ad6ad19299d26892e6c8d/alibabacloud_endpoint_util-0.0.4.tar.gz (2.8 kB)
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Collecting alibabacloud-openapi-util<1.0.0,>=0.2.2 (from alibabacloud_dypnsapi20170525)
+  Downloading https://mirrors.aliyun.com/pypi/packages/08/46/9b217343648b366eb93447f5d93116e09a61956005794aed5ef95a2e9e2e/alibabacloud_openapi_util-0.2.4-py3-none-any.whl (7.7 kB)
+Requirement already satisfied: alibabacloud-tea-openapi<1.0.0,>=0.3.16 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud_dypnsapi20170525) (0.4.4)
+Requirement already satisfied: alibabacloud-tea-util<1.0.0,>=0.3.13 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud_dypnsapi20170525) (0.3.14)
+Requirement already satisfied: cryptography>=3.0.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud-openapi-util<1.0.0,>=0.2.2->alibabacloud_dypnsapi20170525) (46.0.7)
+Requirement already satisfied: alibabacloud-credentials<2.0.0,>=1.0.2 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (1.0.9)
+Requirement already satisfied: alibabacloud-gateway-spi<1.0.0,>=0.0.2 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (0.0.4)
+Requirement already satisfied: darabonba-core<2.0.0,>=1.0.3 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (1.0.7)
+Requirement already satisfied: APScheduler<4.0.0,>=3.10.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (3.10.4)
+Requirement already satisfied: aiofiles<25.0.0,>=22.1.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (24.1.0)
+Requirement already satisfied: alibabacloud-tea>=0.4.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (0.4.3)
+Requirement already satisfied: alibabacloud-credentials-api<2.0.0,>=1.0.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (1.0.1)
+Requirement already satisfied: six>=1.4.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from APScheduler<4.0.0,>=3.10.0->alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (1.17.0)
+Requirement already satisfied: pytz in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from APScheduler<4.0.0,>=3.10.0->alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (2026.2)
+Requirement already satisfied: tzlocal!=3.*,>=2.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from APScheduler<4.0.0,>=3.10.0->alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (5.4.3)
+Requirement already satisfied: cffi>=2.0.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from cryptography>=3.0.0->alibabacloud-openapi-util<1.0.0,>=0.2.2->alibabacloud_dypnsapi20170525) (2.0.0)
+Requirement already satisfied: aiohttp<4.0.0,>=3.7.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (3.14.1)
+Requirement already satisfied: requests<3.0.0,>=2.21.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (2.34.2)
+Requirement already satisfied: aiohappyeyeballs>=2.5.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (2.6.2)
+Requirement already satisfied: aiosignal>=1.4.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (1.4.0)
+Requirement already satisfied: attrs>=17.3.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (26.1.0)
+Requirement already satisfied: frozenlist>=1.1.1 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (1.8.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (6.7.1)
+Requirement already satisfied: propcache>=0.2.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (0.5.2)
+Requirement already satisfied: typing_extensions>=4.4 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (4.15.0)
+Requirement already satisfied: yarl<2.0,>=1.17.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (1.24.2)
+Requirement already satisfied: charset_normalizer<4,>=2 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from requests<3.0.0,>=2.21.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (3.4.7)
+Requirement already satisfied: idna<4,>=2.5 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from requests<3.0.0,>=2.21.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (3.18)
+Requirement already satisfied: urllib3<3,>=1.26 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from requests<3.0.0,>=2.21.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (2.7.0)
+Requirement already satisfied: certifi>=2023.5.7 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from requests<3.0.0,>=2.21.0->darabonba-core<2.0.0,>=1.0.3->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (2026.6.17)
+Requirement already satisfied: pycparser in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from cffi>=2.0.0->cryptography>=3.0.0->alibabacloud-openapi-util<1.0.0,>=0.2.2->alibabacloud_dypnsapi20170525) (3.0)
+Requirement already satisfied: tzdata in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from tzlocal!=3.*,>=2.0->APScheduler<4.0.0,>=3.10.0->alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi<1.0.0,>=0.3.16->alibabacloud_dypnsapi20170525) (2026.2)
+Building wheels for collected packages: alibabacloud-endpoint-util
+  Building wheel for alibabacloud-endpoint-util (pyproject.toml): started
+  Building wheel for alibabacloud-endpoint-util (pyproject.toml): finished with status 'done'
+  Created wheel for alibabacloud-endpoint-util: filename=alibabacloud_endpoint_util-0.0.4-py3-none-any.whl size=2723 sha256=969b7bbd39ed1043e62255085f9d627fdec5ad9bed9a9544415db4a1149df0f6
+  Stored in directory: c:\users\lenovo\appdata\local\pip\cache\wheels\bb\01\db\aaf87f3ce79cd18bbef046aceb7c915f23f936027a97365be6
+Successfully built alibabacloud-endpoint-util
+Installing collected packages: alibabacloud-endpoint-util, alibabacloud-openapi-util, alibabacloud_dypnsapi20170525
+
+Successfully installed alibabacloud-endpoint-util-0.0.4 alibabacloud-openapi-util-0.2.4 alibabacloud_dypnsapi20170525-2.0.0
+
+[notice] A new release of pip is available: 25.1.1 -> 26.1.2
+[notice] To update, run: E:\银发通二阶段项目\backend\.venv\Scripts\python.exe -m pip install --upgrade pip

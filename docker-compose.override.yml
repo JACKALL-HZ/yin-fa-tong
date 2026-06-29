@@ -1,6 +1,26 @@
 # 开发模式：挂载本地代码到容器，改代码后只需重启不需重建
 # 生产环境不使用此文件
 services:
+  mysql:
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 780645
+      MYSQL_DATABASE: yinfa_tong
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  elasticsearch:
+    ports:
+      - "9200:9200"
+
   backend:
     volumes:
       - ./backend/app:/app/app

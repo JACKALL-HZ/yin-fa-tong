@@ -1,0 +1,57 @@
+Looking in indexes: https://mirrors.aliyun.com/pypi/simple/
+Collecting alibabacloud_dysmsapi20170525
+  Using cached https://mirrors.aliyun.com/pypi/packages/3a/db/d3a5e2bedbba433031bed16aafdbcce3c7fdcb8341fb9b298c9da0573f00/alibabacloud_dysmsapi20170525-4.5.1-py3-none-any.whl (258 kB)
+Collecting alibabacloud-tea-openapi
+  Downloading https://mirrors.aliyun.com/pypi/packages/f5/5a/6bfc4506438c1809c486f66217ad11eab78157192b3d5707b4e2f4212f6c/alibabacloud_tea_openapi-0.4.4-py3-none-any.whl (26 kB)
+Collecting darabonba-core<2.0.0,>=1.0.0 (from alibabacloud_dysmsapi20170525)
+  Downloading https://mirrors.aliyun.com/pypi/packages/47/01/34073c5e1742db3399d5837b44ac237e1001f092224a1a2addf30c5f9aaa/darabonba_core-1.0.7-py3-none-any.whl (24 kB)
+Collecting alibabacloud-credentials<2.0.0,>=1.0.2 (from alibabacloud-tea-openapi)
+  Downloading https://mirrors.aliyun.com/pypi/packages/71/9e/0f0c9e100113f30496992e08cde2f21607967a589c55ed1e20f1023a875a/alibabacloud_credentials-1.0.9-py3-none-any.whl (50 kB)
+Collecting alibabacloud-gateway-spi<1.0.0,>=0.0.2 (from alibabacloud-tea-openapi)
+  Using cached https://mirrors.aliyun.com/pypi/packages/45/85/81170c45e9d1240736f9776a1c690b958c975509381221b5f8d960b5376d/alibabacloud_gateway_spi-0.0.4-py3-none-any.whl (4.3 kB)
+Collecting alibabacloud-tea-util<1.0.0,>=0.3.13 (from alibabacloud-tea-openapi)
+  Using cached https://mirrors.aliyun.com/pypi/packages/72/9e/c394b4e2104766fb28a1e44e3ed36e4c7773b4d05c868e482be99d5635c9/alibabacloud_tea_util-0.3.14-py3-none-any.whl (6.7 kB)
+Collecting cryptography<47.0.0,>=3.0.0 (from alibabacloud-tea-openapi)
+  Downloading https://mirrors.aliyun.com/pypi/packages/2b/02/7788f9fefa1d060ca68717c3901ae7fffa21ee087a90b7f23c7a603c32ae/cryptography-46.0.7-cp311-abi3-win_amd64.whl (3.5 MB)
+     ---------------------------------------- 3.5/3.5 MB 2.0 MB/s eta 0:00:00
+Requirement already satisfied: APScheduler<4.0.0,>=3.10.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi) (3.10.4)
+Collecting aiofiles<25.0.0,>=22.1.0 (from alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi)
+  Using cached https://mirrors.aliyun.com/pypi/packages/a5/45/30bb92d442636f570cb5651bc661f52b610e2eec3f891a5dc3a4c3667db0/aiofiles-24.1.0-py3-none-any.whl (15 kB)
+Collecting alibabacloud-tea>=0.4.0 (from alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi)
+  Using cached alibabacloud_tea-0.4.3-py3-none-any.whl
+Collecting alibabacloud-credentials-api<2.0.0,>=1.0.0 (from alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi)
+  Downloading https://mirrors.aliyun.com/pypi/packages/0b/49/ff401af96d77d40ab918096d831bd3360f3eec60f10e65125e5789c4e617/alibabacloud_credentials_api-1.0.1-py3-none-any.whl (2.2 kB)
+Requirement already satisfied: six>=1.4.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from APScheduler<4.0.0,>=3.10.0->alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi) (1.17.0)
+Requirement already satisfied: pytz in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from APScheduler<4.0.0,>=3.10.0->alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi) (2026.2)
+Requirement already satisfied: tzlocal!=3.*,>=2.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from APScheduler<4.0.0,>=3.10.0->alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi) (5.4.3)
+Requirement already satisfied: cffi>=2.0.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from cryptography<47.0.0,>=3.0.0->alibabacloud-tea-openapi) (2.0.0)
+Requirement already satisfied: aiohttp<4.0.0,>=3.7.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (3.14.1)
+Collecting requests<3.0.0,>=2.21.0 (from darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525)
+  Downloading https://mirrors.aliyun.com/pypi/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl (73 kB)
+Requirement already satisfied: aiohappyeyeballs>=2.5.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (2.6.2)
+Requirement already satisfied: aiosignal>=1.4.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (1.4.0)
+Requirement already satisfied: attrs>=17.3.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (26.1.0)
+Requirement already satisfied: frozenlist>=1.1.1 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (1.8.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (6.7.1)
+Requirement already satisfied: propcache>=0.2.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (0.5.2)
+Requirement already satisfied: typing_extensions>=4.4 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (4.15.0)
+Requirement already satisfied: yarl<2.0,>=1.17.0 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from aiohttp<4.0.0,>=3.7.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (1.24.2)
+Collecting charset_normalizer<4,>=2 (from requests<3.0.0,>=2.21.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525)
+  Downloading https://mirrors.aliyun.com/pypi/packages/35/d9/0e7dffa06c5ab081f75b1b786f0aefc88365825dfcd0ac544bdb7b2b6853/charset_normalizer-3.4.7-cp312-cp312-win_amd64.whl (159 kB)
+Requirement already satisfied: idna<4,>=2.5 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from requests<3.0.0,>=2.21.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (3.18)
+Requirement already satisfied: urllib3<3,>=1.26 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from requests<3.0.0,>=2.21.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (2.7.0)
+Requirement already satisfied: certifi>=2023.5.7 in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from requests<3.0.0,>=2.21.0->darabonba-core<2.0.0,>=1.0.0->alibabacloud_dysmsapi20170525) (2026.6.17)
+Requirement already satisfied: pycparser in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from cffi>=2.0.0->cryptography<47.0.0,>=3.0.0->alibabacloud-tea-openapi) (3.0)
+Requirement already satisfied: tzdata in e:\银发通二阶段项目\backend\.venv\lib\site-packages (from tzlocal!=3.*,>=2.0->APScheduler<4.0.0,>=3.10.0->alibabacloud-credentials<2.0.0,>=1.0.2->alibabacloud-tea-openapi) (2026.2)
+Installing collected packages: charset_normalizer, alibabacloud-credentials-api, aiofiles, requests, cryptography, alibabacloud-tea, darabonba-core, alibabacloud-tea-util, alibabacloud-credentials, alibabacloud-gateway-spi, alibabacloud-tea-openapi, alibabacloud_dysmsapi20170525
+  Attempting uninstall: cryptography
+    Found existing installation: cryptography 49.0.0
+    Uninstalling cryptography-49.0.0:
+      Successfully uninstalled cryptography-49.0.0
+  WARNING: Failed to remove contents in a temporary directory 'E:\银发通二阶段项目\backend\.venv\Lib\site-packages\~ryptography'.
+  You can safely remove it manually.
+
+Successfully installed aiofiles-24.1.0 alibabacloud-credentials-1.0.9 alibabacloud-credentials-api-1.0.1 alibabacloud-gateway-spi-0.0.4 alibabacloud-tea-0.4.3 alibabacloud-tea-openapi-0.4.4 alibabacloud-tea-util-0.3.14 alibabacloud_dysmsapi20170525-4.5.1 charset_normalizer-3.4.7 cryptography-46.0.7 darabonba-core-1.0.7 requests-2.34.2
+
+[notice] A new release of pip is available: 25.1.1 -> 26.1.2
+[notice] To update, run: E:\银发通二阶段项目\backend\.venv\Scripts\python.exe -m pip install --upgrade pip

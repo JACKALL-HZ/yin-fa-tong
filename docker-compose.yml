@@ -132,6 +132,8 @@ services:
       ALIPAY_RETURN_URL: ${ALIPAY_RETURN_URL:-http://localhost:5173/pay-result}
       ALIPAY_OAUTH_REDIRECT_URI: ${ALIPAY_OAUTH_REDIRECT_URI:-http://localhost:5173/auth/callback}
       PAY_MODE: ${PAY_MODE:-mock}
+      ALIYUN_ACCESS_KEY_ID: ${ALIYUN_ACCESS_KEY_ID:-}
+      ALIYUN_ACCESS_KEY_SECRET: ${ALIYUN_ACCESS_KEY_SECRET:-}
     # ports:        # 生产环境通过 Nginx 反代，不直接暴露
     #   - "8000:8000"
     depends_on:

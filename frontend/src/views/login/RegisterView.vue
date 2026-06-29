@@ -1,36 +1,54 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { authApi } from '@/api/auth'
 import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const userStore = useUserStore()
 
 const phone = ref('')
+const code = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-const nickname = ref('')
-const userType = ref<1 | 2>(1) // 1老年用户 2子女用户
 const agreed = ref(false)
 const loading = ref(false)
+const countdown = ref(0)
+let cdTimer: ReturnType<typeof setInterval> | null = null
+
+async function handleSendCode() {
+  if (!phone.value) return ElMessage.warning('请输入手机号')
+  if (phone.value.length !== 11) return ElMessage.warning('请输入11位手机号')
+  try {
+    await authApi.sendSmsCode(phone.value)
+    ElMessage.success('验证码已发送')
+    countdown.value = 60
+    cdTimer = setInterval(() => {
+      countdown.value--
+      if (countdown.value <= 0 && cdTimer) {
+        clearInterval(cdTimer)
+        cdTimer = null
+      }
+    }, 1000)
+  } catch (e: any) {
+    ElMessage.error(e?.message || '验证码发送失败')
+  }
+}
 
 async function handleRegister() {
   if (!agreed.value) return ElMessage.warning('请阅读并同意用户协议')
   if (!phone.value) return ElMessage.warning('请输入手机号')
   if (phone.value.length !== 11) return ElMessage.warning('请输入11位手机号')
+  if (!code.value) return ElMessage.warning('请输入验证码')
+  if (code.value.length !== 6) return ElMessage.warning('验证码为6位数字')
   if (!password.value) return ElMessage.warning('请输入密码')
   if (password.value.length < 6) return ElMessage.warning('密码长度不能少于6位')
   if (password.value !== confirmPassword.value) return ElMessage.warning('两次密码输入不一致')
 
   loading.value = true
   try {
-    await userStore.register(
-      phone.value,
-      password.value,
-      nickname.value || undefined,
-      userType.value,
-    )
+    await userStore.registerWithCode(phone.value, code.value, password.value)
     ElMessage.success('注册成功，请登录')
     router.push('/login')
   } catch (e: any) {
@@ -39,6 +57,10 @@ async function handleRegister() {
     loading.value = false
   }
 }
+
+onUnmounted(() => {
+  if (cdTimer) clearInterval(cdTimer)
+})
 </script>
 
 <template>
@@ -116,18 +138,6 @@ async function handleRegister() {
             <div class="sub">注册后即可享受预约挂号、智能导诊、陪诊服务</div>
           </div>
 
-          <!-- 用户类型选择 -->
-          <div class="type-row">
-            <div :class="['type-btn', { on: userType === 1 }]" @click="userType = 1">
-              <span class="ic">👴</span>
-              <span>我是长者</span>
-            </div>
-            <div :class="['type-btn', { on: userType === 2 }]" @click="userType = 2">
-              <span class="ic">👨‍👩‍👧</span>
-              <span>我是子女</span>
-            </div>
-          </div>
-
           <!-- 表单 -->
           <div class="panel">
             <div class="field">
@@ -140,6 +150,28 @@ async function handleRegister() {
                 </span>
                 <span class="prel">+86</span>
                 <input v-model="phone" type="tel" placeholder="请输入手机号" maxlength="11" />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="row">
+                <span class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="10" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <input v-model="code" type="text" placeholder="请输入验证码" maxlength="6" style="letter-spacing: 4px;" />
+                <div class="suf">
+                  <button
+                    class="vcode"
+                    :class="{ cd: countdown > 0 }"
+                    :disabled="countdown > 0"
+                    @click="handleSendCode"
+                  >
+                    {{ countdown > 0 ? `${countdown}s` : '获取验证码' }}
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -163,18 +195,6 @@ async function handleRegister() {
                   </svg>
                 </span>
                 <input v-model="confirmPassword" type="password" placeholder="请再次输入密码" />
-              </div>
-            </div>
-
-            <div class="field">
-              <div class="row">
-                <span class="ic">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="8" r="4" />
-                    <path d="M4 21v-1a8 8 0 0 1 16 0v1" />
-                  </svg>
-                </span>
-                <input v-model="nickname" type="text" placeholder="请输入昵称（选填，默认：用户）" />
               </div>
             </div>
 
@@ -581,6 +601,39 @@ async function handleRegister() {
   color: var(--c-ink-300);
   font-weight: 500;
   letter-spacing: 0;
+}
+
+.field .row .suf {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field .row .vcode {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: var(--c-primary-bg);
+  color: var(--c-primary);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border: 0;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+
+.field .row .vcode:hover {
+  background: var(--c-primary);
+  color: #FFF7E8;
+}
+
+.field .row .vcode.cd {
+  background: var(--c-line);
+  color: var(--c-ink-500);
+  cursor: default;
 }
 
 .form-row {

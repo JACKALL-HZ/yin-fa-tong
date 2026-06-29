@@ -48,6 +48,7 @@ docker/mysql/data/
 docker/redis/data/
 docker/rabbitmq/data/
 docker/es/data/
+docker-compose.override.yml
 
 # 环境文件（保留 .env.example）
 .env

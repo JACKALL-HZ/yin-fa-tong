@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { useAppStore } from '@/stores/app'
+import { authApi } from '@/api/auth'
 import { ElMessage } from 'element-plus'
 
 const router = useRouter()
@@ -10,11 +11,56 @@ const userStore = useUserStore()
 const app = useAppStore()
 
 // ========== 登录表单状态 ==========
-const activeTab = ref<'phone' | 'kin' | 'qr'>('phone')
+const activeTab = ref<'sms' | 'phone'>('sms')
 const phone = ref('')
 const password = ref('')
 const loading = ref(false)
 const agreed = ref(true)
+
+// ========== 验证码登录 ==========
+const smsPhone = ref('')
+const smsCode = ref('')
+const smsLoading = ref(false)
+const smsAgreed = ref(true)
+const smsCountdown = ref(0)
+let smsTimer: ReturnType<typeof setInterval> | null = null
+
+async function handleSendCode() {
+  if (!smsPhone.value) return ElMessage.warning('请输入手机号')
+  if (smsPhone.value.length !== 11) return ElMessage.warning('请输入11位手机号')
+  try {
+    await authApi.sendSmsCode(smsPhone.value)
+    ElMessage.success('验证码已发送')
+    smsCountdown.value = 60
+    smsTimer = setInterval(() => {
+      smsCountdown.value--
+      if (smsCountdown.value <= 0 && smsTimer) {
+        clearInterval(smsTimer)
+        smsTimer = null
+      }
+    }, 1000)
+  } catch (e: any) {
+    ElMessage.error(e?.message || '验证码发送失败')
+  }
+}
+
+async function handleSmsLogin() {
+  if (!smsAgreed.value) return ElMessage.warning('请阅读并同意用户协议')
+  if (!smsPhone.value) return ElMessage.warning('请输入手机号')
+  if (smsPhone.value.length !== 11) return ElMessage.warning('请输入11位手机号')
+  if (!smsCode.value) return ElMessage.warning('请输入验证码')
+  if (smsCode.value.length !== 6) return ElMessage.warning('验证码为6位数字')
+  smsLoading.value = true
+  try {
+    await userStore.smsLogin(smsPhone.value, smsCode.value)
+    ElMessage.success('欢迎回来')
+    router.push('/home')
+  } catch (e: any) {
+    ElMessage.error(e?.message || '登录失败')
+  } finally {
+    smsLoading.value = false
+  }
+}
 
 async function handleLogin() {
   if (!agreed.value) return ElMessage.warning('请阅读并同意用户协议')
@@ -30,29 +76,6 @@ async function handleLogin() {
     ElMessage.error(e?.message || '登录失败')
   } finally {
     loading.value = false
-  }
-}
-
-// ========== 子女亲情登录 ==========
-const kinPhone = ref('')
-const kinPassword = ref('')
-const kinLoading = ref(false)
-const kinAgreed = ref(true)
-
-async function handleKinLogin() {
-  if (!kinAgreed.value) return ElMessage.warning('请阅读并同意用户协议')
-  if (!kinPhone.value) return ElMessage.warning('请输入手机号')
-  if (kinPhone.value.length !== 11) return ElMessage.warning('请输入11位手机号')
-  if (!kinPassword.value) return ElMessage.warning('请输入密码')
-  kinLoading.value = true
-  try {
-    await userStore.login(kinPhone.value, kinPassword.value)
-    ElMessage.success('亲情登录成功')
-    router.push('/home')
-  } catch (e: any) {
-    ElMessage.error(e?.message || '登录失败')
-  } finally {
-    kinLoading.value = false
   }
 }
 
@@ -91,6 +114,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (storyTimer) clearInterval(storyTimer)
+  if (smsTimer) clearInterval(smsTimer)
 })
 
 </script>
@@ -218,40 +242,78 @@ onUnmounted(() => {
 
           <!-- Tab 切换 -->
           <div class="tab-row">
-            <div :class="['tb', { on: activeTab === 'phone' }]" @click="activeTab = 'phone'">
+            <div :class="['tb', { on: activeTab === 'sms' }]" @click="activeTab = 'sms'">
               <span class="ic">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="5" y="2" width="14" height="20" rx="3" />
                   <circle cx="12" cy="18" r="1" fill="currentColor" />
                 </svg>
               </span>
-              手机号登录
+              验证码登录
             </div>
-            <div :class="['tb', { on: activeTab === 'kin' }]" @click="activeTab = 'kin'">
+            <div :class="['tb', { on: activeTab === 'phone' }]" @click="activeTab = 'phone'">
               <span class="ic">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="9" cy="8" r="4" />
-                  <path d="M3 21v-1a6 6 0 0 1 6-6h0a6 6 0 0 1 6 6v1" />
-                  <circle cx="17" cy="6" r="3" />
-                  <path d="M21 21v-.5a4 4 0 0 0-3-3.87" />
+                  <path d="M12 1a5 5 0 0 0-5 5v3H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-2V6a5 5 0 0 0-5-5zM9 6a3 3 0 0 1 6 0v3H9V6z" />
                 </svg>
               </span>
-              子女亲情登录
-            </div>
-            <div :class="['tb', { on: activeTab === 'qr' }]" @click="activeTab = 'qr'">
-              <span class="ic">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="3" width="7" height="7" />
-                  <rect x="14" y="3" width="7" height="7" />
-                  <rect x="3" y="14" width="7" height="7" />
-                  <path d="M14 14h3v3h-3z M19 14h2v2h-2z M14 19h2v2h-2z M19 19h2v2h-2z" />
-                </svg>
-              </span>
-              扫码登录
+              密码登录
             </div>
           </div>
 
-          <!-- 手机号登录面板 -->
+          <!-- 验证码登录面板 -->
+          <div v-show="activeTab === 'sms'" class="panel">
+            <div class="field">
+              <div class="row">
+                <span class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="5" y="2" width="14" height="20" rx="3" />
+                    <circle cx="12" cy="18" r="1" fill="currentColor" />
+                  </svg>
+                </span>
+                <span class="prel">+86</span>
+                <input v-model="smsPhone" type="tel" placeholder="请输入手机号" maxlength="11" />
+              </div>
+            </div>
+            <div class="field">
+              <div class="row">
+                <span class="ic">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="10" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </span>
+                <input v-model="smsCode" type="text" placeholder="请输入验证码" maxlength="6" style="letter-spacing: 4px;" />
+                <div class="suf">
+                  <button
+                    class="vcode"
+                    :class="{ cd: smsCountdown > 0 }"
+                    :disabled="smsCountdown > 0"
+                    @click="handleSendCode"
+                  >
+                    {{ smsCountdown > 0 ? `${smsCountdown}s` : '获取验证码' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <label class="check">
+                <input v-model="smsAgreed" type="checkbox" />
+                <span class="box"></span>
+                7 天内自动登录
+              </label>
+              <a href="javascript:void(0)">遇到问题？</a>
+            </div>
+            <button class="submit" :disabled="smsLoading" @click="handleSmsLogin">
+              {{ smsLoading ? '请稍候...' : '登 录' }}
+            </button>
+            <div class="foot">
+              首次登录自动注册 ·
+              <a href="javascript:void(0)" @click="router.push('/register')">账号密码注册</a>
+            </div>
+          </div>
+
+          <!-- 密码登录面板 -->
           <div v-show="activeTab === 'phone'" class="panel">
             <div class="field">
               <div class="row">
@@ -291,80 +353,6 @@ onUnmounted(() => {
               <a href="javascript:void(0)" @click="router.push('/register')">立即注册</a>
               ·
               <a href="javascript:void(0)">忘记密码？</a>
-            </div>
-          </div>
-
-          <!-- 子女亲情登录面板 -->
-          <div v-show="activeTab === 'kin'" class="panel">
-            <div class="kin-banner">
-              <div class="av">子</div>
-              <div class="info">
-                <div class="n serif">子女代办登录</div>
-                <div class="d">用您的手机号登录后，可代长辈完成挂号、缴费等操作</div>
-              </div>
-            </div>
-            <div class="field">
-              <div class="row">
-                <span class="ic">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="8" r="4" />
-                    <path d="M4 21v-1a8 8 0 0 1 16 0v1" />
-                  </svg>
-                </span>
-                <span class="prel">+86</span>
-                <input v-model="kinPhone" type="tel" placeholder="请输入手机号" maxlength="11" />
-              </div>
-            </div>
-            <div class="field">
-              <div class="row">
-                <span class="ic">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 1a5 5 0 0 0-5 5v3H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-2V6a5 5 0 0 0-5-5zM9 6a3 3 0 0 1 6 0v3H9V6z" />
-                  </svg>
-                </span>
-                <input v-model="kinPassword" type="password" placeholder="请输入登录密码" />
-              </div>
-            </div>
-            <div class="form-row">
-              <label class="check">
-                <input v-model="kinAgreed" type="checkbox" />
-                <span class="box"></span>
-                7 天内自动登录
-              </label>
-              <a href="javascript:void(0)">管理亲情号 ›</a>
-            </div>
-            <button class="submit" :disabled="kinLoading" @click="handleKinLogin">
-              {{ kinLoading ? '请稍候...' : '亲 情 登 录' }}
-            </button>
-            <div class="foot">
-              还没账号？
-              <a href="javascript:void(0)" @click="router.push('/register')">立即注册</a>
-              ·
-              <a href="javascript:void(0)">什么是亲情登录？</a>
-            </div>
-          </div>
-
-          <!-- 扫码登录面板 -->
-          <div v-show="activeTab === 'qr'" class="panel">
-            <div class="qr-wrap">
-              <div class="qr-box">
-                <div class="qr"></div>
-                <div class="corner tl"></div>
-                <div class="corner tr"></div>
-                <div class="corner bl"></div>
-                <div class="corner br"></div>
-              </div>
-              <div class="qr-hint">
-                <div class="t serif">打开 <b class="text-primary">「银发通」App</b> 扫一扫</div>
-                <div class="d">二维码每 <b>90 秒</b> 自动刷新 · 安全可信</div>
-              </div>
-              <div class="qr-refresh">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M3 12a9 9 0 0 1 15-6.7L21 8 M21 3v5h-5" />
-                  <path d="M21 12a9 9 0 0 1-15 6.7L3 16 M3 21v-5h5" />
-                </svg>
-                刷新二维码
-              </div>
             </div>
           </div>
 

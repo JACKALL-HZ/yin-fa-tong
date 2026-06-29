@@ -1,6 +1,7 @@
 """认证模块业务逻辑层"""
 
 import logging
+import secrets
 
 from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -9,9 +10,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.auth.models import UserModel
 from app.auth.schemas import (
     RegisterRequest,
+    RegisterWithCodeRequest,
     LoginRequest,
     WxLoginRequest,
     AlipayLoginRequest,
+    SendSmsCodeRequest,
+    SmsLoginRequest,
+    AdminLoginRequest,
     TokenResponse,
 )
 from app.auth import repository as repo
@@ -70,6 +75,43 @@ async def register(session: AsyncSession, req: RegisterRequest) -> TokenResponse
         nickname=req.nickname,
         user_type=req.user_type,
     )
+    token = create_access_token(user.id, user.user_type)
+    return TokenResponse(access_token=token, user_id=user.id, nickname=user.nickname, user_type=user.user_type)
+
+
+async def register_with_code(session: AsyncSession, req: RegisterWithCodeRequest) -> TokenResponse:
+    """手机号+验证码注册"""
+    from app.shared.redis import get_redis
+
+    redis = await get_redis()
+
+    # 验证码校验
+    code_key = f"sms:code:{req.phone}"
+    stored_code = await redis.get(code_key)
+    if not stored_code or stored_code != req.code:
+        raise BadRequestException("验证码错误或已过期")
+
+    # 检查手机号是否已注册（phone 或 username 字段）
+    existing_phone = await repo.get_user_by_phone(session, req.phone)
+    if existing_phone:
+        raise ConflictException("该手机号已注册")
+    existing_username = await repo.get_user_by_username(session, req.phone)
+    if existing_username:
+        raise ConflictException("该手机号已注册")
+
+    # 创建用户
+    user = await repo.create_user(
+        session,
+        phone=req.phone,
+        username=req.phone,
+        password=hash_password(req.password),
+        nickname="用户",
+        user_type=1,
+    )
+
+    # 数据库操作成功后，删除验证码
+    await redis.delete(code_key)
+
     token = create_access_token(user.id, user.user_type)
     return TokenResponse(access_token=token, user_id=user.id, nickname=user.nickname, user_type=user.user_type)
 
@@ -161,6 +203,105 @@ async def alipay_login(session: AsyncSession, req: AlipayLoginRequest) -> TokenR
 
     token = create_access_token(user.id, user.user_type)
     return TokenResponse(access_token=token, user_id=user.id, nickname=user.nickname, user_type=user.user_type)
+
+
+async def send_sms_code(session: AsyncSession, req: SendSmsCodeRequest) -> None:
+    """发送短信验证码"""
+    from app.shared.redis import get_redis
+    from app.auth.sms_client import generate_verify_code, send_sms_code as send_sms
+
+    redis = await get_redis()
+
+    # 检查60秒限流
+    rate_key = f"sms:rate:{req.phone}"
+    if await redis.exists(rate_key):
+        raise BadRequestException("验证码发送过于频繁，请60秒后重试")
+
+    # 生成验证码
+    code = generate_verify_code(6)
+
+    # 存储到Redis，5分钟有效
+    code_key = f"sms:code:{req.phone}"
+    await redis.setex(code_key, 300, code)
+    logger.info(f"验证码已存储: phone={req.phone}")
+
+    # 设置60秒限流
+    await redis.setex(rate_key, 60, "1")
+
+    # 发送短信（失败会抛异常）
+    try:
+        await send_sms(req.phone, code)
+    except Exception as e:
+        # 短信发送失败，清除已存储的验证码和限流
+        await redis.delete(code_key)
+        await redis.delete(rate_key)
+        raise BadRequestException(f"短信发送失败: {str(e)}")
+
+
+async def sms_login(session: AsyncSession, req: SmsLoginRequest) -> TokenResponse:
+    """手机号验证码登录/注册"""
+    from app.shared.redis import get_redis
+
+    redis = await get_redis()
+
+    # 验证码校验
+    code_key = f"sms:code:{req.phone}"
+    stored_code = await redis.get(code_key)
+    logger.info(f"验证码校验: phone={req.phone}")
+    if not stored_code or stored_code != req.code:
+        raise BadRequestException("验证码错误或已过期")
+
+    # 查询用户（先按手机号查，再按用户名查）
+    user = await repo.get_user_by_phone(session, req.phone)
+
+    if not user:
+        # 可能用户用密码注册过（username=手机号），但 phone 字段为空
+        user = await repo.get_user_by_username(session, req.phone)
+        if user:
+            # 补充手机号
+            user.phone = req.phone
+            await session.flush()
+        else:
+            # 首次登录，自动注册
+            user = await repo.create_user(
+                session,
+                phone=req.phone,
+                username=req.phone,  # 手机号作为用户名
+                password=hash_password(secrets.token_hex(16)),  # 随机密码，手机登录不使用
+                nickname="用户",
+                user_type=1,
+            )
+
+    # 数据库操作成功后，删除验证码（一次性）
+    await redis.delete(code_key)
+
+    # 生成Token
+    token = create_access_token(user.id, user.user_type)
+    return TokenResponse(
+        access_token=token,
+        user_id=user.id,
+        nickname=user.nickname,
+        user_type=user.user_type,
+    )
+
+
+async def admin_login(session: AsyncSession, req: AdminLoginRequest) -> TokenResponse:
+    """管理员登录（独立接口）"""
+    user = await repo.get_user_by_username(session, req.username)
+
+    if not user or not verify_password(req.password, user.password):
+        raise BadRequestException("账号或密码错误")
+
+    if user.user_type != 3:
+        raise ForbiddenException("该账号不是管理员")
+
+    token = create_access_token(user.id, user.user_type)
+    return TokenResponse(
+        access_token=token,
+        user_id=user.id,
+        nickname=user.nickname,
+        user_type=user.user_type,
+    )
 
 
 async def get_current_user(

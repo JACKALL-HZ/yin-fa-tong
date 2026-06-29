@@ -12,6 +12,14 @@ async def get_user_by_username(session: AsyncSession, username: str) -> UserMode
     return result.scalar_one_or_none()
 
 
+async def get_user_by_phone(session: AsyncSession, phone: str) -> UserModel | None:
+    """根据手机号查询用户"""
+    result = await session.execute(
+        select(UserModel).where(UserModel.phone == phone, UserModel.is_deleted == 0)
+    )
+    return result.scalar_one_or_none()
+
+
 async def get_user_by_wx_openid(session: AsyncSession, wx_openid: str) -> UserModel | None:
     result = await session.execute(
         select(UserModel).where(UserModel.wx_openid == wx_openid, UserModel.is_deleted == 0)

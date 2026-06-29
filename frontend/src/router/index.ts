@@ -21,6 +21,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: '支付宝登录', guest: true },
   },
   {
+    path: '/admin/login',
+    name: 'AdminLogin',
+    component: () => import('@/views/login/AdminLoginView.vue'),
+    meta: { title: '管理员登录', guest: true },
+  },
+  {
     path: '/',
     component: () => import('@/components/layout/AppLayout.vue'),
     redirect: '/home',
