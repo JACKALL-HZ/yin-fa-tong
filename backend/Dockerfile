@@ -9,8 +9,8 @@ RUN sed -i 's|http://deb.debian.org/debian|https://mirrors.aliyun.com/debian|g' 
     libgl1 libglib2.0-0 libsm6 libxext6 libxrender1 libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r requirements.txt
+COPY requirements-server.txt .
+RUN pip install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r requirements-server.txt
 
 # App code
 COPY . .

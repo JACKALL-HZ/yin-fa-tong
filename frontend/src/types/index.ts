@@ -72,19 +72,19 @@ export interface GuideResult {
   dept_name: string
   score: number           // rule engine: weighted score
   matched_keywords: string[] // rule engine: matched symptom keywords
-  confidence: number      // Dify AI: confidence 0-1
-  reasoning: string       // Dify AI: recommendation reasoning
+  confidence: number      // AI: confidence 0-1
+  reasoning: string       // AI: recommendation reasoning
 }
 
 export interface GuideResponse {
   results: GuideResult[]
   input_text: string
   suggestion: string
-  medications: MedicationSuggestion[]   // Dify: OTC drug suggestions
-  elderly_precautions: string           // Dify: elderly-specific cautions
-  emergency_flag: boolean               // Dify: emergency alert
-  general_advice: string                // Dify: lifestyle advice
-  engine: 'dify' | 'rule'              // which engine provided the result
+  medications: MedicationSuggestion[]   // AI: OTC drug suggestions
+  elderly_precautions: string           // AI: elderly-specific cautions
+  emergency_flag: boolean               // AI: emergency alert
+  general_advice: string                // AI: lifestyle advice
+  engine: 'langgraph' | 'rule'           // which engine provided the result
 }
 
 // ---- 志愿者 ----

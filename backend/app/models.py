@@ -18,6 +18,7 @@ from app.accompany.volunteer.models import VolunteerModel        # noqa: F401
 from app.accompany.order.models import AccompanyOrderModel       # noqa: F401
 from app.message.models import MessageModel        # noqa: F401
 from app.reminder.models import ReminderModel    # noqa: F401
+from app.guide.models import GuideRunModel       # noqa: F401
 
 __all__ = [
     "UserModel",
@@ -33,4 +34,5 @@ __all__ = [
     "AccompanyOrderModel",
     "MessageModel",
     "ReminderModel",
+    "GuideRunModel",
 ]

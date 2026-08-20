@@ -1,25 +1,24 @@
 """智能导诊业务逻辑
 
-诊断策略:
-  PRIMARY:  调用 Dify Chatbot（通义千问 + 医学知识库）→ 解析 JSON → 返回科室+用药建议
-  FALLBACK: 当 Dify 不可用/未配置/超时/出错时，退化到本地规则引擎关键词匹配
+诊断策略（两档分派）:
+  PRIMARY:  GUIDE_ENGINE=langgraph → 自建 LangGraph 图（症状抽取→紧急分级→知识库检索→科室推荐→用药建议）
+  FALLBACK: GUIDE_ENGINE=rule 或 langgraph 失败 → 本地规则引擎关键词匹配
 """
 
-import json
-import re
 import logging
 from collections import defaultdict
+
+from app.config import settings
 from app.guide.symptom_dict.mapping import SYMPTOM_MAP
 from app.guide.schemas import (
-    GuideRequest, GuideResponse, MatchResult, MedicationSuggestion,
+    GuideRequest, GuideResponse, MatchResult,
 )
-from app.shared.dify_client import dify_client
 
 logger = logging.getLogger(__name__)
 
 
 # ═══════════════════════════════════════════════════════════════
-#  FALLBACK: 本地规则引擎（保持不变，Dify 不可用时的兜底方案）
+#  FALLBACK: 本地规则引擎（保持不变，LangGraph 不可用时的兜底方案）
 # ═══════════════════════════════════════════════════════════════
 
 def _tokenize(text: str) -> list[str]:
@@ -84,83 +83,51 @@ def _rule_engine_diagnose(req: GuideRequest) -> GuideResponse:
 
 
 # ═══════════════════════════════════════════════════════════════
-#  PRIMARY: Dify Chatbot 诊断
+#  PRIMARY: LangGraph 自建图导诊
 # ═══════════════════════════════════════════════════════════════
 
-def _extract_json_from_text(text: str) -> dict:
-    """从 LLM 文本回复中提取 JSON（处理 markdown 代码块包裹的情况）"""
-    # 先尝试匹配 ```json ... ``` 代码块
-    m = re.search(r'```(?:json)?\s*([\s\S]*?)```', text)
-    if m:
-        try:
-            return json.loads(m.group(1))
-        except json.JSONDecodeError:
-            pass
-    # 再尝试匹配裸花括号
-    m = re.search(r'\{[\s\S]*\}', text)
-    if m:
-        try:
-            return json.loads(m.group())
-        except json.JSONDecodeError:
-            pass
-    return {}
-
-
-async def _dify_diagnose(req: GuideRequest) -> GuideResponse:
-    """调用 Dify Chatbot API → 从文本回复中提取 JSON → 映射为响应"""
-    answer_text = await dify_client.chat(query=req.symptom_text)
-    parsed = _extract_json_from_text(answer_text)
-
-    # ── 科室推荐 ──
-    results = []
-    for dep in parsed.get("departments", [])[:3]:
-        results.append(MatchResult(
-            dept_name=dep.get("dept_name", ""),
-            confidence=float(dep.get("confidence", 0)),
-            reasoning=dep.get("reasoning", ""),
-        ))
-
-    # ── 用药建议：note 字段兼容简化格式 ──
-    medications = []
-    for med in parsed.get("medications", [])[:3]:
-        note = med.get("note", "")  # 简化 prompt 只用 note
-        medications.append(MedicationSuggestion(
-            drug_name=med.get("drug_name", ""),
-            indication=med.get("indication", note),       # note → indication
-            dosage_note=med.get("dosage_note", ""),
-            elderly_precaution=med.get("elderly_precaution", ""),
-            contraindication=med.get("contraindication", ""),
-        ))
-
-    # ── 建议文本：advice 字段兼容简化格式 ──
-    advice = parsed.get("advice", parsed.get("general_advice", ""))
-    if results:
-        top = results[0]
-        suggestion = f"根据AI分析，建议优先挂【{top.dept_name}】（置信度 {top.confidence:.0%}）。{top.reasoning}"
-    else:
-        suggestion = advice or "AI分析未匹配到明确科室，建议挂【内科】就诊。"
-
-    return GuideResponse(
-        symptom_text=req.symptom_text,
-        results=results,
-        suggestion=suggestion,
-        medications=medications,
-        general_advice=advice,
-        engine="dify",
-    )
+async def _langgraph_diagnose(req: GuideRequest) -> GuideResponse:
+    """LangGraph 自建图导诊（lazy import，避免模块加载期依赖 graph.build 尚未就绪）"""
+    from app.guide.graph.build import run_guide_graph
+    return await run_guide_graph(req)
 
 
 # ═══════════════════════════════════════════════════════════════
-#  主入口：Dify 优先，规则引擎兜底
+#  主入口：按 GUIDE_ENGINE 分派，langgraph 失败自动降级 rule
 # ═══════════════════════════════════════════════════════════════
 
 async def guide_diagnose(req: GuideRequest) -> GuideResponse:
-    """智能导诊主入口：Dify AI 优先，失败时自动降级为规则引擎"""
-    if not dify_client.enabled:
-        return _rule_engine_diagnose(req)
+    """智能导诊主入口：GUIDE_ENGINE=langgraph 优先，失败降级规则引擎"""
+    engine = settings.GUIDE_ENGINE
+    if engine == "langgraph":
+        try:
+            return await _langgraph_diagnose(req)
+        except Exception as exc:
+            logger.warning("LangGraph 诊断失败，降级规则引擎。错误: %s", exc)
+            return _rule_engine_diagnose(req)
+    # rule（默认/兜底）
+    return _rule_engine_diagnose(req)
 
-    try:
-        return await _dify_diagnose(req)
-    except Exception as exc:
-        logger.warning("Dify 诊断失败，降级为规则引擎。错误: %s", exc)
-        return _rule_engine_diagnose(req)
+
+# ═══════════════════════════════════════════════════════════════
+#  流式入口：SSE 事件生成器（节点级进度 + 最终结果）
+# ═══════════════════════════════════════════════════════════════
+
+async def stream_guide_diagnose(req: GuideRequest):
+    """流式导诊 SSE 生成器
+
+    langgraph 模式 → start/node_end×N/final 事件流
+    图不可用/失败 → 降级 rule，单次 final 事件
+    """
+    if settings.GUIDE_ENGINE == "langgraph":
+        try:
+            from app.guide.graph.build import stream_guide_graph  # noqa: E402
+            async for evt in stream_guide_graph(req):
+                yield evt
+            return
+        except Exception as exc:
+            logger.warning("LangGraph 流式失败，降级规则引擎: %s", exc)
+    # 降级：规则引擎单 final 事件
+    from app.guide.graph.build import _sse  # noqa: E402
+    resp = _rule_engine_diagnose(req)
+    yield _sse("final", resp.model_dump())

@@ -1,9 +1,10 @@
 """智能导诊 + 语音挂号路由层"""
 
 from fastapi import APIRouter
+from fastapi.responses import StreamingResponse
 from app.shared.response import ApiResponse
 from app.guide.schemas import GuideRequest, GuideResponse
-from app.guide.service import guide_diagnose
+from app.guide.service import guide_diagnose, stream_guide_diagnose
 
 router = APIRouter(prefix="/api/guide", tags=["智能服务"])
 
@@ -14,12 +15,27 @@ async def diagnose(req: GuideRequest):
 
     输入症状描述（支持方言/口语），返回：
     - 推荐科室（含置信度和推理理由）
-    - OTC 用药参考（Dify AI 模式）
+    - OTC 用药参考（AI 模式）
     - 老年患者注意事项
     - 紧急情况警示
     """
     data = await guide_diagnose(req)
     return ApiResponse.ok(data, message="导诊完成")
+
+
+@router.post("/diagnose/stream")
+async def diagnose_stream(req: GuideRequest):
+    """AI 智能导诊（SSE 流式）
+
+    响应 Content-Type: text/event-stream
+    事件序列：start → node_end(×N, 含节点进度) → final(完整 GuideResponse) / error
+    前端用 EventSource 或 fetch+ReadableStream 消费。
+    """
+    return StreamingResponse(
+        stream_guide_diagnose(req),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 @router.post("/voice-search")
@@ -37,7 +53,7 @@ async def voice_search(voice_text: str = "头疼发烧"):
         search_keyword: str
         suggestion: str
 
-    # 复用导诊引擎（Dify 优先）
+    # 复用导诊引擎（LangGraph 优先）
     guide_result = await guide_diagnose(GuideRequest(symptom_text=voice_text))
     top_dept = guide_result.results[0].dept_name if guide_result.results else None
 

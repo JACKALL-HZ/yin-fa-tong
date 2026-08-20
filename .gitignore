@@ -58,3 +58,14 @@ docker-compose.override.yml
 
 # 计划文件
 .claude/plans/
+
+# ========================
+# 推 GitHub 排除项（本地配置 / 文档报告 / 工具目录）
+# ========================
+.claude/
+CLAUDE.md
+docs/
+backend/data/
+.workbuddy/
+overview.md
+项目审查报告.md

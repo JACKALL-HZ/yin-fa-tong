@@ -14,8 +14,10 @@ async def list_by_doctor(session: AsyncSession, doctor_id: int, from_date: date 
         ScheduleModel.doctor_id == doctor_id,
         ScheduleModel.is_deleted == 0,
     )
-    if from_date:
-        stmt = stmt.where(ScheduleModel.work_date >= from_date)
+    # 默认只查询今天及以后的排班
+    if from_date is None:
+        from_date = date.today()
+    stmt = stmt.where(ScheduleModel.work_date >= from_date)
     result = await session.execute(stmt.order_by(ScheduleModel.work_date))
     return list(result.scalars().all())
 
@@ -32,8 +34,10 @@ async def list_with_relations(session: AsyncSession, doctor_id: int | None = Non
     )
     if doctor_id:
         stmt = stmt.where(ScheduleModel.doctor_id == doctor_id)
-    if from_date:
-        stmt = stmt.where(ScheduleModel.work_date >= from_date)
+    # 默认只查询今天及以后的排班
+    if from_date is None:
+        from_date = date.today()
+    stmt = stmt.where(ScheduleModel.work_date >= from_date)
 
     result = await session.execute(stmt.order_by(ScheduleModel.work_date))
     rows = result.all()

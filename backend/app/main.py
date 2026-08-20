@@ -20,7 +20,6 @@ async def lifespan(app: FastAPI):
     """应用生命周期管理"""
     # 启动时：初始化中间件连接（RabbitMQ/ES 连不上也能跑）
     from app.shared.redis import init_redis          # noqa: E402
-    from app.shared.dify_client import dify_client   # noqa: E402
     await init_redis()
 
     _consumer_task = None
@@ -40,10 +39,14 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning("RabbitMQ 连接失败，消息队列功能不可用: %s", e)
 
+    # 启动时预热知识库向量入库（LangGraph 导诊依赖 Chroma 语义检索）
     try:
-        await dify_client.start()
+        from app.shared.vector_store import vector_store  # noqa: E402
+        if vector_store.enabled and not vector_store.is_ingested:
+            count = await vector_store.ingest_kb()
+            logger.info("知识库向量入库完成 chunks=%d", count)
     except Exception as e:
-        logger.warning("Dify 客户端启动失败，AI 导诊不可用: %s", e)
+        logger.warning("知识库向量入库失败，语义检索不可用（降级规则引擎）: %s", e)
 
     try:
         from app.shared.elasticsearch import init_es, get_es, ensure_indexes  # noqa: E402
@@ -77,16 +80,18 @@ async def lifespan(app: FastAPI):
     except Exception:
         pass
 
+    # 关闭 LangGraph 导诊图 sqlite checkpointer
+    try:
+        from app.guide.graph.build import close_graph  # noqa: E402
+        await close_graph()
+    except Exception:
+        pass
+
     from app.shared.redis import close_redis          # noqa: E402
     await close_redis()
     try:
         from app.shared.rabbitmq import close_rabbitmq    # noqa: E402
         await close_rabbitmq()
-    except Exception:
-        pass
-    try:
-        from app.shared.dify_client import dify_client    # noqa: E402
-        await dify_client.close()
     except Exception:
         pass
     try:

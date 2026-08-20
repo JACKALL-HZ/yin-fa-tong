@@ -1,7 +1,9 @@
 """智能导诊 Pydantic 模型
 
-Dify AI 增强版 — 向后兼容规则引擎返回格式。
-规则引擎返回时，AI 专属字段为默认值/空列表。
+向后兼容：规则引擎 / LangGraph 两档共用同一响应结构。
+- 规则引擎填充: dept_name, total_score, matched_symptoms
+- LangGraph 填充: dept_name, confidence, reasoning, medications, ...
+LangGraph 新增可选字段（thread_id / trace_id / emergency_level），前端零改动。
 """
 
 from pydantic import BaseModel, Field
@@ -12,12 +14,17 @@ class GuideRequest(BaseModel):
         min_length=1, max_length=500,
         description="症状描述（支持方言/口语，如: 头疼三天）"
     )
+    # LangGraph 断点续推用：传上次返回的 thread_id 即可 resume，不传则新开一轮
+    thread_id: str | None = Field(
+        default=None,
+        description="续推线程ID（LangGraph 模式可选，首轮不传）"
+    )
 
 
-# ── Dify AI 专属模型 ──
+# ── AI 专属模型 ──
 
 class MedicationSuggestion(BaseModel):
-    """用药建议（仅 OTC，来自 Dify AI）"""
+    """用药建议（仅 OTC）"""
     drug_name: str = Field(default="", description="药品通用名")
     indication: str = Field(default="", description="适应症说明")
     dosage_note: str = Field(default="", description="用法用量参考")
@@ -28,27 +35,33 @@ class MedicationSuggestion(BaseModel):
 # ── 向后兼容的匹配结果 ──
 
 class MatchResult(BaseModel):
-    """科室匹配结果（同时兼容规则引擎和 Dify AI）
+    """科室匹配结果（兼容规则引擎 / LangGraph）
 
-    - 规则引擎填充: dept_name, total_score, matched_symptoms
-    - Dify AI 填充:   dept_name, confidence, reasoning
+    - 规则引擎: dept_name, total_score, matched_symptoms
+    - LangGraph: dept_name, confidence, reasoning
     """
     dept_name: str
-    total_score: int = 0              # 规则引擎：加权匹配分数
-    matched_symptoms: list[str] = []  # 规则引擎：匹配到的症状关键词
-    confidence: float = 0.0           # Dify AI：置信度 (0.0-1.0)
-    reasoning: str = ""               # Dify AI：推荐理由
+    total_score: int = 0
+    matched_symptoms: list[str] = []
+    confidence: float = 0.0
+    reasoning: str = ""
 
 
 class GuideResponse(BaseModel):
-    """导诊响应（扩展版，向后兼容）"""
+    """导诊响应（扩展版，两档向后兼容）"""
     symptom_text: str
-    results: list[MatchResult] = []    # 科室推荐列表（降序）
-    suggestion: str = ""               # 综合就医建议文本
+    results: list[MatchResult] = []
+    suggestion: str = ""
 
-    # ── Dify AI 专属字段（规则引擎返回时为空/默认值） ──
+    # ── AI 专属字段（规则引擎返回时为空/默认值） ──
     medications: list[MedicationSuggestion] = []
     elderly_precautions: str = ""
     emergency_flag: bool = False
     general_advice: str = ""
-    engine: str = "rule"               # "dify" | "rule" — 前端据此区分展示
+    engine: str = "rule"               # "langgraph" | "rule"
+
+    # ── LangGraph 新增（可选，前端可忽略） ──
+    thread_id: str = ""               # 续推用，首轮返回供前端下次带上
+    trace_id: str = ""                # request_id → thread_id → trace_id 三层可追
+    emergency_level: str = ""         # "red" | "yellow" | "green"（空=未分级）
+    emergency_message: str = ""       # 紧急分级警示语

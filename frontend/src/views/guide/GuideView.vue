@@ -12,6 +12,8 @@ const guideData = ref<GuideResponse | null>(null)
 const activePart = ref('')
 const isListening = ref(false)
 const loading = ref(false)
+const streamSteps = ref<string[]>([])   // 已完成节点
+const currentStep = ref('')              // 当前进行中节点
 
 const bodyParts = [
   { id: 'head', label: '头 / 脑', top: '22px', left: '50%', tagClass: 'head' },
@@ -33,13 +35,24 @@ function clickPart(id: string) {
 async function doDiagnose() {
   if (!symptomText.value.trim()) return
   loading.value = true
+  streamSteps.value = []
+  currentStep.value = ''
+  guideData.value = null
+  results.value = []
   try {
-    const r = await guideApi.diagnose(symptomText.value)
-    guideData.value = r.data.data ?? null
-    results.value = r.data.data?.results || []
-    console.log('[GuideView] diagnose results:', JSON.parse(JSON.stringify(results.value)))
+    await guideApi.streamDiagnose(symptomText.value, (event, data) => {
+      if (event === 'node_end') {
+        currentStep.value = data.label
+        streamSteps.value.push(data.label)
+      } else if (event === 'final') {
+        guideData.value = data
+        results.value = data.results || []
+      } else if (event === 'error') {
+        ElMessage.error(data.message || '导诊失败')
+      }
+    })
   } catch (err) {
-    console.error('[GuideView] diagnose error:', err)
+    console.error('[GuideView] stream error:', err)
     ElMessage.error('导诊服务暂时不可用，请稍后重试')
   } finally { loading.value = false }
 }
@@ -95,7 +108,7 @@ function goReserve(dept: string) {
             @click="goReserve(r.dept_name)"
             :data-dept="r.dept_name">
             {{ r.dept_name }}
-            <span v-if="guideData?.engine === 'dify' && r.confidence" class="chip-conf">
+            <span v-if="guideData?.engine === 'langgraph' && r.confidence" class="chip-conf">
               {{ (r.confidence * 100).toFixed(0) }}%
             </span>
           </button>
@@ -112,9 +125,16 @@ function goReserve(dept: string) {
       </el-input>
     </div>
 
-    <!-- 加载态 -->
+    <!-- 加载态 + 流式进度 -->
     <div v-if="loading" class="loading-card card">
-      <el-skeleton :rows="4" animated />
+      <div class="stream-progress">
+        <div v-for="(s, i) in streamSteps" :key="i" class="step done">
+          <span class="step-dot">✓</span><span class="step-text">{{ s }}</span>
+        </div>
+        <div class="step active">
+          <span class="step-dot spin">●</span><span class="step-text">{{ currentStep || '正在分析…' }}</span>
+        </div>
+      </div>
       <p class="loading-msg">AI 正在分析您的症状，请稍候…</p>
     </div>
 
@@ -131,7 +151,7 @@ function goReserve(dept: string) {
       </div>
 
       <!-- AI 分析推理 -->
-      <div v-if="guideData.engine === 'dify' && guideData.results.length" class="card reasoning-card">
+      <div v-if="guideData.engine === 'langgraph' && guideData.results.length" class="card reasoning-card">
         <h3 class="card-section-title">🩺 AI 分析说明</h3>
         <div v-for="r in guideData.results" :key="r.dept_name" class="reason-row">
           <div class="reason-dept-row">
@@ -172,7 +192,7 @@ function goReserve(dept: string) {
 
       <!-- 引擎标签 -->
       <div class="engine-badge">
-        <span v-if="guideData.engine === 'dify'" class="badge-ai">🤖 AI 智能分析</span>
+        <span v-if="guideData.engine === 'langgraph'" class="badge-ai">🤖 AI 智能分析</span>
         <span v-else class="badge-rule">📋 基础症状匹配</span>
       </div>
     </template>
@@ -230,7 +250,17 @@ function goReserve(dept: string) {
 
 /* ── 加载态 ── */
 .loading-card { padding: 24px; margin-bottom: 24px; }
-.loading-msg { text-align: center; color: var(--c-primary); margin-top: 12px; font-weight: 600; font-size: 16px; }
+.loading-msg { text-align: center; color: var(--c-primary); margin-top: 16px; font-weight: 600; font-size: 16px; }
+.stream-progress { display: flex; flex-direction: column; gap: 12px; }
+.step { display: flex; align-items: center; gap: 10px; font-size: 16px; }
+.step.done { color: var(--c-ink-500); }
+.step.done .step-text { text-decoration: line-through; opacity: .7; }
+.step.active { color: var(--c-primary); font-weight: 700; }
+.step-dot { width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.step.done .step-dot { background: var(--c-primary-l); color: var(--c-primary); }
+.step.active .step-dot { background: var(--c-primary); color: #fff; }
+.step-dot.spin { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
 
 /* ── 紧急提醒 ── */
 .emergency-alert {

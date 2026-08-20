@@ -55,11 +55,30 @@ class Settings(BaseSettings):
     UPLOAD_DIR: str = "uploads"
     MAX_UPLOAD_SIZE_MB: int = 10
 
-    # ---- Dify AI (Chatflow 模式) ----
-    DIFY_API_KEY: str = ""
-    DIFY_BASE_URL: str = "https://api.dify.ai"
-    DIFY_CHAT_ENDPOINT: str = "/v1/chat-messages"
-    DIFY_TIMEOUT: int = 60
+    # ---- Chroma 向量库 ----
+    CHROMA_DB_DIR: str = "data/chroma"
+    CHROMA_COLLECTION: str = "yinfa_kb"
+    # Embedding 部署模式：local(本机 BGE-M3 推理) | api(硅基流动 BGE-M3 API)
+    EMBEDDING_PROVIDER: str = "local"
+    # 本地模型（BAAI/bge-m3，1024 维，零联网依赖）
+    EMBEDDING_MODEL: str = "BAAI/bge-m3"
+    EMBEDDING_DIM: int = 1024
+    # ModelScope 模型缓存目录（仅 local 模式用，默认放 E 盘避免 C 盘爆满）
+    MODELSCOPE_CACHE: str = "E:/modelscope_cache"
+    # API 模式（硅基流动 OpenAI 兼容接口，BGE-M3 同维度，零本地内存占用）
+    EMBEDDING_API_BASE: str = "https://api.siliconflow.cn/v1"
+    EMBEDDING_API_KEY: str = ""
+    # 知识库分块参数
+    KB_CHUNK_SIZE: int = 512
+    KB_CHUNK_OVERLAP: int = 128
+    KB_TOP_K: int = 8
+    KB_SCORE_THRESHOLD: float = 0.35
+    # 混合检索：稀疏(BM25) + 稠密(向量) → RRF 融合 → LLM Reranker 重排
+    BM25_TOP_N: int = 12            # 稀疏路召回数
+    DENSE_TOP_N: int = 12           # 稠密路召回数
+    RRF_K: int = 60                 # RRF 融合常数（标准值 60）
+    RERANK_ENABLED: bool = True     # 是否启用 LLM 重排（关闭则只用 RRF 序）
+    RERANK_TOP_K: int = 6           # 重排后保留数
 
     # ---- 阿里云短信 ----
     ALIYUN_ACCESS_KEY_ID: str = ""
@@ -75,8 +94,21 @@ class Settings(BaseSettings):
     ALIPAY_OAUTH_REDIRECT_URI: str = "http://118.31.120.180/auth/callback"
     # 支付模式：sandbox=沙箱 / mock=纯模拟（降级方案）
     PAY_MODE: str = "mock"
-    DIFY_MAX_RETRIES: int = 1
-    DIFY_APP_MODE: str = "chatflow"  # "chatflow" (Chatflow/Advanced-Chat) | "chatbot" (聊天助手)
+
+    # ── LangGraph 导诊引擎 ──
+    # 引擎分派：langgraph(自建图+Chroma向量检索) | rule(纯规则兜底)
+    GUIDE_ENGINE: str = "langgraph"
+    # OpenAI-compatible LLM（可配 DeepSeek/通义/硅基流动，任一 base_url）
+    LLM_BASE_URL: str = ""
+    LLM_API_KEY: str = ""
+    LLM_MODEL: str = "qwen-plus"
+    LLM_TEMPERATURE: float = 0.3
+    LLM_MAX_TOKENS: int = 2000
+    LLM_TIMEOUT: int = 60
+    # Checkpointer 断点续推（sqlite 文件级，零依赖）
+    GUIDE_CHECKPOINT_DB: str = "data/guide_checkpoints.sqlite"
+    # 知识库目录（相对 backend/ 根）
+    KB_DIR: str = "docs/knowledge-base"
 
     # ── 管理员注册码 ──
     ADMIN_REGISTER_CODE: str = "yft-admin-2026"
@@ -85,6 +117,11 @@ class Settings(BaseSettings):
     def upload_dir_absolute(self) -> Path:
         """返回绝对路径的上传目录"""
         return BASE_DIR / self.UPLOAD_DIR
+
+    @property
+    def BASE_DIR(self) -> Path:
+        """项目根目录（backend/），供 data 目录/chroma/checkpoint 等绝对路径拼接"""
+        return BASE_DIR
 
     class Config:
         env_file = ".env"

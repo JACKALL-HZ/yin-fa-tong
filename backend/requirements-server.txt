@@ -27,14 +27,9 @@ langgraph-checkpoint-sqlite>=2.0.0
 langchain-core>=0.2.0
 # openai 仅作 OpenAI-compatible 客户端（可配 DeepSeek/通义/硅基流动 base_url）
 openai>=1.30.0
-# Chroma 向量库（知识库语义检索，embedding 走本地 BGE-M3）
+# Chroma 向量库（知识库语义检索，embedding 走硅基流动 API，不装本地模型）
 chromadb>=1.0.0
-
-# BGE-M3 本地 Embedding 模型（BAAI/bge-m3，1024维，零联网依赖）
-FlagEmbedding>=1.2.0
-# 模型本地缓存加载需要（snapshot_download 定位已下载模型）
-modelscope>=1.9.0
-# BM25 稀疏检索（混合检索一路）
+# BM25 稀疏检索（混合检索一路，纯 Python 轻量，不依赖本地模型）
 rank-bm25>=0.2.2
 
 # Scheduler
@@ -44,14 +39,15 @@ apscheduler==3.10.4
 opencv-python==4.10.0.84
 pytesseract==0.3.10
 
-# Development
-pytest==8.2.2
-pytest-asyncio==0.23.7
-httpx==0.27.0
-
 # Payment - Alipay
 alipay-sdk-python==3.7.33
 
 # SMS - Alibaba Cloud (号码认证服务)
 alibabacloud-dypnsapi20170525>=2.0.0
 alibabacloud-tea-openapi>=0.3.0
+
+# HTTP client（API embedding 调用）
+httpx==0.27.0
+
+# note: 本地 BGE-M3 的 FlagEmbedding/modelscope/torch 在此镜像中不安装，
+#       服务器低配(2C4G)改用硅基流动 BGE-M3 API（EMBEDDING_PROVIDER=api）。

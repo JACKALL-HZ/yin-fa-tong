@@ -3,7 +3,7 @@
 services:
   mysql:
     ports:
-      - "3306:3306"
+      - "3307:3306"   # 宿主3306被本机MySQL占用，改用3307
     environment:
       MYSQL_ROOT_PASSWORD: 780645
       MYSQL_DATABASE: yinfa_tong
